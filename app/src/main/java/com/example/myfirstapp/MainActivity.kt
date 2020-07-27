@@ -4,7 +4,9 @@ import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDateTime
 import java.util.*
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,9 +18,16 @@ class MainActivity : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
+        textView.text = "Today is $month-$day-$year"
+
+
+
         chooseButton.setOnClickListener {
             val chosenDate = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
-            editTextDate.setText("" + choiceYear + choiceMonth + choiceDay)
+
+                var daysDiff = abs(((choiceYear - year) * 365) - ((choiceMonth - month) * 30) + (choiceDay - day))
+
+                textView.setText("It's been $daysDiff day/s since you've been sober. Good job!")
             }, year, month, day)
 
             chosenDate.show()
