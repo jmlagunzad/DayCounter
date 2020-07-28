@@ -2,14 +2,14 @@ package com.example.myfirstapp
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myfirstapp.EndureFragment.Companion.newInstance
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_endure.*
+import java.lang.Math.abs
 import java.util.*
-import kotlin.math.abs
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +42,32 @@ class EndureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_endure, container, false)
+        val thisView = inflater.inflate(R.layout.fragment_endure, container, false)
+
+        return thisView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        //DAY COUNTER
+        val c =  Calendar.getInstance();
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val textView = view!!.findViewById<TextView>(R.id.textView)
+        textView.text = "Today is $month-$day-$year"
+
+        chooseButton.setOnClickListener {
+            val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
+
+                var daysDiff = abs(((choiceYear - year) * 365) - ((choiceMonth - month) * 30) + (choiceDay - day))
+
+                textView.setText("It's been $daysDiff day/s since you've been sober. Good job!")
+            }, year, month, day)
+
+            chosenDate.show()
+        }
     }
 
     companion object {
