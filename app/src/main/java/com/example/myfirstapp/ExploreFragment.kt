@@ -68,8 +68,10 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //recyclerView.setBackgroundColor(Color.YELLOW)
 
+        val mAdapter = ExploreRecyclerAdapter()
+
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
-        recyclerView.adapter = ExploreRecyclerAdapter()
+        recyclerView.adapter = mAdapter
 
         addButton.setOnClickListener{
 
@@ -85,6 +87,13 @@ class ExploreFragment : Fragment() {
             val customDialog = dialog.create()
             customDialog.show()
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener({
+
+
+                mAdapter.items.add(entryName.toString())
+                mAdapter.prices.add(entryDescription.toString())
+                mAdapter.notifyItemInserted(mAdapter.items.size - 1)
+                mAdapter.notifyItemInserted(mAdapter.prices.size - 1)
+
 
                 Toast.makeText(this.context, "Title: $entryName Description: $entryDescription", Toast.LENGTH_LONG).show()
                 customDialog.dismiss()

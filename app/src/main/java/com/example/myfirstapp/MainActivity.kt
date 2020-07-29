@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
 
         //TAB LAYOUT
         var tabLayout = findViewById<TabLayout>(R.id.tabMenu)
-        var tabExplore = findViewById<TabItem>(R.id.tabExplore)
-        var tabEndure = findViewById<TabItem>(R.id.tabEndure)
+        //var tabExplore = findViewById<TabItem>(R.id.tabExplore)
+        //var tabEndure = findViewById<TabItem>(R.id.tabEndure)
         var viewPager = findViewById<ViewPager>(R.id.viewPager)
 
         val fragmentAdapter = PagerAdapter(supportFragmentManager)

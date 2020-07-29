@@ -8,8 +8,8 @@ import kotlinx.android.synthetic.main.frame_row.view.*
 
 class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
-    val items = listOf("Nier GOTY", "P5 Royal", "AC Valhalla")
-    val prices = listOf(108, 432, 432)
+    var items = mutableListOf("Nier GOTY", "P5 Royal", "AC Valhalla")
+    var prices = mutableListOf("108", "234", "432")
 
     override fun getItemCount(): Int {
         return items.size
