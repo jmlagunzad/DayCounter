@@ -1,10 +1,13 @@
 package com.example.myfirstapp
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_explore.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,4 +59,13 @@ class ExploreFragment : Fragment() {
                 }
             }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //recyclerView.setBackgroundColor(Color.YELLOW)
+
+        recyclerView.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView.adapter = ExploreRecyclerAdapter()
+
+    }
+
 }

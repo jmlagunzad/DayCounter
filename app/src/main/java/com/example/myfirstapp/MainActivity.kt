@@ -25,11 +25,6 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
 
-
-
-
-
-
     }
 
 }
