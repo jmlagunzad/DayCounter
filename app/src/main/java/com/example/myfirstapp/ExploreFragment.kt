@@ -1,13 +1,18 @@
 package com.example.myfirstapp
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_explore.*
+import kotlinx.android.synthetic.main.add_dialog.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +70,26 @@ class ExploreFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = ExploreRecyclerAdapter()
+
+        addButton.setOnClickListener{
+
+            val dialog = AlertDialog.Builder(this.context!!)
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
+
+            val entryName = dialogView.findViewById<EditText>(R.id.editText_name).text
+            val entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
+
+            dialog.setView(dialogView)
+            dialog.setCancelable(true)
+            dialog.setPositiveButton("Add", { dialogInterface: DialogInterface, i: Int -> })
+            val customDialog = dialog.create()
+            customDialog.show()
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener({
+
+                Toast.makeText(this.context, "Title: $entryName Description: $entryDescription", Toast.LENGTH_LONG).show()
+                customDialog.dismiss()
+            })
+        }
 
     }
 
