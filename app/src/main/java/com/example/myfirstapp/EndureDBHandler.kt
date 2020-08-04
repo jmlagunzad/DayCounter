@@ -98,4 +98,24 @@ class EndureDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         }
     }
 
+    fun readHistory(): MutableList<Attempt>{
+
+        val db = this.readableDatabase
+        var attempts: MutableList<Attempt> = ArrayList()
+
+        val result = db.rawQuery("SELECT * from  $TABLE_NAME WHERE end_date != \"\" order by id desc limit 5", null)
+        if(result.moveToFirst()){
+            do {
+                var attempt = Attempt(result.getString(result.getColumnIndex(COL_START)))
+                attempt.end = result.getString(result.getColumnIndex(COL_END))
+                attempt.days = result.getString(result.getColumnIndex(COL_DAYS)).toInt()
+                attempt.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                attempts.add(attempt)
+
+            }while(result.moveToNext())
+        }
+
+        return attempts
+    }
+
 }

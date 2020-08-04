@@ -36,7 +36,7 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
         val db = DatabaseHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
-            Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
+            //Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
             //Toast.makeText(holder.view.context, holder?.view?.textView_mainTitle?.text, Toast.LENGTH_LONG).show()
             val dialog = AlertDialog.Builder(holder.view.context)
             val layoutInflater = LayoutInflater.from(holder.view.context)

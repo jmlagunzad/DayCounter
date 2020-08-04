@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3b5998">
+    android:background="#FFD52E">
 
     <TextView
         android:id="@+id/textView_mainTitle"
@@ -15,9 +15,10 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
+        android:background="#FFD52E"
         android:fontFamily="sans-serif"
         android:text="Title"
-        android:textColor="#FFFFFF"
+        android:textColor="#504C2D"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -34,9 +35,10 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
+        android:background="#FFD52E"
         android:fontFamily="sans-serif-light"
         android:text="TextView"
-        android:textColor="#FFFFFF"
+        android:textColor="#504C2D"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +50,7 @@
         android:id="@+id/divider2"
         android:layout_width="0dp"
         android:layout_height="10dp"
-        android:background="#85E199"
+        android:background="#1F3E63"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +60,7 @@
         android:id="@+id/divider3"
         android:layout_width="0dp"
         android:layout_height="5dp"
-        android:background="#85E199"
+        android:background="#1F3E63"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -67,7 +69,7 @@
         android:id="@+id/divider4"
         android:layout_width="10dp"
         android:layout_height="0dp"
-        android:background="#85E199"
+        android:background="#1F3E63"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
@@ -76,8 +78,8 @@
         android:id="@+id/divider5"
         android:layout_width="10dp"
         android:layout_height="0dp"
-        android:background="#85E199"
-        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        android:background="#1F3E63"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

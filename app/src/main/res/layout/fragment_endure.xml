@@ -3,39 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#3b5998"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".EndureFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="70dp" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="227dp"
-        android:layout_height="60dp"
-        android:text="Choose a date to count how many days you've been sober!"
-        android:gravity="center" />
+        android:layout_width="313dp"
+        android:layout_height="89dp"
+        android:gravity="center"
+        android:text="Select a date to start the counter."
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/textView_last"
         android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:layout_height="95dp"
         android:gravity="center_horizontal"
-        android:text="Streak?" />
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/chooseButton"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:text="Choose date" />
+        android:background="#FFD52E"
+        android:text="Reset Progress"
+        android:textColor="#504C2D" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="101dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="#3b5998"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="bottom|center_horizontal"
+        android:text="Past Journeys"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#1F3E63" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_endure"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#1F3E63" />
 
 
 </LinearLayout>

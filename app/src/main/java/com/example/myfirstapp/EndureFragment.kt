@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_endure.*
+import kotlinx.android.synthetic.main.fragment_explore.*
 import org.joda.time.DateTime
 import org.joda.time.Days
 import java.lang.Math.abs
@@ -58,6 +60,14 @@ class EndureFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //RecyclerView
+        val mAdapter = EndureRecyclerAdapter()
+        val db = EndureDBHandler(this.context!!)
+
+        recyclerView_endure.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView_endure.adapter = mAdapter
+
+        mAdapter.attempts = db.readHistory()
 
         //DAY COUNTER
         val c =  Calendar.getInstance();
@@ -71,8 +81,6 @@ class EndureFragment : Fragment() {
         var dtCurrStart : LocalDate
 
 
-        val db = EndureDBHandler(this.context!!)
-
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val textLast = view!!.findViewById<TextView>(R.id.textView_last)
 
@@ -82,8 +90,8 @@ class EndureFragment : Fragment() {
             var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
             days = abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
-            textLast.setText("Streak #${currentAttempt.id}: ${currentAttempt.start}")
-            textView.setText("Now on a $days-day streak!")
+            textLast.setText("${currentAttempt.start}")
+            textView.setText("$days days clean")
             fresh = false;
         }
         else{
@@ -118,20 +126,22 @@ class EndureFragment : Fragment() {
                   //  var cur = LocalDate.parse("$year-$month-$day",formatter)
                    // dtCurrStart = DateTime(currentAttempt.start, formatter)
 
+                    /*
                     println("THE YEAR IS ${dtCurrStart.year} - $year")
                     println("THE MONTH IS ${dtCurrStart.month.value} - $month")
                     println("THE DAY IS ${dtCurrStart.dayOfMonth} - $day")
-
+*/
                     days = abs(abs((dtCurrStart.year - year) * 365) - abs((dtCurrStart.month.value - month) * 30) + abs(dtCurrStart.dayOfMonth - day))
                     //days = Days.daysBetween(dtCurrStart, cur).getDays()
                     //days = Days.daysBetween(cur, cur)
-                    textLast.setText("Streak #${currentAttempt.id}: ${currentAttempt.start}")
-                    textView.setText("Now on a $days-day streak!")
+                    textLast.setText("${currentAttempt.start}")
+                    textView.setText("$days days clean")
                     fresh = false;
-                }
-                else{
-                    textLast.setText("No progress found.")
-                    fresh = true
+
+                    mAdapter.attempts = db.readHistory()
+                    mAdapter.notifyDataSetChanged()
+
+
                 }
 
 
