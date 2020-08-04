@@ -8,11 +8,11 @@ import android.widget.Toast
 import androidx.core.database.getStringOrNull
 import java.lang.Exception
 
-val DATABASE_NAME = "Personal"
-val TABLE_NAME = "Entries"
-val COL_TITLE = "title"
-val COL_DESCRIPTION = "description"
-val COL_ID = "id"
+private val DATABASE_NAME = "Personal"
+private val TABLE_NAME = "Entries"
+private val COL_TITLE = "title"
+private val COL_DESCRIPTION = "description"
+private val COL_ID = "id"
 
 class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){
 
@@ -22,7 +22,18 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
                 "$COL_TITLE VARCHAR(256)," +
                 "$COL_DESCRIPTION VARCHAR(256) NULL)"
 
+        val createTable2 = "CREATE TABLE Attempts (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "start_date VARCHAR(256)," +
+                "end_date VARCHAR(256) NULL," +
+                "days INTEGER NULL)"
+
+        db?.execSQL(createTable2)
+
+
         db?.execSQL(createTable)
+
+
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

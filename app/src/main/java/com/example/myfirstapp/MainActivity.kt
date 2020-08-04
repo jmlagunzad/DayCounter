@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var dbHandler = DatabaseHandler(this)
+        dbHandler.writableDatabase
         //TAB LAYOUT
         var tabLayout = findViewById<TabLayout>(R.id.tabMenu)
         //var tabExplore = findViewById<TabItem>(R.id.tabExplore)

@@ -20,15 +20,22 @@
         android:text="Choose a date to count how many days you've been sober!"
         android:gravity="center" />
 
-    <Space
+    <TextView
+        android:id="@+id/textView_last"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="108dp"
+        android:gravity="center_horizontal"
+        android:text="Streak?" />
 
     <Button
         android:id="@+id/chooseButton"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:text="Choose date" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

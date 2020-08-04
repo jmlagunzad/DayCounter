@@ -1,15 +1,24 @@
 package com.example.myfirstapp
 
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_endure.*
+import org.joda.time.DateTime
+import org.joda.time.Days
 import java.lang.Math.abs
+import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.LocalDateTime.*
+import java.time.format.DateTimeFormatter
 import java.util.*
+import java.lang.Object
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,6 +56,7 @@ class EndureFragment : Fragment() {
         return thisView
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //DAY COUNTER
@@ -54,20 +64,86 @@ class EndureFragment : Fragment() {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        var strToday = "$year-$month-$day"
+        var fresh = false
+        var currentAttempt = Attempt()
+        var days = 0
+        var dtCurrStart : LocalDate
+
+
+        val db = EndureDBHandler(this.context!!)
 
         val textView = view!!.findViewById<TextView>(R.id.textView)
-        textView.text = "Today is $month-$day-$year"
+        val textLast = view!!.findViewById<TextView>(R.id.textView_last)
+
+        if(db.checkExist()){
+            //textLast.setText("Streak ongoing")
+            currentAttempt = db.readData()
+            var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
+            days = abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
+            textLast.setText("Streak #${currentAttempt.id}: ${currentAttempt.start}")
+            textView.setText("Now on a $days-day streak!")
+            fresh = false;
+        }
+        else{
+            textLast.setText("No progress found.")
+            fresh = true
+        }
+
+
 
         chooseButton.setOnClickListener {
             val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
-                var daysDiff = abs(((choiceYear - year) * 365) - ((choiceMonth - month) * 30) + (choiceDay - day))
+                if(!fresh){
+                    //var dtCurrStart = LocalDate.parse(currentAttempt.start)
+                    //var days = abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.monthValue - month) * 30) + (dtCurrStart.dayOfMonth - day))
+                    currentAttempt.end = strToday
+                    currentAttempt.days = days
+                    db.updateData(currentAttempt.id, currentAttempt)
+                }
 
-                textView.setText("It's been $daysDiff day/s since you've been sober. Good job!")
+                //var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                //var dtStart = LocalDate.parse("$choiceYear-$choiceMonth-$choiceDay",formatter)
+                var dec = DecimalFormat("00")
+                db.insertData(Attempt("$choiceYear-${dec.format(choiceMonth)}-${dec.format(choiceDay)}"))
+
+                if(db.checkExist()){
+                    //textLast.setText("Streak ongoing")
+                    currentAttempt = db.readData()
+
+                    var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
+                  //  var cur = LocalDate.parse("$year-$month-$day",formatter)
+                   // dtCurrStart = DateTime(currentAttempt.start, formatter)
+
+                    println("THE YEAR IS ${dtCurrStart.year} - $year")
+                    println("THE MONTH IS ${dtCurrStart.month.value} - $month")
+                    println("THE DAY IS ${dtCurrStart.dayOfMonth} - $day")
+
+                    days = abs(abs((dtCurrStart.year - year) * 365) - abs((dtCurrStart.month.value - month) * 30) + abs(dtCurrStart.dayOfMonth - day))
+                    //days = Days.daysBetween(dtCurrStart, cur).getDays()
+                    //days = Days.daysBetween(cur, cur)
+                    textLast.setText("Streak #${currentAttempt.id}: ${currentAttempt.start}")
+                    textView.setText("Now on a $days-day streak!")
+                    fresh = false;
+                }
+                else{
+                    textLast.setText("No progress found.")
+                    fresh = true
+                }
+
+
             }, year, month, day)
 
             chosenDate.show()
+
         }
+    }
+
+    fun updateCounter(){
+
     }
 
     companion object {
