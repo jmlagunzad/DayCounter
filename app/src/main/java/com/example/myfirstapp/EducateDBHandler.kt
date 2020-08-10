@@ -8,33 +8,16 @@ import android.widget.Toast
 import androidx.core.database.getStringOrNull
 import java.lang.Exception
 
+
 private val DATABASE_NAME = "Personal"
-private val TABLE_NAME = "Entries"
+private val TABLE_NAME = "Wishes"
 private val COL_TITLE = "title"
-private val COL_DESCRIPTION = "description"
+private val COL_PRICE= "price"
 private val COL_ID = "id"
 
-class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){
+class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){
 
     override fun onCreate(db: SQLiteDatabase?) {
-
-        val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COL_TITLE VARCHAR(256)," +
-                "$COL_DESCRIPTION VARCHAR(256) NULL)"
-
-        val createTable2 = "CREATE TABLE Attempts (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "start_date VARCHAR(256)," +
-                "end_date VARCHAR(256) NULL," +
-                "days INTEGER NULL)"
-
-        val createTable3 = "CREATE TABLE Wishes ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COL_TITLE VARCHAR(256)," +
-                "price REAL)"
-
-        db?.execSQL(createTable)
-        db?.execSQL(createTable2)
-        db?.execSQL(createTable3)
-
 
     }
 
@@ -47,7 +30,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         var cv = ContentValues()
 
         cv.put(COL_TITLE, entry.title)
-        cv.put(COL_DESCRIPTION, entry.description)
+        cv.put(COL_PRICE, entry.description!!.toDouble())
 
         var result = db.insert(TABLE_NAME,null,cv)
         if(result == -1.toLong()){
@@ -67,7 +50,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         if(result.moveToFirst()){
             do {
                 var entry = Entry(result.getString(result.getColumnIndex(COL_TITLE)),
-                                                    result.getStringOrNull(result.getColumnIndex(COL_DESCRIPTION)))
+                    result.getStringOrNull(result.getColumnIndex(COL_PRICE)))
                 entry.id = result.getString(0).toInt()
                 list.add(entry)
             }while(result.moveToNext())
@@ -82,7 +65,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
             var cv = ContentValues()
 
             cv.put(COL_TITLE, entry.title)
-            cv.put(COL_DESCRIPTION, entry.description)
+            cv.put(COL_PRICE, entry.description!!.toDouble())
 
             db.update(TABLE_NAME, cv, "$COL_ID = ?", arrayOf(id.toString()))
 

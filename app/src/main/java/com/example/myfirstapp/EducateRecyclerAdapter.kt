@@ -1,48 +1,63 @@
 package com.example.myfirstapp
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.*
+import kotlinx.android.synthetic.main.frame_row.view.textView_description
+import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import okhttp3.*
 import java.io.IOException
-import kotlin.coroutines.coroutineContext
+import java.math.BigDecimal
+import java.math.RoundingMode
 
+class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
-class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
-
-//    val entry1 = Entry("Nier GOTY", "235")
- //   val entry2 = Entry("Bloodborne", "88")
     var entries: MutableList<Entry> = ArrayList()
+    //var attempts: MutableList<Attempt> = ArrayList()
+    var exchangeRate: Double = 0.0
+
+
+
 
     override fun getItemCount(): Int {
+        //return entries.size
+        //return contents.data.count()
         return entries.size
-        //return contentList.content_descriptors.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        var cellForRow = layoutInflater.inflate(R.layout.frame_row, parent, false)
+        var cellForRow = layoutInflater.inflate(R.layout.educate_row, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
-
-
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.textView_mainTitle?.text = entries.get(position).title
-        holder?.view?.textView_description?.text = entries.get(position).description
-//        val content = contentList.content_descriptors.get(position)
-//        holder?.view?.textView_mainTitle.text = content.name
-//        holder?.view?.textView_description.text = content.description
+        //var contentList = contents.data.get(position)
+        //var contentList = contents.data
+        //holder?.view?.textView_mainTitle.text = exchangeRate.HKD_PHP.toString()
+        //holder?.view?.textView_description.text = "${contentList.first_name} ${contentList.last_name}"
+        var priceInPeso = BigDecimal(entries.get(position).description!!.toDouble() * exchangeRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+        when(priceInPeso){
+            in 1.00..499.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+            in 500.00..999.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFDFBA"))
+            else -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+        }
 
-        val db = DatabaseHandler(holder.view.context)
+        holder?.view?.textView_mainTitle?.text = entries.get(position).title
+        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${entries.get(position).description} HKD"
+
+        val db = EducateDBHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
             //Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
@@ -52,6 +67,7 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
             val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
 
             dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit entry"
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit price"
             dialogView.findViewById<EditText>(R.id.editText_title).setText(entries.get(position).title)
             dialogView.findViewById<EditText>(R.id.editText_description).setText(entries.get(position).description)
 
@@ -68,13 +84,23 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
 
                 if(entryTitle.isNotEmpty()){
-                    val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
-                    db.updateData(entries.get(position).id, newEntry)
-                    this.entries = db.readData()
-                    this.notifyItemChanged(position)
-                    customDialog.dismiss()
+                    //println(entryDescription.toString())
+                    if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
+                        val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
+                        db.updateData(entries.get(position).id, newEntry)
+                        this.entries = db.readData()
+                        this.notifyItemChanged(position)
+                        customDialog.dismiss()
 
-                    Toast.makeText(holder.view.context, "Entry ${position+1} updated.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            holder.view.context,
+                            "Entry ${position + 1} updated.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else{
+                        Toast.makeText(holder.view.context, "Enter only numbers.", Toast.LENGTH_LONG).show()
+                    }
                 }
                 else{
                     Toast.makeText(holder.view.context, "Enter a title!", Toast.LENGTH_LONG).show()
@@ -93,12 +119,6 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
             true
         }
-
-
     }
-
-}
-
-class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view){
 
 }

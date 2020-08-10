@@ -1,32 +1,39 @@
 package com.example.myfirstapp
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class PagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
-    override fun getItem(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> {
                 EndureFragment()
             }
+            1 -> {
+                ExploreFragment()
+            }
             else -> {
-                return ExploreFragment()
+                EducateFragment()
             }
         }
     }
 
-    override fun getCount(): Int{
-        return 2
+    override fun getItemCount(): Int{
+        return 3
     }
 
+    /*
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position){
             0 -> "ENDURE"
             1 -> "EXPLORE"
+            2 -> "EDUCATE"
             else -> ""
         }
-    }
+    }*/
 
 }
