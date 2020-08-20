@@ -143,7 +143,8 @@ class EducateFragment : Fragment() {
             //API
             //var url = "https://jsonplaceholder.typicode.com/todos/" + textView_id.text
             //var url = "http://192.168.1.2/api_sample/get_data.php"
-            var url = "http://192.168.1.2:5000/api/v1/resources/books/?author=Jm+Lagunzad&title=" + textView_id.text
+            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
+            //+ textView_id.text
 
             var request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
             var client = OkHttpClient()
@@ -177,10 +178,12 @@ class EducateFragment : Fragment() {
         view.button_post.setOnClickListener{
             //API
 
-            var url = "https://jsonplaceholder.typicode.com/todos"
+            //var url = "https://jsonplaceholder.typicode.com/todos"
+            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
 
-            val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
+            val payload = JSONObject("""{"title": "Nier Automata","price": 175 }""").toString()
             val requestBody = payload.toRequestBody()
+
             var request = Request.Builder().method("POST", requestBody).url(url).build()
             var client = OkHttpClient()
 
@@ -192,14 +195,8 @@ class EducateFragment : Fragment() {
                     val body = response?.body?.string()
 
                     println(body)
-                    val gson = GsonBuilder().create()
-                    val todos = gson.fromJson(body, Todo::class.java)
-//                    {
-//                        "userId": 1,
-//                        "id": 1,
-//                        "title": "delectus aut autem",
-//                        "completed": false
-//                    }
+                  //  val gson = GsonBuilder().create()
+//                    val todos = gson.fromJson(body, Todo::class.java)
 
 
                     activity!!.runOnUiThread {
@@ -217,10 +214,9 @@ class EducateFragment : Fragment() {
 
         view.button_put.setOnClickListener{
             //API
+            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + textView_id.text
 
-            var url = "https://jsonplaceholder.typicode.com/todos" + textView_id.text
-
-            val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
+            val payload = JSONObject("""{"title": "P5R","price": 250 }""").toString()
             val requestBody = payload.toRequestBody()
             var request = Request.Builder().method("PUT", requestBody).url(url).build()
             var client = OkHttpClient()
@@ -233,18 +229,10 @@ class EducateFragment : Fragment() {
                     val body = response?.body?.string()
 
                     println(body)
-                    val gson = GsonBuilder().create()
-                    val todos = gson.fromJson(body, Todo::class.java)
-//                    {
-//                        "userId": 1,
-//                        "id": 1,
-//                        "title": "delectus aut autem",
-//                        "completed": false
-//                    }
 
 
                     activity!!.runOnUiThread {
-                        textView_result.text = "PUT SUCCESS!"
+                        textView_result.text = body
                         //todos.title + " " + todos.completed
 
                     }
@@ -259,35 +247,19 @@ class EducateFragment : Fragment() {
         view.button_delete.setOnClickListener{
             //API
 
-            var url = "https://jsonplaceholder.typicode.com/todos" + textView_id.text
-
-            //val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
-            //val requestBody = payload.toRequestBody()
+            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + textView_id.text
             var request = Request.Builder().delete().url(url).build()
             var client = OkHttpClient()
-
-            //var mAdapter : EducateRecyclerAdapter
-            //var mAdapter = EducateRecyclerAdapter()
 
             client.newCall(request).enqueue(object: Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val body = response?.body?.string()
 
                     println(body)
-                    //val gson = GsonBuilder().create()
-                    //val todos = gson.fromJson(body, Todo::class.java)
-//                    {
-//                        "userId": 1,
-//                        "id": 1,
-//                        "title": "delectus aut autem",
-//                        "completed": false
-//                    }
 
 
                     activity!!.runOnUiThread {
-                        textView_result.text = "DELETE SUCCESS!"
-                        //todos.title + " " + todos.completed
-
+                        textView_result.text = body
                     }
                 }
 
