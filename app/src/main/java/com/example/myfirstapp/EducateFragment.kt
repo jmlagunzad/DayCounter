@@ -18,6 +18,8 @@ import kotlinx.android.synthetic.main.fragment_educate.view.*
 import kotlinx.android.synthetic.main.fragment_endure.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 // TODO: Rename parameter arguments, choose names that match
@@ -137,9 +139,169 @@ class EducateFragment : Fragment() {
             }
         }
 
+        view.button_get.setOnClickListener{
+            //API
+            //var url = "https://jsonplaceholder.typicode.com/todos/" + textView_id.text
+            //var url = "http://192.168.1.2/api_sample/get_data.php"
+            var url = "http://192.168.1.2:5000/api/v1/resources/books/?author=Jm+Lagunzad&title=" + textView_id.text
+
+            var request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
+            var client = OkHttpClient()
+
+            //var mAdapter : EducateRecyclerAdapter
+            //var mAdapter = EducateRecyclerAdapter()
+
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response?.body?.string()
+
+                    println(response.toString())
+                    //val gson = GsonBuilder().create()
+                    //val todos = gson.fromJson(body, Todo::class.java)
+
+
+                    activity!!.runOnUiThread {
+                        textView_result.text = body
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println("call failed")
+                    activity!!.runOnUiThread {
+                        textView_result.text = e.toString()
+                    }
+                }
+            })
+        }
+
+        view.button_post.setOnClickListener{
+            //API
+
+            var url = "https://jsonplaceholder.typicode.com/todos"
+
+            val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
+            val requestBody = payload.toRequestBody()
+            var request = Request.Builder().method("POST", requestBody).url(url).build()
+            var client = OkHttpClient()
+
+            //var mAdapter : EducateRecyclerAdapter
+            //var mAdapter = EducateRecyclerAdapter()
+
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response?.body?.string()
+
+                    println(body)
+                    val gson = GsonBuilder().create()
+                    val todos = gson.fromJson(body, Todo::class.java)
+//                    {
+//                        "userId": 1,
+//                        "id": 1,
+//                        "title": "delectus aut autem",
+//                        "completed": false
+//                    }
+
+
+                    activity!!.runOnUiThread {
+                        textView_result.text = body
+                        //todos.title + " " + todos.completed
+
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println("call failed")
+                }
+            })
+        }
+
+        view.button_put.setOnClickListener{
+            //API
+
+            var url = "https://jsonplaceholder.typicode.com/todos" + textView_id.text
+
+            val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
+            val requestBody = payload.toRequestBody()
+            var request = Request.Builder().method("PUT", requestBody).url(url).build()
+            var client = OkHttpClient()
+
+            //var mAdapter : EducateRecyclerAdapter
+            //var mAdapter = EducateRecyclerAdapter()
+
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response?.body?.string()
+
+                    println(body)
+                    val gson = GsonBuilder().create()
+                    val todos = gson.fromJson(body, Todo::class.java)
+//                    {
+//                        "userId": 1,
+//                        "id": 1,
+//                        "title": "delectus aut autem",
+//                        "completed": false
+//                    }
+
+
+                    activity!!.runOnUiThread {
+                        textView_result.text = "PUT SUCCESS!"
+                        //todos.title + " " + todos.completed
+
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println("call failed")
+                }
+            })
+        }
+
+        view.button_delete.setOnClickListener{
+            //API
+
+            var url = "https://jsonplaceholder.typicode.com/todos" + textView_id.text
+
+            //val payload = JSONObject("""{"userId": 1, "title": "Test put API", "completed": true }""").toString()
+            //val requestBody = payload.toRequestBody()
+            var request = Request.Builder().delete().url(url).build()
+            var client = OkHttpClient()
+
+            //var mAdapter : EducateRecyclerAdapter
+            //var mAdapter = EducateRecyclerAdapter()
+
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response?.body?.string()
+
+                    println(body)
+                    //val gson = GsonBuilder().create()
+                    //val todos = gson.fromJson(body, Todo::class.java)
+//                    {
+//                        "userId": 1,
+//                        "id": 1,
+//                        "title": "delectus aut autem",
+//                        "completed": false
+//                    }
+
+
+                    activity!!.runOnUiThread {
+                        textView_result.text = "DELETE SUCCESS!"
+                        //todos.title + " " + todos.completed
+
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println("call failed")
+                }
+            })
+        }
+
     }
 
     class ExchangeRate(val HKD_PHP: Double)
+    class Post(val userId: Int, val id: Int, val title: String, val body: String)
+    class Todo(val userId: Int, val id: Int, val title: String, val completed: Boolean)
     //class ContentList(val data: List<Data>)
     //class ContentSingle(val data: Data)
     //class Data(val id: Int, val email: String, val first_name: String, val last_name: String, val avatar: String)
