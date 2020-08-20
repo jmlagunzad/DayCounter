@@ -58,22 +58,16 @@ class EducateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        //INITIALIZATIONS
         val db = EducateDBHandler(this.context!!)
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
-
-
-        //var url = "https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/999/UP9000-NPUA80677_00-SOTC000000000001"
-        //var url = "https://reqres.in/api/users/2"
-        //val db = EducateDBHandler()
-        //API
         var url = "https://free.currconv.com/api/v7/convert?q=HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
-
         var request = Request.Builder().url(url).build()
         var client = OkHttpClient()
-
-        //var mAdapter : EducateRecyclerAdapter
         var mAdapter = EducateRecyclerAdapter()
 
+
+        //API GET REQUEST FOR CURRENCY CONVERTER
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
                 val body = response?.body?.string()
@@ -98,8 +92,38 @@ class EducateFragment : Fragment() {
             }
         })
 
+        //API GET REQUEST FOR LOCALHOST WISHES API
+        url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
+        request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
 
-        mAdapter.entries = db.readData()
+        client.newCall(request).enqueue(object: Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response?.body?.string()
+
+                //println(response?.body?.string())
+                val gson = GsonBuilder().create()
+                val wishes = gson.fromJson(body, Array<Wish>::class.java).toMutableList()
+
+
+                activity!!.runOnUiThread {
+                    //textView_result.text =
+                    mAdapter.wishes = wishes
+                    //wishes.toString()
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                println("call failed")
+                activity!!.runOnUiThread {
+                    textView_result.text = e.toString()
+                }
+            }
+        })
+
+
+        //mAdapter.entries = db.readData()
+
+
 
 
         view.addButton.setOnClickListener{
@@ -125,7 +149,7 @@ class EducateFragment : Fragment() {
                         val newEntry =
                             Entry(entryTitle.toString(), entryDescription.text.toString())
                         db.insertData(newEntry)
-                        mAdapter.entries = db.readData()
+                        //mAdapter.entries = db.readData()
                         customDialog.dismiss()
                     }
                     else{
@@ -143,26 +167,22 @@ class EducateFragment : Fragment() {
             //API
             //var url = "https://jsonplaceholder.typicode.com/todos/" + textView_id.text
             //var url = "http://192.168.1.2/api_sample/get_data.php"
-            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
-            //+ textView_id.text
 
-            var request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
-            var client = OkHttpClient()
-
-            //var mAdapter : EducateRecyclerAdapter
-            //var mAdapter = EducateRecyclerAdapter()
+            url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
+            request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
 
             client.newCall(request).enqueue(object: Callback {
                 override fun onResponse(call: Call, response: Response) {
                     val body = response?.body?.string()
 
-                    println(response.toString())
-                    //val gson = GsonBuilder().create()
-                    //val todos = gson.fromJson(body, Todo::class.java)
+                    println(body)
+                    val gson = GsonBuilder().create()
+                   // val wishList = gson.fromJson(body, WishList::class.java)
 
 
                     activity!!.runOnUiThread {
-                        textView_result.text = body
+                        textView_result.text = "get good"
+                        //wishes.toString()
                     }
                 }
 
@@ -173,6 +193,7 @@ class EducateFragment : Fragment() {
                     }
                 }
             })
+
         }
 
         view.button_post.setOnClickListener{
@@ -272,11 +293,10 @@ class EducateFragment : Fragment() {
     }
 
     class ExchangeRate(val HKD_PHP: Double)
-    class Post(val userId: Int, val id: Int, val title: String, val body: String)
-    class Todo(val userId: Int, val id: Int, val title: String, val completed: Boolean)
-    //class ContentList(val data: List<Data>)
-    //class ContentSingle(val data: Data)
-    //class Data(val id: Int, val email: String, val first_name: String, val last_name: String, val avatar: String)
+    //class WishListsList(val wishLists: List<WishList>)
+    class WishList(val wishes: Array<Wish>)
+    class Wish(val id: Int, val price: Double, val title:String)
+
 
     companion object {
         /**

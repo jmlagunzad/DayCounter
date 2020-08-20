@@ -23,7 +23,8 @@ import java.math.RoundingMode
 
 class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
-    var entries: MutableList<Entry> = ArrayList()
+    //var entries: MutableList<Entry> = ArrayList()
+    var wishes: MutableList<EducateFragment.Wish> = ArrayList()
     //var attempts: MutableList<Attempt> = ArrayList()
     var exchangeRate: Double = 0.0
 
@@ -33,7 +34,8 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
     override fun getItemCount(): Int {
         //return entries.size
         //return contents.data.count()
-        return entries.size
+        //return entries.size
+        return wishes.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -47,15 +49,15 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
         //var contentList = contents.data
         //holder?.view?.textView_mainTitle.text = exchangeRate.HKD_PHP.toString()
         //holder?.view?.textView_description.text = "${contentList.first_name} ${contentList.last_name}"
-        var priceInPeso = BigDecimal(entries.get(position).description!!.toDouble() * exchangeRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+        var priceInPeso = BigDecimal(wishes.get(position).price * exchangeRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
         when(priceInPeso){
             in 1.00..499.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
             in 500.00..999.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFDFBA"))
             else -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
         }
 
-        holder?.view?.textView_mainTitle?.text = entries.get(position).title
-        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${entries.get(position).description} HKD"
+        holder?.view?.textView_mainTitle?.text = wishes.get(position).title
+        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} HKD"
 
         val db = EducateDBHandler(holder.view.context)
 
@@ -68,8 +70,8 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
             dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit entry"
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit price"
-            dialogView.findViewById<EditText>(R.id.editText_title).setText(entries.get(position).title)
-            dialogView.findViewById<EditText>(R.id.editText_description).setText(entries.get(position).description)
+            dialogView.findViewById<EditText>(R.id.editText_title).setText(wishes.get(position).title)
+            dialogView.findViewById<EditText>(R.id.editText_description).setText(wishes.get(position).price.toString())
 
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
@@ -86,9 +88,11 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
                 if(entryTitle.isNotEmpty()){
                     //println(entryDescription.toString())
                     if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
-                        val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
-                        db.updateData(entries.get(position).id, newEntry)
-                        this.entries = db.readData()
+//                        val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
+//                        db.updateData(entries.get(position).id, newEntry)
+//                        this.entries = db.readData()
+
+
                         this.notifyItemChanged(position)
                         customDialog.dismiss()
 
@@ -108,10 +112,10 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
             }
 
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
-                db.deleteData(entries.get(position).id)
-                this.entries.removeAt(position)
+//                db.deleteData(entries.get(position).id)
+//                this.entries.removeAt(position)
                 this.notifyItemRemoved(position)
-                this.notifyItemRangeChanged(position, this.entries.size);
+//                this.notifyItemRangeChanged(position, this.entries.size);
                 customDialog.dismiss()
                 Toast.makeText(holder.view.context, "Entry ${position + 1} deleted.", Toast.LENGTH_SHORT).show()
             }
