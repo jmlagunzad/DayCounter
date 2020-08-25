@@ -84,7 +84,6 @@ class EducateFragment : Fragment() {
 
 
                     recyclerView_educate.adapter = mAdapter
-                    //recyclerView_educate.adapter = mAdapter
                 }
             }
 
@@ -110,29 +109,21 @@ class EducateFragment : Fragment() {
 
 
                     activity!!.runOnUiThread {
-                        //textView_result.text =
                         mAdapter.wishes = wishes
                         mAdapter.notifyDataSetChanged()
-                        //wishes.toString()
+
                     }
 
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
                     println("call failed")
-                    activity!!.runOnUiThread {
-                        textView_result.text = e.toString()
-                    }
+
                 }
             })
         }
 
-
-
         refreshList()
-        //mAdapter.entries = db.readData()
-
-
 
 
         view.addButton.setOnClickListener{
@@ -171,11 +162,6 @@ class EducateFragment : Fragment() {
 
                                 println(body)
 
-                                activity!!.runOnUiThread {
-                                    textView_result.text = body
-
-
-                                }
 
                                 refreshList()
 
@@ -199,135 +185,6 @@ class EducateFragment : Fragment() {
                 }
 
             }
-        }
-
-        view.button_get.setOnClickListener{
-            //API
-            //var url = "https://jsonplaceholder.typicode.com/todos/" + textView_id.text
-            //var url = "http://192.168.1.2/api_sample/get_data.php"
-
-            url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
-            request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
-
-            client.newCall(request).enqueue(object: Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response?.body?.string()
-
-                    println(body)
-                    val gson = GsonBuilder().create()
-                   // val wishList = gson.fromJson(body, WishList::class.java)
-
-
-                    activity!!.runOnUiThread {
-                        textView_result.text = "get good"
-                        //wishes.toString()
-                    }
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    println("call failed")
-                    activity!!.runOnUiThread {
-                        textView_result.text = e.toString()
-                    }
-                }
-            })
-
-        }
-
-        view.button_post.setOnClickListener{
-            //API
-
-            //var url = "https://jsonplaceholder.typicode.com/todos"
-            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
-
-            val payload = JSONObject("""{"title": "Nier Automata","price": 175 }""").toString()
-            val requestBody = payload.toRequestBody()
-
-            var request = Request.Builder().method("POST", requestBody).url(url).build()
-            var client = OkHttpClient()
-
-            //var mAdapter : EducateRecyclerAdapter
-            //var mAdapter = EducateRecyclerAdapter()
-
-            client.newCall(request).enqueue(object: Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response?.body?.string()
-
-                    println(body)
-                  //  val gson = GsonBuilder().create()
-//                    val todos = gson.fromJson(body, Todo::class.java)
-
-
-                    activity!!.runOnUiThread {
-                        textView_result.text = body
-                        //todos.title + " " + todos.completed
-
-                    }
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    println("call failed")
-                }
-            })
-        }
-
-        view.button_put.setOnClickListener{
-            //API
-            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + textView_id.text
-
-            val payload = JSONObject("""{"title": "P5R","price": 250 }""").toString()
-            val requestBody = payload.toRequestBody()
-            var request = Request.Builder().method("PUT", requestBody).url(url).build()
-            var client = OkHttpClient()
-
-            //var mAdapter : EducateRecyclerAdapter
-            //var mAdapter = EducateRecyclerAdapter()
-
-            client.newCall(request).enqueue(object: Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response?.body?.string()
-
-                    println(body)
-
-
-                    activity!!.runOnUiThread {
-                        textView_result.text = body
-                        //todos.title + " " + todos.completed
-
-                    }
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    println("call failed")
-                }
-            })
-        }
-
-
-
-        view.button_delete.setOnClickListener{
-            //API
-
-            var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + textView_id.text
-            var request = Request.Builder().delete().url(url).build()
-            var client = OkHttpClient()
-
-            client.newCall(request).enqueue(object: Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response?.body?.string()
-
-                    println(body)
-
-
-                    activity!!.runOnUiThread {
-                        textView_result.text = body
-                    }
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    println("call failed")
-                }
-            })
         }
 
     }

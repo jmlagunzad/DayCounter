@@ -52,10 +52,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        //var contentList = contents.data.get(position)
-        //var contentList = contents.data
-        //holder?.view?.textView_mainTitle.text = exchangeRate.HKD_PHP.toString()
-        //holder?.view?.textView_description.text = "${contentList.first_name} ${contentList.last_name}"
+
         var priceInPeso = BigDecimal(wishes.get(position).price * exchangeRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
         when(priceInPeso){
             in 1.00..499.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
@@ -69,8 +66,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
         //val db = EducateDBHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
-            //Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
-            //Toast.makeText(holder.view.context, holder?.view?.textView_mainTitle?.text, Toast.LENGTH_LONG).show()
+
             val dialog = AlertDialog.Builder(holder.view.context)
             val layoutInflater = LayoutInflater.from(holder.view.context)
             val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
@@ -93,11 +89,9 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
 
 
                 if(entryTitle.isNotEmpty()){
-                    //println(entryDescription.toString())
+
                     if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
-//                        val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
-//                        db.updateData(entries.get(position).id, newEntry)
-//                        this.entries = db.readData()
+
 
                         //API
                         var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + wishes.get(position).id
@@ -144,13 +138,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
                                 println("call failed")
                             }
                         })
-                        //*/
 
-//                        fa!!.runOnUiThread{
-//
-//                            this.notifyDataSetChanged()
-//                            this.notifyItemChanged(position)
-//                        }
                         customDialog.dismiss()
 
                         Toast.makeText(
@@ -200,7 +188,4 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
         }
     }
 
-    fun refreshList() {
-
-    }
 }
