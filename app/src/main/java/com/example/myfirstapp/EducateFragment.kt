@@ -61,14 +61,15 @@ class EducateFragment : Fragment() {
         //INITIALIZATIONS
         val db = EducateDBHandler(this.context!!)
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
-        var url = "https://free.currconv.com/api/v7/convert?q=HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
+        var url =
+            "https://free.currconv.com/api/v7/convert?q=HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
         var request = Request.Builder().url(url).build()
         var client = OkHttpClient()
-        var mAdapter = EducateRecyclerAdapter()
+        var mAdapter = EducateRecyclerAdapter(activity!!)
 
 
         //API GET REQUEST FOR CURRENCY CONVERTER
-        client.newCall(request).enqueue(object: Callback {
+        client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val body = response?.body?.string()
 
@@ -92,35 +93,43 @@ class EducateFragment : Fragment() {
             }
         })
 
-        //API GET REQUEST FOR LOCALHOST WISHES API
-        url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
-        request = Request.Builder().url(url).addHeader("Content-Type","application/json").build()
+        fun refreshList() {
+            //API GET REQUEST FOR LOCALHOST WISHES API
+            url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
+            request =
+                Request.Builder().url(url).addHeader("Content-Type", "application/json").build()
 
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response?.body?.string()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response?.body?.string()
 
-                //println(response?.body?.string())
-                val gson = GsonBuilder().create()
-                val wishes = gson.fromJson(body, Array<Wish>::class.java).toMutableList()
+                    //println(response?.body?.string())
+                    val gson = GsonBuilder().create()
+                    val wishes = gson.fromJson(body, Array<Wish>::class.java).toMutableList()
 
 
-                activity!!.runOnUiThread {
-                    //textView_result.text =
-                    mAdapter.wishes = wishes
-                    //wishes.toString()
+
+                    activity!!.runOnUiThread {
+                        //textView_result.text =
+                        mAdapter.wishes = wishes
+                        mAdapter.notifyDataSetChanged()
+                        //wishes.toString()
+                    }
+
                 }
-            }
 
-            override fun onFailure(call: Call, e: IOException) {
-                println("call failed")
-                activity!!.runOnUiThread {
-                    textView_result.text = e.toString()
+                override fun onFailure(call: Call, e: IOException) {
+                    println("call failed")
+                    activity!!.runOnUiThread {
+                        textView_result.text = e.toString()
+                    }
                 }
-            }
-        })
+            })
+        }
 
 
+
+        refreshList()
         //mAdapter.entries = db.readData()
 
 
@@ -146,10 +155,39 @@ class EducateFragment : Fragment() {
                 if(entryTitle.toString().isNotEmpty()){
                     //println(entryDescription.toString())
                     if(entryDescription.text.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
-                        val newEntry =
-                            Entry(entryTitle.toString(), entryDescription.text.toString())
-                        db.insertData(newEntry)
+
                         //mAdapter.entries = db.readData()
+                        var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
+
+                        val payload = JSONObject("""{"title": "${entryTitle}","price": ${entryDescription.text}}""").toString()
+                        val requestBody = payload.toRequestBody()
+
+                        var request = Request.Builder().method("POST", requestBody).url(url).build()
+                        var client = OkHttpClient()
+
+                        client.newCall(request).enqueue(object: Callback {
+                            override fun onResponse(call: Call, response: Response) {
+                                val body = response?.body?.string()
+
+                                println(body)
+
+                                activity!!.runOnUiThread {
+                                    textView_result.text = body
+
+
+                                }
+
+                                refreshList()
+
+                            }
+
+                            override fun onFailure(call: Call, e: IOException) {
+                                println("call failed")
+                            }
+                        })
+
+
+
                         customDialog.dismiss()
                     }
                     else{
@@ -264,6 +302,8 @@ class EducateFragment : Fragment() {
                 }
             })
         }
+
+
 
         view.button_delete.setOnClickListener{
             //API

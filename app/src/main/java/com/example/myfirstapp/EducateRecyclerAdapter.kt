@@ -10,23 +10,30 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.educate_row.view.*
+import kotlinx.android.synthetic.main.fragment_educate.*
+import kotlinx.android.synthetic.main.fragment_educate.view.*
 import kotlinx.android.synthetic.main.frame_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
+class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<CustomViewHolder>() {
 
     //var entries: MutableList<Entry> = ArrayList()
     var wishes: MutableList<EducateFragment.Wish> = ArrayList()
     //var attempts: MutableList<Attempt> = ArrayList()
     var exchangeRate: Double = 0.0
+    //var mAdapter = this
 
 
 
@@ -59,7 +66,7 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
         holder?.view?.textView_mainTitle?.text = wishes.get(position).title
         holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} HKD"
 
-        val db = EducateDBHandler(holder.view.context)
+        //val db = EducateDBHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
             //Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
@@ -92,8 +99,58 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 //                        db.updateData(entries.get(position).id, newEntry)
 //                        this.entries = db.readData()
 
+                        //API
+                        var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + wishes.get(position).id
 
-                        this.notifyItemChanged(position)
+                        val payload = JSONObject("""{"title": "${entryTitle}","price": ${entryDescription}}""").toString()
+                        val requestBody = payload.toRequestBody()
+                        var request = Request.Builder().method("PUT", requestBody).url(url).build()
+                        var client = OkHttpClient()
+
+                        client.newCall(request).enqueue(object: Callback {
+                            override fun onResponse(call: Call, response: Response) {
+                                val body = response?.body?.string()
+
+                                println(body)
+
+                                //API GET REQUEST FOR LOCALHOST WISHES API
+                                url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
+                                request =
+                                    Request.Builder().url(url).addHeader("Content-Type", "application/json").build()
+
+                                //client = OkHttpClient()
+                                client.newCall(request).enqueue(object : Callback {
+                                    override fun onResponse(call: Call, response: Response) {
+                                        val body = response?.body?.string()
+
+                                        //println(response?.body?.string())
+                                        val gson = GsonBuilder().create()
+                                        val wishes2 = gson.fromJson(body, Array<EducateFragment.Wish>::class.java).toMutableList()
+
+                                        fa!!.runOnUiThread{
+                                            wishes = wishes2
+                                            this@EducateRecyclerAdapter.notifyDataSetChanged()
+                                            this@EducateRecyclerAdapter.notifyItemChanged(position)
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call, e: IOException) {
+                                        println("call failed")
+                                    }
+                                })
+                            }
+
+                            override fun onFailure(call: Call, e: IOException) {
+                                println("call failed")
+                            }
+                        })
+                        //*/
+
+//                        fa!!.runOnUiThread{
+//
+//                            this.notifyDataSetChanged()
+//                            this.notifyItemChanged(position)
+//                        }
                         customDialog.dismiss()
 
                         Toast.makeText(
@@ -112,17 +169,38 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
             }
 
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
+
+                var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + wishes.get(position).id
+                var request = Request.Builder().delete().url(url).build()
+                var client = OkHttpClient()
+
+                client.newCall(request).enqueue(object: Callback {
+                    override fun onResponse(call: Call, response: Response) {
+                        val body = response?.body?.string()
+
+                        println(body)
+
+                    }
+
+                    override fun onFailure(call: Call, e: IOException) {
+                        println("call failed")
+                    }
+                })
+
 //                db.deleteData(entries.get(position).id)
-//                this.entries.removeAt(position)
+                this.wishes.removeAt(position)
                 this.notifyItemRemoved(position)
-//                this.notifyItemRangeChanged(position, this.entries.size);
+                this.notifyItemRangeChanged(position, this.wishes.size);
                 customDialog.dismiss()
+
                 Toast.makeText(holder.view.context, "Entry ${position + 1} deleted.", Toast.LENGTH_SHORT).show()
             }
-
 
             true
         }
     }
 
+    fun refreshList() {
+
+    }
 }
