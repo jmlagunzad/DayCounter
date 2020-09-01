@@ -152,7 +152,7 @@ class EducateFragment : Fragment() {
                         //mAdapter.entries = db.readData()
                         var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
 
-                        val payload = JSONObject("""{"title": "${entryTitle}","price": "${entryDescription}"}""").toString()
+                        val payload = JSONObject("""{"title": "${entryTitle}","price": "${entryDescription}","curr": "${spinnerCurrency.selectedItem.toString()}"} """).toString()
                         val requestBody = payload.toRequestBody()
 
                         var request = Request.Builder().method("POST", requestBody).url(url).build()
