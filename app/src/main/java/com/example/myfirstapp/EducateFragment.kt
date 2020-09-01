@@ -7,16 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.textservice.TextInfo
+import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
-import kotlinx.android.synthetic.main.fragment_endure.*
-import kotlinx.android.synthetic.main.fragment_explore.*
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -129,12 +127,16 @@ class EducateFragment : Fragment() {
         view.addButton.setOnClickListener{
 
             val dialog = AlertDialog.Builder(this.context!!)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog,null)
 
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            val entryDescription = dialogView.findViewById<EditText>(R.id.editText_description)
-            dialogView.findViewById<TextView>(R.id.textView_description).text = "Price (in HKD)"
-            entryDescription.hint = "Enter the item price (in HKD)"
+            val entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
+            val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+
+            //LOAD CURRENCY CHOICES FOR SPINNER
+            val currencies = arrayListOf<String>("HKD","USD","PHP")
+            val currAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,currencies)
+            spinnerCurrency.adapter = currAdapter
 
             dialog.setView(dialogView)
             dialog.setCancelable(true)
@@ -145,12 +147,12 @@ class EducateFragment : Fragment() {
 
                 if(entryTitle.toString().isNotEmpty()){
                     //println(entryDescription.toString())
-                    if(entryDescription.text.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
+                    if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
 
                         //mAdapter.entries = db.readData()
                         var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
 
-                        val payload = JSONObject("""{"title": "${entryTitle}","price": ${entryDescription.text}}""").toString()
+                        val payload = JSONObject("""{"title": "${entryTitle}","price": "${entryDescription}"}""").toString()
                         val requestBody = payload.toRequestBody()
 
                         var request = Request.Builder().method("POST", requestBody).url(url).build()
