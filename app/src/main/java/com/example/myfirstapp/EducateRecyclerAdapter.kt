@@ -7,9 +7,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +21,7 @@ import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.DataOutput
 import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -32,7 +31,8 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
     //var entries: MutableList<Entry> = ArrayList()
     var wishes: MutableList<EducateFragment.Wish> = ArrayList()
     //var attempts: MutableList<Attempt> = ArrayList()
-    var exchangeRate: Double = 0.0
+    var usdRate: Double = 0.0
+    var hkdRate: Double = 0.0
     //var mAdapter = this
 
 
@@ -53,7 +53,14 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
-        var priceInPeso = BigDecimal(wishes.get(position).price * exchangeRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+        var priceInPeso = 0.0
+        when(wishes.get(position).curr){
+            "HKD" -> priceInPeso = BigDecimal(wishes.get(position).price * hkdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+            "USD" -> priceInPeso = BigDecimal(wishes.get(position).price * usdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+            else -> {
+                priceInPeso = wishes.get(position).price
+            }
+        }
         when(priceInPeso){
             in 1.00..499.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
             in 500.00..999.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFDFBA"))
@@ -61,7 +68,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
         }
 
         holder?.view?.textView_mainTitle?.text = wishes.get(position).title
-        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} HKD"
+        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
 
         //val db = EducateDBHandler(holder.view.context)
 
@@ -69,12 +76,20 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
 
             val dialog = AlertDialog.Builder(holder.view.context)
             val layoutInflater = LayoutInflater.from(holder.view.context)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog,null)
 
-            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit entry"
-            dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit price"
+            //LOAD CURRENCY CHOICES FOR SPINNER
+            val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+            val currencies = arrayListOf<String>("HKD","USD","PHP")
+            val currAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,currencies)
+            spinnerCurrency.adapter = currAdapter
+
+            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
             dialogView.findViewById<EditText>(R.id.editText_title).setText(wishes.get(position).title)
             dialogView.findViewById<EditText>(R.id.editText_description).setText(wishes.get(position).price.toString())
+            spinnerCurrency.setSelection(currAdapter.getPosition(wishes.get(position).curr))
+
 
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
@@ -96,7 +111,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
                         //API
                         var url = "http://192.168.1.2:5000/api/v1/resources/wishes/" + wishes.get(position).id
 
-                        val payload = JSONObject("""{"title": "${entryTitle}","price": ${entryDescription}}""").toString()
+                        val payload = JSONObject("""{"title": "${entryTitle}","price": ${entryDescription},"curr": "${spinnerCurrency.selectedItem.toString()}" }""").toString()
                         val requestBody = payload.toRequestBody()
                         var request = Request.Builder().method("PUT", requestBody).url(url).build()
                         var client = OkHttpClient()

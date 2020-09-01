@@ -75,12 +75,34 @@ class EducateFragment : Fragment() {
                 val gson = GsonBuilder().create()
                 //val contentList = gson.fromJson(body, ContentList::class.java)
 
-                val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
-                mAdapter.exchangeRate = currentRate.HKD_PHP
+                val currentRate = gson.fromJson(body, EducateFragment.HKDRate::class.java)
+                mAdapter.hkdRate = currentRate.HKD_PHP
 
                 activity!!.runOnUiThread {
+                    //recyclerView_educate.adapter = mAdapter
+                }
+            }
 
+            override fun onFailure(call: Call, e: IOException) {
+                println("call failed")
+            }
+        })
 
+        url = "https://free.currconv.com/api/v7/convert?q=USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
+        request = Request.Builder().url(url).build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response?.body?.string()
+
+                println("SECOND RUN: " + body)
+                val gson = GsonBuilder().create()
+                //val contentList = gson.fromJson(body, ContentList::class.java)
+
+                val currentRate = gson.fromJson(body, EducateFragment.USDRate::class.java)
+                mAdapter.usdRate = currentRate.USD_PHP
+
+                activity!!.runOnUiThread {
                     recyclerView_educate.adapter = mAdapter
                 }
             }
@@ -89,6 +111,8 @@ class EducateFragment : Fragment() {
                 println("call failed")
             }
         })
+
+
 
         fun refreshList() {
             //API GET REQUEST FOR LOCALHOST WISHES API
@@ -134,7 +158,7 @@ class EducateFragment : Fragment() {
             val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
 
             //LOAD CURRENCY CHOICES FOR SPINNER
-            val currencies = arrayListOf<String>("HKD","USD","PHP")
+            val currencies = arrayListOf("HKD","USD","PHP")
             val currAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,currencies)
             spinnerCurrency.adapter = currAdapter
 
@@ -191,10 +215,11 @@ class EducateFragment : Fragment() {
 
     }
 
-    class ExchangeRate(val HKD_PHP: Double)
+    class USDRate(val USD_PHP: Double)
+    class HKDRate(val HKD_PHP: Double)
     //class WishListsList(val wishLists: List<WishList>)
     class WishList(val wishes: Array<Wish>)
-    class Wish(val id: Int, val price: Double, val title:String)
+    class Wish(val id: Int, val price: Double, val title:String, val curr:String)
 
 
     companion object {
