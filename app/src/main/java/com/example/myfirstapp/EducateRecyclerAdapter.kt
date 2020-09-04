@@ -32,7 +32,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
     var wishes: MutableList<EducateFragment.Wish> = ArrayList()
     //var attempts: MutableList<Attempt> = ArrayList()
     var usdRate: Double = 50.0
-    var hkdRate: Double = 6.0
+    var hkdRate: Double = 6.5
     //var mAdapter = this
 
 
