@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
@@ -69,20 +71,26 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val mAdapter = ExploreRecyclerAdapter()
-        val db = DatabaseHandler(this.context!!)
+        val db = EducateDBHandler(this.context!!)
 
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = mAdapter
 
-        mAdapter.entries = db.readData()
+        mAdapter.wishes = db.readData()
 
         addButton.setOnClickListener{
 
             val dialog = AlertDialog.Builder(this.context!!)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog,null)
 
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
+            val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+
+            //LOAD CURRENCY CHOICES FOR SPINNER
+            val currencies = arrayListOf("HKD","USD","PHP")
+            val currAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,currencies)
+            spinnerCurrency.adapter = currAdapter
 
             dialog.setView(dialogView)
             dialog.setCancelable(true)
@@ -92,9 +100,9 @@ class ExploreFragment : Fragment() {
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
                 if(entryTitle.toString().isNotEmpty()){
-                    val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
-                    db.insertData(newEntry)
-                    mAdapter.entries = db.readData()
+                    val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString())
+                    db.insertData(newWish)
+                    mAdapter.wishes = db.readData()
                     customDialog.dismiss()
                 }
                 else{

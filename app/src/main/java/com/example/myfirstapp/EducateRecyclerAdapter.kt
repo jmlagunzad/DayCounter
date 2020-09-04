@@ -31,8 +31,8 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
     //var entries: MutableList<Entry> = ArrayList()
     var wishes: MutableList<EducateFragment.Wish> = ArrayList()
     //var attempts: MutableList<Attempt> = ArrayList()
-    var usdRate: Double = 0.0
-    var hkdRate: Double = 0.0
+    var usdRate: Double = 50.0
+    var hkdRate: Double = 6.0
     //var mAdapter = this
 
 
@@ -67,7 +67,7 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
             else -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
         }
 
-        holder?.view?.textView_mainTitle?.text = wishes.get(position).title
+        holder?.view?.textView_mainTitle?.text = wishes.get(position).name
         holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
 
         //val db = EducateDBHandler(holder.view.context)
@@ -86,10 +86,9 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
 
             dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
-            dialogView.findViewById<EditText>(R.id.editText_title).setText(wishes.get(position).title)
+            dialogView.findViewById<EditText>(R.id.editText_title).setText(wishes.get(position).name)
             dialogView.findViewById<EditText>(R.id.editText_description).setText(wishes.get(position).price.toString())
             spinnerCurrency.setSelection(currAdapter.getPosition(wishes.get(position).curr))
-
 
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text

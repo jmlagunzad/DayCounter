@@ -60,7 +60,7 @@ class EducateFragment : Fragment() {
         val db = EducateDBHandler(this.context!!)
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         var url =
-            "https://free.currconv.com/api/v7/convert?q=HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
+            "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
         var request = Request.Builder().url(url).build()
         var client = OkHttpClient()
         var mAdapter = EducateRecyclerAdapter(activity!!)
@@ -74,33 +74,14 @@ class EducateFragment : Fragment() {
                 println(body)
                 val gson = GsonBuilder().create()
                 //val contentList = gson.fromJson(body, ContentList::class.java)
-
-                val currentRate = gson.fromJson(body, EducateFragment.HKDRate::class.java)
-                mAdapter.hkdRate = currentRate.HKD_PHP
-
-                activity!!.runOnUiThread {
-                    //recyclerView_educate.adapter = mAdapter
+                try{
+                    val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
+                    mAdapter.hkdRate = currentRate.HKD_PHP
+                    mAdapter.usdRate = currentRate.USD_PHP
                 }
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                println("call failed")
-            }
-        })
-
-        url = "https://free.currconv.com/api/v7/convert?q=USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response?.body?.string()
-
-                println("SECOND RUN: " + body)
-                val gson = GsonBuilder().create()
-                //val contentList = gson.fromJson(body, ContentList::class.java)
-
-                val currentRate = gson.fromJson(body, EducateFragment.USDRate::class.java)
-                mAdapter.usdRate = currentRate.USD_PHP
+                catch(e: Exception){
+                    println("call failed")
+                }
 
                 activity!!.runOnUiThread {
                     recyclerView_educate.adapter = mAdapter
@@ -111,6 +92,30 @@ class EducateFragment : Fragment() {
                 println("call failed")
             }
         })
+
+//        url = "https://free.currconv.com/api/v7/convert?q=USD_PHP,HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
+//        request = Request.Builder().url(url).build()
+//
+//        client.newCall(request).enqueue(object : Callback {
+//            override fun onResponse(call: Call, response: Response) {
+//                val body = response?.body?.string()
+//
+//                println("SECOND RUN: " + body)
+//                val gson = GsonBuilder().create()
+//                //val contentList = gson.fromJson(body, ContentList::class.java)
+//
+//                val currentRate = gson.fromJson(body, EducateFragment.USDRate::class.java)
+//                mAdapter.usdRate = currentRate.USD_PHP
+//
+//                activity!!.runOnUiThread {
+//                    recyclerView_educate.adapter = mAdapter
+//                }
+//            }
+//
+//            override fun onFailure(call: Call, e: IOException) {
+//                println("call failed")
+//            }
+//        })
 
 
 
@@ -127,7 +132,7 @@ class EducateFragment : Fragment() {
                     //println(response?.body?.string())
                     val gson = GsonBuilder().create()
                     val wishes = gson.fromJson(body, Array<Wish>::class.java).toMutableList()
-
+                    println(body)
 
 
                     activity!!.runOnUiThread {
@@ -215,11 +220,11 @@ class EducateFragment : Fragment() {
 
     }
 
-    class USDRate(val USD_PHP: Double)
-    class HKDRate(val HKD_PHP: Double)
+    //class USDRate(val USD_PHP: Double)
+    class ExchangeRate(val HKD_PHP: Double, val USD_PHP: Double)
     //class WishListsList(val wishLists: List<WishList>)
     class WishList(val wishes: Array<Wish>)
-    class Wish(val id: Int, val price: Double, val title:String, val curr:String)
+    class Wish(val id: Int, val price: Double, val name:String, val curr:String)
 
 
     companion object {

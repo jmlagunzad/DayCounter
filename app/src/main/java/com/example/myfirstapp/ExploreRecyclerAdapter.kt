@@ -2,90 +2,126 @@ package com.example.myfirstapp
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.*
+import kotlinx.android.synthetic.main.frame_row.view.textView_description
+import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import okhttp3.*
 import java.io.IOException
+import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.coroutines.coroutineContext
 
 
 class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
-//    val entry1 = Entry("Nier GOTY", "235")
- //   val entry2 = Entry("Bloodborne", "88")
-    var entries: MutableList<Entry> = ArrayList()
+    var wishes: MutableList<Wish> = ArrayList()
+    var hkdRate = 6.0
+    var usdRate = 50.0
+
 
     override fun getItemCount(): Int {
-        return entries.size
-        //return contentList.content_descriptors.size
+        return wishes.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        var cellForRow = layoutInflater.inflate(R.layout.frame_row, parent, false)
+        var cellForRow = layoutInflater.inflate(R.layout.educate_row, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
 
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.textView_mainTitle?.text = entries.get(position).title
-        holder?.view?.textView_description?.text = entries.get(position).description
-//        val content = contentList.content_descriptors.get(position)
-//        holder?.view?.textView_mainTitle.text = content.name
-//        holder?.view?.textView_description.text = content.description
 
-        val db = DatabaseHandler(holder.view.context)
+        var priceInPeso = 0.0
+        when(wishes.get(position).curr){
+            "HKD" -> priceInPeso = BigDecimal(wishes.get(position).price * hkdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+            "USD" -> priceInPeso = BigDecimal(wishes.get(position).price * usdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+            else -> {
+                priceInPeso = wishes.get(position).price
+            }
+        }
+        when(priceInPeso){
+            in 1.00..499.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+            in 500.00..999.99 -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFDFBA"))
+            else -> holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+        }
+
+
+        holder?.view?.textView_mainTitle?.text = wishes.get(position).name
+        holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
+
+        val db = EducateDBHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
-            //Toast.makeText(holder.view.context, "id: ${entries.get(position).id} posInList: $position", Toast.LENGTH_LONG).show()
-            //Toast.makeText(holder.view.context, holder?.view?.textView_mainTitle?.text, Toast.LENGTH_LONG).show()
+
+            //CHOOSE TEMPLATE FOR EACH FRAME
             val dialog = AlertDialog.Builder(holder.view.context)
             val layoutInflater = LayoutInflater.from(holder.view.context)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog,null)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog,null)
 
-            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit entry"
-            dialogView.findViewById<EditText>(R.id.editText_title).setText(entries.get(position).title)
-            dialogView.findViewById<EditText>(R.id.editText_description).setText(entries.get(position).description)
+            //LOAD CURRENCY CHOICES FOR SPINNER
+            val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+            val currencies = arrayListOf<String>("HKD","USD","PHP")
+            val currAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,currencies)
+            spinnerCurrency.adapter = currAdapter
 
+            //SET TEXT WITHIN FRAME
+            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
+            dialogView.findViewById<EditText>(R.id.editText_title).setText(wishes.get(position).name)
+            dialogView.findViewById<EditText>(R.id.editText_description).setText(wishes.get(position).price.toString())
+            spinnerCurrency.setSelection(currAdapter.getPosition(wishes.get(position).curr))
+
+            //GET VALUES FROM EDIT TEXT FIELDS
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
 
+            //SETUP VALUES FOR DIALOGVIEW
             dialog.setView(dialogView)
             dialog.setCancelable(true)
             dialog.setPositiveButton("Save Changes", { dialogInterface: DialogInterface, i: Int -> })
             dialog.setNegativeButton("Delete Entry", { dialogInterface: DialogInterface, i: Int -> })
             val customDialog = dialog.create()
             customDialog.show()
+
+            //LISTENER FOR EDIT
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
-
                 if(entryTitle.isNotEmpty()){
-                    val newEntry = Entry(entryTitle.toString(), entryDescription.toString())
-                    db.updateData(entries.get(position).id, newEntry)
-                    this.entries = db.readData()
-                    this.notifyItemChanged(position)
-                    customDialog.dismiss()
+                    if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
+                        val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString())
+                        db.updateData(wishes.get(position).id, newWish)
+                        this.wishes = db.readData()
+                        this.notifyItemChanged(position)
+                        customDialog.dismiss()
 
-                    Toast.makeText(holder.view.context, "Entry ${position+1} updated.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            holder.view.context,
+                            "Entry ${position + 1} updated.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 else{
-                    Toast.makeText(holder.view.context, "Enter a title!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(holder.view.context, "Enter a product name!", Toast.LENGTH_LONG).show()
                 }
             }
 
+            //LISTENER FOR DELETE
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
-                db.deleteData(entries.get(position).id)
-                this.entries.removeAt(position)
+                db.deleteData(wishes.get(position).id)
+                this.wishes.removeAt(position)
                 this.notifyItemRemoved(position)
-                this.notifyItemRangeChanged(position, this.entries.size);
+                this.notifyItemRangeChanged(position, this.wishes.size);
                 customDialog.dismiss()
                 Toast.makeText(holder.view.context, "Entry ${position + 1} deleted.", Toast.LENGTH_SHORT).show()
             }
