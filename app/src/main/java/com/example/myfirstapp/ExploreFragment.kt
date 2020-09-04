@@ -13,7 +13,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_explore.*
+import kotlinx.android.synthetic.main.fragment_explore.addButton
 import okhttp3.*
 import java.io.IOException
 
@@ -77,6 +79,37 @@ class ExploreFragment : Fragment() {
         recyclerView.adapter = mAdapter
 
         mAdapter.wishes = db.readData()
+
+        var url =
+            "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
+        var request = Request.Builder().url(url).build()
+        var client = OkHttpClient()
+        //var mAdapter = EducateRecyclerAdapter(activity!!)
+
+
+        //API GET REQUEST FOR CURRENCY CONVERTER
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response?.body?.string()
+
+                println(body)
+                val gson = GsonBuilder().create()
+                //val contentList = gson.fromJson(body, ContentList::class.java)
+                try{
+                    val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
+                    mAdapter.hkdRate = currentRate.HKD_PHP
+                    mAdapter.usdRate = currentRate.USD_PHP
+                }
+                catch(e: Exception){
+                    println("Could not get live data for currency exchange rates.")
+                }
+
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                println("call failed")
+            }
+        })
 
         addButton.setOnClickListener{
 
