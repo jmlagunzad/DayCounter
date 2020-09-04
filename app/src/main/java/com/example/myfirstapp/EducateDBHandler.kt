@@ -10,9 +10,10 @@ import java.lang.Exception
 
 
 private val DATABASE_NAME = "Personal"
-private val TABLE_NAME = "Wishes"
-private val COL_TITLE = "title"
+private val TABLE_NAME = "wishes"
+private val COL_NAME = "name"
 private val COL_PRICE= "price"
+private val COL_CURR= "curr"
 private val COL_ID = "id"
 
 class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){
@@ -25,52 +26,57 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
         TODO("Not yet implemented")
     }
 
-    fun insertData(entry: Entry){
+    fun insertData(wish: Wish){
         val db = this.writableDatabase
         var cv = ContentValues()
 
-        cv.put(COL_TITLE, entry.title)
-        cv.put(COL_PRICE, entry.description!!.toDouble())
+        cv.put(COL_NAME, wish.name)
+        cv.put(COL_PRICE, wish.price)
+        cv.put(COL_CURR, wish.curr)
 
         var result = db.insert(TABLE_NAME,null,cv)
         if(result == -1.toLong()){
-            Toast.makeText(context, "Adding the entry has failed.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Adding the wish entry has failed.", Toast.LENGTH_SHORT).show()
         }
         else{
-            Toast.makeText(context, "Entry added.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Wish entry added.", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun readData() : MutableList<Entry>{
-        val list: MutableList<Entry> = ArrayList()
+    fun readData() : MutableList<Wish>{
+        val list: MutableList<Wish> = ArrayList()
         val db = this.readableDatabase
 
         val result = db.rawQuery("SELECT * from  $TABLE_NAME", null)
         if(result.moveToFirst()){
             do {
-                var entry = Entry(result.getString(result.getColumnIndex(COL_TITLE)),
-                    result.getStringOrNull(result.getColumnIndex(COL_PRICE)))
-                entry.id = result.getString(0).toInt()
-                list.add(entry)
+                var wish = Wish(
+                    result.getString(result.getColumnIndex(COL_NAME)),
+                    result.getString(result.getColumnIndex(COL_PRICE)).toDouble(),
+                    result.getString(result.getColumnIndex(COL_CURR))
+                )
+                wish.id = result.getString(0).toInt()
+                list.add(wish)
             }while(result.moveToNext())
         }
 
         return list
     }
 
-    fun updateData(id: Int, entry: Entry){
+    fun updateData(id: Int, wish: Wish){
         try {
             val db = this.writableDatabase
             var cv = ContentValues()
 
-            cv.put(COL_TITLE, entry.title)
-            cv.put(COL_PRICE, entry.description!!.toDouble())
+            cv.put(COL_NAME, wish.name)
+            cv.put(COL_PRICE, wish.price)
+            cv.put(COL_CURR, wish.curr)
 
             db.update(TABLE_NAME, cv, "$COL_ID = ?", arrayOf(id.toString()))
 
         }catch(e: Exception){
-            Toast.makeText(context, "Entry update failed. Error: $e", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Wish entry update failed. Error: $e", Toast.LENGTH_LONG).show()
         }
     }
 
