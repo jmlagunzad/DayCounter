@@ -16,14 +16,17 @@ class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
             1 -> {
                 ExploreFragment()
             }
-            else -> {
+            2 -> {
                 EducateFragment()
+            }
+            else -> {
+                AboutFragment()
             }
         }
     }
 
     override fun getItemCount(): Int{
-        return 3
+        return 4
     }
 
     /*

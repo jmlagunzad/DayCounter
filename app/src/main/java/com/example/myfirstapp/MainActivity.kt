@@ -38,8 +38,11 @@ class MainActivity : AppCompatActivity() {
                 1 -> {
                     tab.text = "Explore"
                 }
-                else -> {
+                2 -> {
                     tab.text = "Educate"
+                }
+                else -> {
+                    tab.text = "About"
                 }
             }
         }.attach()
