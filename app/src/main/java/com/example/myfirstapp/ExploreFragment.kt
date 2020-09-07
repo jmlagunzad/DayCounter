@@ -97,12 +97,17 @@ class ExploreFragment : Fragment() {
                 //val contentList = gson.fromJson(body, ContentList::class.java)
                 try{
                     val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
-                    mAdapter.hkdRate = currentRate.HKD_PHP
-                    mAdapter.usdRate = currentRate.USD_PHP
+                    activity!!.runOnUiThread {
+                        mAdapter.hkdRate = currentRate.HKD_PHP
+                        mAdapter.usdRate = currentRate.USD_PHP
+                        mAdapter.notifyDataSetChanged()
+
+                    }
                 }
                 catch(e: Exception){
                     println("Could not get live data for currency exchange rates.")
                 }
+
 
             }
 
@@ -110,6 +115,8 @@ class ExploreFragment : Fragment() {
                 println("call failed")
             }
         })
+
+
 
         addButton.setOnClickListener{
 
