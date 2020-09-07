@@ -23,7 +23,7 @@ import kotlin.coroutines.coroutineContext
 class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
     var wishes: MutableList<Wish> = ArrayList()
-    var hkdRate = 6.5
+    var hkdRate = 6.0
     var usdRate = 50.0
 
 

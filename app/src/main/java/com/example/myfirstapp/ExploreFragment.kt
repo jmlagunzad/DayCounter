@@ -13,9 +13,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_explore.*
-import kotlinx.android.synthetic.main.fragment_explore.addButton
 import okhttp3.*
 import java.io.IOException
 
@@ -80,6 +78,7 @@ class ExploreFragment : Fragment() {
 
         mAdapter.wishes = db.readData()
 
+<<<<<<< HEAD
         var url =
             "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
         var request = Request.Builder().url(url).build()
@@ -118,6 +117,8 @@ class ExploreFragment : Fragment() {
 
 
 
+=======
+>>>>>>> parent of 32faff1... Added default values for currency, API call not yet implemented
         addButton.setOnClickListener{
 
             val dialog = AlertDialog.Builder(this.context!!)
