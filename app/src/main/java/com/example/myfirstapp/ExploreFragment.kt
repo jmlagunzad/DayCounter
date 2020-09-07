@@ -108,14 +108,12 @@ class ExploreFragment : Fragment() {
                     println("Could not get live data for currency exchange rates.")
                 }
 
-
             }
 
             override fun onFailure(call: Call, e: IOException) {
                 println("call failed")
             }
         })
-
 
 
         addButton.setOnClickListener{
