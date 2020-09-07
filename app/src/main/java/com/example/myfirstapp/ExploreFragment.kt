@@ -113,10 +113,6 @@ class ExploreFragment : Fragment() {
             }
         })
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         addButton.setOnClickListener{
 
             val dialog = AlertDialog.Builder(this.context!!)
