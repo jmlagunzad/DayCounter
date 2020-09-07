@@ -78,7 +78,6 @@ class ExploreFragment : Fragment() {
 
         mAdapter.wishes = db.readData()
 
-<<<<<<< HEAD
         var url =
             "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
         var request = Request.Builder().url(url).build()
@@ -107,7 +106,6 @@ class ExploreFragment : Fragment() {
                     println("Could not get live data for currency exchange rates.")
                 }
 
-
             }
 
             override fun onFailure(call: Call, e: IOException) {
@@ -115,10 +113,6 @@ class ExploreFragment : Fragment() {
             }
         })
 
-
-
-=======
->>>>>>> parent of 32faff1... Added default values for currency, API call not yet implemented
         addButton.setOnClickListener{
 
             val dialog = AlertDialog.Builder(this.context!!)
