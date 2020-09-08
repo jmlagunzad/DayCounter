@@ -2,12 +2,23 @@ package com.example.myfirstapp
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintSet
 import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.android.synthetic.main.fragment_about.constraintLayout
+import kotlinx.android.synthetic.main.fragment_about.fb_button
+import kotlinx.android.synthetic.main.fragment_about.joker_icon
+import kotlinx.android.synthetic.main.fragment_about.ps_button
+import kotlinx.android.synthetic.main.fragment_about.view.*
+import kotlinx.android.synthetic.main.fragment_about_large.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,12 +51,34 @@ class AboutFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_about, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fb_button.setOnClickListener{
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/jm.lagunzad/")))
         }
         ps_button.setOnClickListener{
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://psntrophyleaders.com/user/view/SlaughterDoi#games")))
+        }
+
+        //Initialize Constraint Layouts
+        val constraintsSet1 = ConstraintSet()
+        val constraintsSet2 = ConstraintSet()
+
+        constraintsSet2.clone(this.context!!,R.layout.fragment_about_large)
+        constraintsSet1.clone(constraintLayout)
+
+        var large = false
+
+        joker_icon.setOnClickListener{
+            if(!large) {
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                constraintsSet2.applyTo(constraintLayout)
+                large = true
+            }else{
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                constraintsSet1.applyTo(constraintLayout)
+                large = false
+            }
         }
     }
 
