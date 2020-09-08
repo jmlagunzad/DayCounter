@@ -1,10 +1,13 @@
 package com.example.myfirstapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_about.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,15 @@ class AboutFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fb_button.setOnClickListener{
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/jm.lagunzad/")))
+        }
+        ps_button.setOnClickListener{
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://psntrophyleaders.com/user/view/SlaughterDoi#games")))
+        }
     }
 
     companion object {
