@@ -14,6 +14,7 @@ private val TABLE_NAME = "wishes"
 private val COL_NAME = "name"
 private val COL_PRICE= "price"
 private val COL_CURR= "curr"
+private val COL_DEADLINE= "deadline"
 private val COL_ID = "id"
 
 class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){

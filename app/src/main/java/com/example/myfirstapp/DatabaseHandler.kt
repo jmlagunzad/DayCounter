@@ -30,7 +30,8 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         val createTable3 = "CREATE TABLE wishes ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name VARCHAR(256) NOT NULL," +
                 "price REAL NOT NULL," +
-                "curr VARCHAR(10) NOT NULL)"
+                "curr VARCHAR(10) NOT NULL," +
+                "deadline VARCHAR(256) NULL)"
 
         db?.execSQL(createTable)
         db?.execSQL(createTable2)
