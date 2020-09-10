@@ -50,7 +50,7 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
         val list: MutableList<Wish> = ArrayList()
         val db = this.readableDatabase
 
-        val result = db.rawQuery("SELECT * from  $TABLE_NAME", null)
+        val result = db.rawQuery("SELECT * from  $TABLE_NAME  where deadline >= date('now')", null)
         if(result.moveToFirst()){
             do {
                 var wish = Wish(

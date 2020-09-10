@@ -154,7 +154,8 @@ class ExploreFragment : Fragment() {
                     val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{ view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
 
-                        var deadline = "${choiceMonth+1}/$choiceDay"
+                        var dec = DecimalFormat("00")
+                        var deadline = "$choiceYear-${dec.format(choiceMonth+1)}-${dec.format(choiceDay)}"
 
                         //ORIGINAL FUNCTIONS
                         val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString(), deadline)

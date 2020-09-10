@@ -50,6 +50,9 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
         var priceInPeso = 0.0
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var deadline = LocalDate.parse(wishes.get(position).deadline, formatter)
+
         when(wishes.get(position).curr){
             "HKD" -> priceInPeso = BigDecimal(wishes.get(position).price * hkdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
             "USD" -> priceInPeso = BigDecimal(wishes.get(position).price * usdRate).setScale(2, RoundingMode.HALF_EVEN).toDouble()
@@ -66,7 +69,7 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
         holder?.view?.textView_mainTitle?.text = wishes.get(position).name
         holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
-        holder?.view?.textView_deadline?.text = wishes.get(position).deadline
+        holder?.view?.textView_deadline?.text = "${deadline.month.value}/${deadline.dayOfMonth}"
 
         val db = EducateDBHandler(holder.view.context)
 
@@ -115,7 +118,8 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
                         val chosenDate = DatePickerDialog(holder.view.context, DatePickerDialog.OnDateSetListener{ view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
-                            var deadline = "${choiceMonth + 1}/$choiceDay"
+                            var dec = DecimalFormat("00")
+                            var deadline = "$choiceYear-${dec.format(choiceMonth+1)}-${dec.format(choiceDay)}"
 
                             //ORIGINAL FUNCTIONS
                             val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString(), deadline)
