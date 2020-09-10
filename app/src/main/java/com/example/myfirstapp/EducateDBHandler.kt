@@ -34,6 +34,7 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
         cv.put(COL_NAME, wish.name)
         cv.put(COL_PRICE, wish.price)
         cv.put(COL_CURR, wish.curr)
+        cv.put(COL_DEADLINE, wish.deadline)
 
         var result = db.insert(TABLE_NAME,null,cv)
         if(result == -1.toLong()){
@@ -55,7 +56,8 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
                 var wish = Wish(
                     result.getString(result.getColumnIndex(COL_NAME)),
                     result.getString(result.getColumnIndex(COL_PRICE)).toDouble(),
-                    result.getString(result.getColumnIndex(COL_CURR))
+                    result.getString(result.getColumnIndex(COL_CURR)),
+                    result.getString(result.getColumnIndex(COL_DEADLINE))
                 )
                 wish.id = result.getString(0).toInt()
                 list.add(wish)
@@ -73,6 +75,7 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
             cv.put(COL_NAME, wish.name)
             cv.put(COL_PRICE, wish.price)
             cv.put(COL_CURR, wish.curr)
+            cv.put(COL_DEADLINE, wish.deadline)
 
             db.update(TABLE_NAME, cv, "$COL_ID = ?", arrayOf(id.toString()))
 

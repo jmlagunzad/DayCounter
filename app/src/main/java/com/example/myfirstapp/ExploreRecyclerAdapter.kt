@@ -1,12 +1,15 @@
 package com.example.myfirstapp
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.educate_row.view.*
@@ -17,6 +20,11 @@ import okhttp3.*
 import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.coroutines.coroutineContext
 
 
@@ -38,7 +46,7 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
     }
 
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
         var priceInPeso = 0.0
@@ -58,6 +66,7 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
         holder?.view?.textView_mainTitle?.text = wishes.get(position).name
         holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
+        holder?.view?.textView_deadline?.text = wishes.get(position).deadline
 
         val db = EducateDBHandler(holder.view.context)
 
@@ -98,17 +107,36 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
                 if(entryTitle.isNotEmpty()){
                     if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
-                        val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString())
-                        db.updateData(wishes.get(position).id, newWish)
-                        this.wishes = db.readData()
-                        this.notifyItemChanged(position)
-                        customDialog.dismiss()
+                        //DAY COUNTER
+                        val c =  Calendar.getInstance();
+                        val year = c.get(Calendar.YEAR)
+                        val month = c.get(Calendar.MONTH)
+                        val day = c.get(Calendar.DAY_OF_MONTH)
 
-                        Toast.makeText(
-                            holder.view.context,
-                            "Entry ${position + 1} updated.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val chosenDate = DatePickerDialog(holder.view.context, DatePickerDialog.OnDateSetListener{ view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
+
+                            var deadline = "${choiceMonth + 1}/$choiceDay"
+
+                            //ORIGINAL FUNCTIONS
+                            val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString(), deadline)
+                            db.updateData(wishes.get(position).id, newWish)
+                            this.wishes = db.readData()
+                            this.notifyItemChanged(position)
+                            customDialog.dismiss()
+                            //---ORIGINAL FUNCTIONS
+
+                            Toast.makeText(
+                                holder.view.context,
+                                "Entry ${position + 1} updated.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+
+                        }, year, month, day)
+
+                        chosenDate.show()
+
+
                     }
                 }
                 else{

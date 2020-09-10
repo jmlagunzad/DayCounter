@@ -105,35 +105,22 @@ class EndureFragment : Fragment() {
             val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
                 if(!fresh){
-                    //var dtCurrStart = LocalDate.parse(currentAttempt.start)
-                    //var days = abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.monthValue - month) * 30) + (dtCurrStart.dayOfMonth - day))
                     currentAttempt.end = strToday
                     currentAttempt.days = days
                     db.updateData(currentAttempt.id, currentAttempt)
                 }
 
-                //var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                //var dtStart = LocalDate.parse("$choiceYear-$choiceMonth-$choiceDay",formatter)
                 var dec = DecimalFormat("00")
                 db.insertData(Attempt("$choiceYear-${dec.format(choiceMonth)}-${dec.format(choiceDay)}"))
 
                 if(db.checkExist()){
-                    //textLast.setText("Streak ongoing")
                     currentAttempt = db.readData()
 
                     var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                     dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
-                  //  var cur = LocalDate.parse("$year-$month-$day",formatter)
-                   // dtCurrStart = DateTime(currentAttempt.start, formatter)
 
-                    /*
-                    println("THE YEAR IS ${dtCurrStart.year} - $year")
-                    println("THE MONTH IS ${dtCurrStart.month.value} - $month")
-                    println("THE DAY IS ${dtCurrStart.dayOfMonth} - $day")
-*/
                     days = abs(abs((dtCurrStart.year - year) * 365) - abs((dtCurrStart.month.value - month) * 30) + abs(dtCurrStart.dayOfMonth - day))
-                    //days = Days.daysBetween(dtCurrStart, cur).getDays()
-                    //days = Days.daysBetween(cur, cur)
+
                     textLast.setText("${currentAttempt.start}")
                     textView.setText("$days days clean")
                     fresh = false;
@@ -148,6 +135,7 @@ class EndureFragment : Fragment() {
             }, year, month, day)
 
             chosenDate.show()
+
 
         }
     }
