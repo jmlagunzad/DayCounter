@@ -189,7 +189,6 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
                     }
                 })
 
-//                db.deleteData(entries.get(position).id)
                 this.wishes.removeAt(position)
                 this.notifyItemRemoved(position)
                 this.notifyItemRangeChanged(position, this.wishes.size);

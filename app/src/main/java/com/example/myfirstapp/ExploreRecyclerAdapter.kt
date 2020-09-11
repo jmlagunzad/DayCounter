@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.educate_row.view.*
+import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.android.synthetic.main.frame_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
@@ -28,9 +30,10 @@ import kotlin.collections.ArrayList
 import kotlin.coroutines.coroutineContext
 
 
-class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
+class ExploreRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
     var wishes: MutableList<Wish> = ArrayList()
+    var query = ""
     var hkdRate = 6.0
     var usdRate = 50.0
 
@@ -124,7 +127,8 @@ class ExploreRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {
                             //ORIGINAL FUNCTIONS
                             val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString(), deadline)
                             db.updateData(wishes.get(position).id, newWish)
-                            this.wishes = db.readData()
+                            this.wishes = db.readData(this.query)
+                            this.notifyDataSetChanged()
                             this.notifyItemChanged(position)
                             customDialog.dismiss()
                             //---ORIGINAL FUNCTIONS

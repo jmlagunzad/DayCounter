@@ -3,16 +3,14 @@ package com.example.myfirstapp
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
@@ -84,7 +82,11 @@ class ExploreFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = mAdapter
 
-        mAdapter.wishes = db.readData()
+        var query1 = "SELECT * from wishes where deadline >= date('now')"
+        var query2 = "SELECT * from wishes"
+
+        mAdapter.wishes = db.readData(query1)
+        mAdapter.query = query1
 
         var url =
             "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
@@ -160,7 +162,13 @@ class ExploreFragment : Fragment() {
                         //ORIGINAL FUNCTIONS
                         val newWish = Wish(entryTitle.toString(), entryDescription.toString().toDouble(), spinnerCurrency.selectedItem.toString(), deadline)
                         db.insertData(newWish)
-                        mAdapter.wishes = db.readData()
+                        if(switch_filter.isChecked){
+                            mAdapter.wishes = db.readData(query2)
+                        }
+                        else{
+                            mAdapter.wishes = db.readData(query1)
+                        }
+                        mAdapter.notifyDataSetChanged()
                         customDialog.dismiss()
                         //---ORIGINAL FUNCTIONS
 
@@ -176,6 +184,21 @@ class ExploreFragment : Fragment() {
                     Toast.makeText(this.context, "Enter a title!", Toast.LENGTH_LONG).show()
                 }
 
+            }
+        }
+
+        switch_filter.setOnCheckedChangeListener{ _ , isChecked ->
+            if(isChecked){
+                //switch_filter.setBackgroundColor(Color.GREEN)
+                mAdapter.wishes = db.readData(query2)
+                mAdapter.notifyDataSetChanged()
+                mAdapter.query = query2
+            }
+            else{
+                //switch_filter.setBackgroundColor(Color.RED)
+                mAdapter.wishes = db.readData(query1)
+                mAdapter.notifyDataSetChanged()
+                mAdapter.query = query1
             }
         }
 
