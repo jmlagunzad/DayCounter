@@ -75,7 +75,7 @@ class EndureFragment : Fragment() {
         val bitmapSmall = BitmapFactory.decodeResource(this.activity!!.applicationContext.resources, R.mipmap.morgana_icon_foreground)
 
         val builder = NotificationCompat.Builder(this.context!!, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.joker_icon_foreground)
+            .setSmallIcon(R.mipmap.im_icon_foreground)
             .setLargeIcon(bitmapSmall)
             .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
             .setContentTitle("Looking cool, Joker!")
