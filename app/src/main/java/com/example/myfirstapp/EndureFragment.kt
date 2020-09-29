@@ -1,6 +1,10 @@
 package com.example.myfirstapp
 
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_endure.*
@@ -37,6 +44,8 @@ class EndureFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val CHANNEL_ID = "endure_channel_id"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,8 +53,38 @@ class EndureFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        createNotificationChannel()
 
+    }
 
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID,name,importance).apply{
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendNotification(days: Int = 0){
+        val bitmap = BitmapFactory.decodeResource(this.activity!!.applicationContext.resources, R.mipmap.joker_crit_foreground)
+        val bitmapSmall = BitmapFactory.decodeResource(this.activity!!.applicationContext.resources, R.mipmap.morgana_icon_foreground)
+
+        val builder = NotificationCompat.Builder(this.context!!, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.joker_icon_foreground)
+            .setLargeIcon(bitmapSmall)
+            .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+            .setContentTitle("Looking cool, Joker!")
+            .setContentText("You've been clean for $days day/s!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this.context!!)){
+            notify(101,builder.build())
+        }
     }
 
     override fun onCreateView(
@@ -80,7 +119,6 @@ class EndureFragment : Fragment() {
         var days = 0
         var dtCurrStart : LocalDate
 
-
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val textLast = view!!.findViewById<TextView>(R.id.textView_last)
 
@@ -99,7 +137,7 @@ class EndureFragment : Fragment() {
             fresh = true
         }
 
-
+        sendNotification(days)
 
         chooseButton.setOnClickListener {
             val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->

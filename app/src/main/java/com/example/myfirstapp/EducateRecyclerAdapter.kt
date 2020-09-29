@@ -28,20 +28,12 @@ import java.math.RoundingMode
 
 class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<CustomViewHolder>() {
 
-    //var entries: MutableList<Entry> = ArrayList()
     var wishes: MutableList<EducateFragment.Wish> = ArrayList()
-    //var attempts: MutableList<Attempt> = ArrayList()
     var usdRate: Double = 50.0
     var hkdRate: Double = 6.0
-    //var mAdapter = this
-
-
 
 
     override fun getItemCount(): Int {
-        //return entries.size
-        //return contents.data.count()
-        //return entries.size
         return wishes.size
     }
 
@@ -69,8 +61,6 @@ class EducateRecyclerAdapter(val fa: FragmentActivity?): RecyclerView.Adapter<Cu
 
         holder?.view?.textView_mainTitle?.text = wishes.get(position).name
         holder?.view?.textView_description?.text = "$priceInPeso PHP - ${wishes.get(position).price} ${wishes.get(position).curr}"
-
-        //val db = EducateDBHandler(holder.view.context)
 
         holder?.itemView.setOnLongClickListener{
 
