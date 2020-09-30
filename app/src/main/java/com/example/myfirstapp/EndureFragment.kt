@@ -87,14 +87,19 @@ class EndureFragment : Fragment() {
         }
     }
 
-    private fun sendAlert(days: Int = 0){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun sendAlert(currentAttempt: String){
+        //println("Send alert $days days")
+        //var reminderBroadcast =
         var intent = Intent(this.activity!!,ReminderBroadcast::class.java)
+        intent.putExtra("currentAttempt", currentAttempt)
         var pendingIntent = PendingIntent.getBroadcast(this.activity!!,0,intent,0)
-        var alarmManager : AlarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
+        var alarmManager : AlarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         var timeAtButtonClick: Long = System.currentTimeMillis()
+        //var tenSeconds = 1000 * 5
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick, pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeAtButtonClick,1000*60*1, pendingIntent)
     }
 
     override fun onCreateView(
@@ -147,7 +152,8 @@ class EndureFragment : Fragment() {
             fresh = true
         }
 
-        sendNotification(days)
+        //sendNotification(days)
+        //sendAlert(days)
 
         chooseButton.setOnClickListener {
             val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
@@ -176,13 +182,14 @@ class EndureFragment : Fragment() {
                     mAdapter.attempts = db.readHistory()
                     mAdapter.notifyDataSetChanged()
 
-
+                    sendAlert(currentAttempt.start)
                 }
 
 
             }, year, month, day)
 
             chosenDate.show()
+
 
 
         }
