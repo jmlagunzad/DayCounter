@@ -1,9 +1,9 @@
 package com.example.myfirstapp
 
-import android.app.DatePickerDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -85,6 +85,16 @@ class EndureFragment : Fragment() {
         with(NotificationManagerCompat.from(this.context!!)){
             notify(101,builder.build())
         }
+    }
+
+    private fun sendAlert(days: Int = 0){
+        var intent = Intent(this.activity!!,ReminderBroadcast::class.java)
+        var pendingIntent = PendingIntent.getBroadcast(this.activity!!,0,intent,0)
+        var alarmManager : AlarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
+
+        var timeAtButtonClick: Long = System.currentTimeMillis()
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick, pendingIntent)
     }
 
     override fun onCreateView(
