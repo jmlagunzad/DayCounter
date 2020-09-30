@@ -43,12 +43,8 @@ class ReminderBroadcast : BroadcastReceiver() {
 
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var currentAttempt = intent.getStringExtra("currentAttempt")
-        println("on receive currentAttempt: $currentAttempt")
         var dtCurrStart = LocalDate.parse(currentAttempt, formatter)
 
-        var days =
-            Math.abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
-
-        return days
+        return Math.abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
     }
 }

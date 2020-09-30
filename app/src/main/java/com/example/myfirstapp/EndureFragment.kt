@@ -54,7 +54,6 @@ class EndureFragment : Fragment() {
         }
 
         createNotificationChannel()
-
     }
 
     private fun createNotificationChannel(){
@@ -70,6 +69,7 @@ class EndureFragment : Fragment() {
         }
     }
 
+    /*
     private fun sendNotification(days: Int = 0){
         val bitmap = BitmapFactory.decodeResource(this.activity!!.applicationContext.resources, R.mipmap.joker_crit_foreground)
         val bitmapSmall = BitmapFactory.decodeResource(this.activity!!.applicationContext.resources, R.mipmap.morgana_icon_foreground)
@@ -85,7 +85,7 @@ class EndureFragment : Fragment() {
         with(NotificationManagerCompat.from(this.context!!)){
             notify(101,builder.build())
         }
-    }
+    }*/
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendAlert(currentAttempt: String){
@@ -128,23 +128,16 @@ class EndureFragment : Fragment() {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        var strToday = "$year-$month-$day"
         var fresh = false
         var currentAttempt = Attempt()
-        var days = 0
-        var dtCurrStart : LocalDate
 
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val textLast = view!!.findViewById<TextView>(R.id.textView_last)
 
         if(db.checkExist()){
-            //textLast.setText("Streak ongoing")
             currentAttempt = db.readData()
-            var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
-            days = abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
-            textLast.setText("${currentAttempt.start}")
-            textView.setText("$days days clean")
+            textLast.setText("Started on ${currentAttempt.start}")
+            textView.setText("${computeDays(currentAttempt.start)} days clean")
             fresh = false;
         }
         else{
@@ -152,15 +145,12 @@ class EndureFragment : Fragment() {
             fresh = true
         }
 
-        //sendNotification(days)
-        //sendAlert(days)
-
         chooseButton.setOnClickListener {
             val chosenDate = DatePickerDialog(this.context!!, DatePickerDialog.OnDateSetListener{view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
                 if(!fresh){
-                    currentAttempt.end = strToday
-                    currentAttempt.days = days
+                    currentAttempt.end = "$year-$month-$day"
+                    currentAttempt.days = computeDays(currentAttempt.start)
                     db.updateData(currentAttempt.id, currentAttempt)
                 }
 
@@ -169,14 +159,8 @@ class EndureFragment : Fragment() {
 
                 if(db.checkExist()){
                     currentAttempt = db.readData()
-
-                    var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                    dtCurrStart = LocalDate.parse(currentAttempt.start, formatter)
-
-                    days = abs(abs((dtCurrStart.year - year) * 365) - abs((dtCurrStart.month.value - month) * 30) + abs(dtCurrStart.dayOfMonth - day))
-
-                    textLast.setText("${currentAttempt.start}")
-                    textView.setText("$days days clean")
+                    textLast.setText("Started on ${currentAttempt.start}")
+                    textView.setText("${computeDays(currentAttempt.start)} days clean")
                     fresh = false;
 
                     mAdapter.attempts = db.readHistory()
@@ -190,9 +174,20 @@ class EndureFragment : Fragment() {
 
             chosenDate.show()
 
-
-
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun computeDays(currentAttempt: String): Int{
+        val c =  Calendar.getInstance();
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var dtCurrStart = LocalDate.parse(currentAttempt, formatter)
+
+        return Math.abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
     }
 
     companion object {
