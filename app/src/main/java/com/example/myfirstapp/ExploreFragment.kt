@@ -168,8 +168,8 @@ class ExploreFragment : Fragment() {
                         else{
                             mAdapter.wishes = db.readData(query1)
                         }
-                        //mAdapter.notifyItemInserted(mAdapter.wishes.size)
-                        //mAdapter.notifyDataSetChanged()
+                        mAdapter.notifyItemInserted(mAdapter.wishes.size)
+                        mAdapter.notifyDataSetChanged()
                         customDialog.dismiss()
                         //---ORIGINAL FUNCTIONS
 

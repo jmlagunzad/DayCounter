@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -32,6 +33,8 @@ class ReminderBroadcast : BroadcastReceiver() {
 
         val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
         notificationManager.notify(102,builder.build())
+
+        Toast.makeText(context, "Alarm bot set to ${computeDays(intent)} days", Toast.LENGTH_LONG).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

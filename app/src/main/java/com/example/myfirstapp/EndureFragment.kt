@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,12 +92,15 @@ class EndureFragment : Fragment() {
     private fun sendAlert(currentAttempt: String){
         var intent = Intent(this.activity!!,ReminderBroadcast::class.java)
         intent.putExtra("currentAttempt", currentAttempt)
-        var pendingIntent = PendingIntent.getBroadcast(this.activity!!,0,intent,0)
+        var pendingIntent = PendingIntent.getBroadcast(this.activity!!,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
         var alarmManager : AlarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         var timeAtButtonClick: Long = System.currentTimeMillis()
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeAtButtonClick,AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeAtButtonClick,
+            AlarmManager.INTERVAL_HALF_DAY
+            //1000 * 30
+            , pendingIntent)
     }
 
     override fun onCreateView(
@@ -154,6 +158,9 @@ class EndureFragment : Fragment() {
                 var dec = DecimalFormat("00")
                 db.insertData(Attempt("$choiceYear-${dec.format(choiceMonth)}-${dec.format(choiceDay)}"))
 
+
+                var start = ""
+
                 if(db.checkExist()){
                     currentAttempt = db.readData()
                     textLast.setText("Started on ${currentAttempt.start}")
@@ -163,9 +170,13 @@ class EndureFragment : Fragment() {
                     mAdapter.attempts = db.readHistory()
                     mAdapter.notifyDataSetChanged()
 
-                    sendAlert(currentAttempt.start)
+                    Log.d("StartDate", currentAttempt.start)
+                    start = currentAttempt.start
+
+
                 }
 
+                sendAlert(start)
 
             }, year, month, day)
 
