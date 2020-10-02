@@ -195,7 +195,13 @@ class EndureFragment : Fragment() {
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var dtCurrStart = LocalDate.parse(currentAttempt, formatter)
 
-        return Math.abs(((dtCurrStart.year - year) * 365) - ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
+//        println("Math.abs(((${dtCurrStart.year} - $year) * 365) - ((${dtCurrStart.month.value} - $month) * 30) + (${dtCurrStart.dayOfMonth} - $day))")
+//        var daysElapsed = Math.abs(((dtCurrStart.year - year) * 365) + ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
+//        println("dtCurrStart: $dtCurrStart -- $year-$month-$day")
+//        println("days = $daysElapsed")
+
+
+        return Math.abs(((dtCurrStart.year - year) * 365) + ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
     }
 
     companion object {
