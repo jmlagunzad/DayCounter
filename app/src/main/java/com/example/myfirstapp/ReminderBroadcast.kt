@@ -39,6 +39,7 @@ class ReminderBroadcast : BroadcastReceiver() {
             .setContentText("You've been clean for ${computeDays(intent)} day/s!")
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
 
         val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
         notificationManager.notify(102,builder.build())
