@@ -9,8 +9,8 @@
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/morgana_icon_foreground"
-        android:label="Personal Management"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="MyMorgana"
+        android:roundIcon="@mipmap/morgana_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
