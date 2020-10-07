@@ -23,7 +23,7 @@ class ReminderBroadcast : BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
-        val mainIntent = Intent(context, MainActivity::class.java).apply{
+        val mainIntent = Intent(context, SplashScreenActivity::class.java).apply{
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
         val pendingIntent = PendingIntent.getActivity(context,0,mainIntent, 0)
