@@ -156,7 +156,7 @@ class EndureFragment : Fragment() {
                 }
 
                 var dec = DecimalFormat("00")
-                db.insertData(Attempt("$choiceYear-${dec.format(choiceMonth)}-${dec.format(choiceDay)}"))
+                db.insertData(Attempt("$choiceYear-${dec.format(choiceMonth+1)}-${dec.format(choiceDay)}"))
 
 
                 var start = ""
@@ -189,7 +189,7 @@ class EndureFragment : Fragment() {
     fun computeDays(currentAttempt: String): Int{
         val c =  Calendar.getInstance();
         val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
+        val month = c.get(Calendar.MONTH) + 1
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -201,7 +201,7 @@ class EndureFragment : Fragment() {
 //        println("days = $daysElapsed")
 
 
-        return Math.abs(((dtCurrStart.year - year) * 365) + ((dtCurrStart.month.value - month) * 30) + (dtCurrStart.dayOfMonth - day))
+        return Math.abs(((dtCurrStart.year - year) * 365) + (((dtCurrStart.month.value) - month) * 30) + (dtCurrStart.dayOfMonth - day))
     }
 
     companion object {
