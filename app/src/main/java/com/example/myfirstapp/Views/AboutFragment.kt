@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.content.Intent
 import android.net.Uri
@@ -9,16 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintSet
-import kotlinx.android.synthetic.main.fragment_about.*
+import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.fragment_about.constraintLayout
 import kotlinx.android.synthetic.main.fragment_about.fb_button
 import kotlinx.android.synthetic.main.fragment_about.joker_icon
 import kotlinx.android.synthetic.main.fragment_about.ps_button
-import kotlinx.android.synthetic.main.fragment_about.view.*
-import kotlinx.android.synthetic.main.fragment_about_large.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +61,7 @@ class AboutFragment : Fragment() {
         val constraintsSet1 = ConstraintSet()
         val constraintsSet2 = ConstraintSet()
 
-        constraintsSet2.clone(this.context!!,R.layout.fragment_about_large)
+        constraintsSet2.clone(this.context!!, R.layout.fragment_about_large)
         constraintsSet1.clone(constraintLayout)
 
         var large = false

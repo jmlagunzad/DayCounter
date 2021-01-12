@@ -1,10 +1,8 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.*
 import android.content.Context
-import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,22 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myfirstapp.EndureDBHandler
+import com.example.myfirstapp.EndureRecyclerAdapter
+import com.example.myfirstapp.Model.Attempt
+import com.example.myfirstapp.R
+import com.example.myfirstapp.ReminderBroadcast
 import kotlinx.android.synthetic.main.fragment_endure.*
-import kotlinx.android.synthetic.main.fragment_explore.*
-import org.joda.time.DateTime
-import org.joda.time.Days
-import java.lang.Math.abs
 import java.text.DecimalFormat
 import java.time.LocalDate
-import java.time.LocalDateTime.*
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.lang.Object
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,7 +84,7 @@ class EndureFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendAlert(currentAttempt: String){
-        var intent = Intent(this.activity!!,ReminderBroadcast::class.java)
+        var intent = Intent(this.activity!!, ReminderBroadcast::class.java)
         intent.putExtra("currentAttempt", currentAttempt)
         var pendingIntent = PendingIntent.getBroadcast(this.activity!!,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
         var alarmManager : AlarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager

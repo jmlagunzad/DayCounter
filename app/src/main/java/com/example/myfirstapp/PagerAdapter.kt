@@ -2,9 +2,11 @@ package com.example.myfirstapp
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.myfirstapp.Views.AboutFragment
+import com.example.myfirstapp.Views.EducateFragment
+import com.example.myfirstapp.Views.EndureFragment
+import com.example.myfirstapp.Views.ExploreFragment
 
 class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
 

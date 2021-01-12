@@ -1,17 +1,10 @@
 package com.example.myfirstapp
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapp.Model.Attempt
 import kotlinx.android.synthetic.main.frame_row.view.*
-import kotlin.coroutines.coroutineContext
 
 
 class EndureRecyclerAdapter: RecyclerView.Adapter<CustomViewHolder>() {

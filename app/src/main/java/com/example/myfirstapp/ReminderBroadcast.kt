@@ -1,18 +1,16 @@
 package com.example.myfirstapp
 
-import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.media.RingtoneManager
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.myfirstapp.Views.SplashScreenActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*

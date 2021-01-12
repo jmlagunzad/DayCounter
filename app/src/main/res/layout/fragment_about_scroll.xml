@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="#3F51B5"
         android:paddingBottom="40dp"
-        tools:context=".AboutFragment">
+        tools:context=".Views.AboutFragment">
 
         <ImageView
             android:id="@+id/imageView2"

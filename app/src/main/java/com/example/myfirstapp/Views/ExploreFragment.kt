@@ -1,9 +1,8 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,13 +12,15 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myfirstapp.EducateDBHandler
+import com.example.myfirstapp.ExploreRecyclerAdapter
+import com.example.myfirstapp.Model.Wish
+import com.example.myfirstapp.R
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_explore.*
 import okhttp3.*
 import java.io.IOException
 import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match

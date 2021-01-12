@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
-import androidx.core.database.getStringOrNull
+import com.example.myfirstapp.Model.Wish
 import java.lang.Exception
 
 

@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Model
 
 data class Wish(var name: String, var price: Double, var curr: String, var deadline: String){
 

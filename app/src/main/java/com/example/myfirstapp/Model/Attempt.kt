@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Model
 
 data class Attempt(var start: String){
 

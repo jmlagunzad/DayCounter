@@ -6,7 +6,7 @@
     android:background="#3b5998"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".EndureFragment">
+    tools:context=".Views.EndureFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

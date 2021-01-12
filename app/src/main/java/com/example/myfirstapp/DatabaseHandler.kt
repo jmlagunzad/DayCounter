@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
 import androidx.core.database.getStringOrNull
+import com.example.myfirstapp.Model.Entry
 import java.lang.Exception
 
 private val DATABASE_NAME = "Personal"

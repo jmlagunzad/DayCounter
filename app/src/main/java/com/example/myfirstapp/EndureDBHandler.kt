@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
-import androidx.core.database.getStringOrNull
+import com.example.myfirstapp.Model.Attempt
 import java.lang.Exception
 
 private val DATABASE_NAME = "Personal"
@@ -58,7 +58,7 @@ class EndureDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         return doesExist
     }
 
-    fun readData() : Attempt{
+    fun readData() : Attempt {
        // val list: MutableList<Entry> = ArrayList()
         val db = this.readableDatabase
         var ret = Attempt()

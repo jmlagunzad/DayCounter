@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -12,6 +12,9 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myfirstapp.EducateDBHandler
+import com.example.myfirstapp.EducateRecyclerAdapter
+import com.example.myfirstapp.R
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
@@ -75,7 +78,7 @@ class EducateFragment : Fragment() {
                 val gson = GsonBuilder().create()
                 //val contentList = gson.fromJson(body, ContentList::class.java)
                 try{
-                    val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
+                    val currentRate = gson.fromJson(body, ExchangeRate::class.java)
                     mAdapter.hkdRate = currentRate.HKD_PHP
                     mAdapter.usdRate = currentRate.USD_PHP
                 }
