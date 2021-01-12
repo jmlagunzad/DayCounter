@@ -7,13 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.EducateDBHandler
 import com.example.myfirstapp.EducateRecyclerAdapter
+import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_educate.*
@@ -38,6 +36,8 @@ class EducateFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    val educatePresenter = EducatePresenter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,175 +59,30 @@ class EducateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //INITIALIZATIONS
-        val db = EducateDBHandler(this.context!!)
-        recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
-        var url =
-            "https://free.currconv.com/api/v7/convert?q=HKD_PHP,USD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
-        var request = Request.Builder().url(url).build()
-        var client = OkHttpClient()
-        var mAdapter = EducateRecyclerAdapter(activity!!)
 
-
-        //API GET REQUEST FOR CURRENCY CONVERTER
-        client.newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response?.body?.string()
-
-                println(body)
-                val gson = GsonBuilder().create()
-                //val contentList = gson.fromJson(body, ContentList::class.java)
-                try{
-                    val currentRate = gson.fromJson(body, ExchangeRate::class.java)
-                    mAdapter.hkdRate = currentRate.HKD_PHP
-                    mAdapter.usdRate = currentRate.USD_PHP
-                }
-                catch(e: Exception){
-                    println("call failed")
-                }
-
-                activity!!.runOnUiThread {
-                    recyclerView_educate.adapter = mAdapter
-                }
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                println("call failed")
-            }
-        })
-
-//        url = "https://free.currconv.com/api/v7/convert?q=USD_PHP,HKD_PHP&compact=ultra&apiKey=d0bacd4bbe5106fbe9fc"
-//        request = Request.Builder().url(url).build()
-//
-//        client.newCall(request).enqueue(object : Callback {
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response?.body?.string()
-//
-//                println("SECOND RUN: " + body)
-//                val gson = GsonBuilder().create()
-//                //val contentList = gson.fromJson(body, ContentList::class.java)
-//
-//                val currentRate = gson.fromJson(body, EducateFragment.USDRate::class.java)
-//                mAdapter.usdRate = currentRate.USD_PHP
-//
-//                activity!!.runOnUiThread {
-//                    recyclerView_educate.adapter = mAdapter
-//                }
-//            }
-//
-//            override fun onFailure(call: Call, e: IOException) {
-//                println("call failed")
-//            }
-//        })
-
-
-
-        fun refreshList() {
-            //API GET REQUEST FOR LOCALHOST WISHES API
-            url = "http://192.168.1.2:5000/api/v1/resources/wishes/all"
-            request =
-                Request.Builder().url(url).addHeader("Content-Type", "application/json").build()
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response?.body?.string()
-
-                    //println(response?.body?.string())
-                    val gson = GsonBuilder().create()
-                    val wishes = gson.fromJson(body, Array<Wish>::class.java).toMutableList()
-                    println(body)
-
-
-                    activity!!.runOnUiThread {
-                        mAdapter.wishes = wishes
-                        mAdapter.notifyDataSetChanged()
-
-                    }
-
-                }
-
-                override fun onFailure(call: Call, e: IOException) {
-                    println("call failed")
-
-                }
-            })
-        }
-
-        refreshList()
-
-
-        view.addButton.setOnClickListener{
-
+        view.addButton.setOnClickListener {
+            //educatePresenter.test()
             val dialog = AlertDialog.Builder(this.context!!)
-            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog,null)
-
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            val entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
-            val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+            val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
 
-            //LOAD CURRENCY CHOICES FOR SPINNER
-            val currencies = arrayListOf("HKD","USD","PHP")
-            val currAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,currencies)
-            spinnerCurrency.adapter = currAdapter
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Added"
+            dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount added"
 
             dialog.setView(dialogView)
             dialog.setCancelable(true)
             dialog.setPositiveButton("Add", { dialogInterface: DialogInterface, i: Int -> })
             val customDialog = dialog.create()
             customDialog.show()
-            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
-                if(entryTitle.toString().isNotEmpty()){
-                    //println(entryDescription.toString())
-                    if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
-
-                        //mAdapter.entries = db.readData()
-                        var url = "http://192.168.1.2:5000/api/v1/resources/wishes/new"
-
-                        val payload = JSONObject("""{"title": "${entryTitle}","price": "${entryDescription}","curr": "${spinnerCurrency.selectedItem.toString()}"} """).toString()
-                        val requestBody = payload.toRequestBody()
-
-                        var request = Request.Builder().method("POST", requestBody).url(url).build()
-                        var client = OkHttpClient()
-
-                        client.newCall(request).enqueue(object: Callback {
-                            override fun onResponse(call: Call, response: Response) {
-                                val body = response?.body?.string()
-
-                                println(body)
-
-
-                                refreshList()
-
-                            }
-
-                            override fun onFailure(call: Call, e: IOException) {
-                                println("call failed")
-                            }
-                        })
-
-
-
-                        customDialog.dismiss()
-                    }
-                    else{
-                        Toast.makeText(this.context, "Enter only numbers.", Toast.LENGTH_LONG).show()
-                    }
-                }
-                else{
-                    Toast.makeText(this.context, "Enter a title!", Toast.LENGTH_LONG).show()
-                }
-
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                educatePresenter.addEntry()
             }
         }
 
-    }
 
-    //class USDRate(val USD_PHP: Double)
-    class ExchangeRate(val HKD_PHP: Double, val USD_PHP: Double)
-    //class WishListsList(val wishLists: List<WishList>)
-    class WishList(val wishes: Array<Wish>)
-    class Wish(val id: Int, val price: Double, val name:String, val curr:String)
+    }
 
 
     companion object {

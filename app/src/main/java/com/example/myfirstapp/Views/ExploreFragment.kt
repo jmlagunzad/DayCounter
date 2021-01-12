@@ -105,7 +105,7 @@ class ExploreFragment : Fragment() {
                 val gson = GsonBuilder().create()
                 //val contentList = gson.fromJson(body, ContentList::class.java)
                 try{
-                    val currentRate = gson.fromJson(body, EducateFragment.ExchangeRate::class.java)
+                    val currentRate = gson.fromJson(body, ExchangeRate::class.java)
                     activity!!.runOnUiThread {
                         mAdapter.hkdRate = currentRate.HKD_PHP
                         mAdapter.usdRate = currentRate.USD_PHP
@@ -204,6 +204,10 @@ class ExploreFragment : Fragment() {
             }
         }
 
+
+
     }
+
+    class ExchangeRate(val HKD_PHP: Double, val USD_PHP: Double)
 
 }
