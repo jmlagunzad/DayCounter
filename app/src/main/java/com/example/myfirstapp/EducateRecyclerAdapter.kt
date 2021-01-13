@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
@@ -40,7 +41,13 @@ class EducateRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-
+        holder?.view?.textView_mainTitle?.text = entries.get(position).title
+        holder?.view?.textView_description?.text = entries.get(position).amount.toString()
+        if(entries.get(position).amount < 0){
+            holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+        }
     }
+
+
 
 }

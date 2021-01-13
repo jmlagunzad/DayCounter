@@ -9,13 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.EducateDBHandler
 import com.example.myfirstapp.EducateRecyclerAdapter
+import com.example.myfirstapp.ExploreRecyclerAdapter
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
+import kotlinx.android.synthetic.main.fragment_explore.*
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -36,8 +39,6 @@ class EducateFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    val educatePresenter = EducatePresenter()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,14 +52,24 @@ class EducateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val thisView = inflater.inflate(R.layout.fragment_educate, container, false)
-        return thisView
+        return inflater.inflate(R.layout.fragment_educate, container, false)
     }
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val educatePresenter = EducatePresenter(view)
+        val educateRecyclerAdapter = EducateRecyclerAdapter()
+
+        recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView_educate.adapter = educateRecyclerAdapter
+
+        educateRecyclerAdapter.entries = educatePresenter.getEntries()
+
+        val currBalance = view.findViewById<TextView>(R.id.textView_balance)
+
+        currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
@@ -77,9 +88,54 @@ class EducateFragment : Fragment() {
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                educatePresenter.addEntry()
+                educatePresenter.addEntry(entryTitle.toString(), entryAmount.toString())
+                educateRecyclerAdapter.entries = educatePresenter.getEntries()
+
+                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.entries.size)
+                educateRecyclerAdapter.notifyDataSetChanged()
+
+                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
+
+                customDialog.dismiss()
             }
+
+
+
         }
+
+        view.minusButton.setOnClickListener {
+            //educatePresenter.test()
+            val dialog = AlertDialog.Builder(this.context!!)
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
+            val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+            val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Deducted"
+            dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount used"
+
+            dialog.setView(dialogView)
+            dialog.setCancelable(true)
+            dialog.setPositiveButton("Deduct", { dialogInterface: DialogInterface, i: Int -> })
+            val customDialog = dialog.create()
+            customDialog.show()
+
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                educatePresenter.addNegativeEntry(entryTitle.toString(), entryAmount.toString())
+                educateRecyclerAdapter.entries = educatePresenter.getEntries()
+
+                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.entries.size)
+                educateRecyclerAdapter.notifyDataSetChanged()
+
+                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
+
+                customDialog.dismiss()
+            }
+
+
+
+        }
+
+
 
 
     }
