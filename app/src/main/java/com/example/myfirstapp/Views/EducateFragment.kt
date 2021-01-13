@@ -57,18 +57,20 @@ class EducateFragment : Fragment() {
 
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter()
+        val currBalance = view.findViewById<TextView>(R.id.textView_balance)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_educate.adapter = educateRecyclerAdapter
 
+        //Get latest entries
         educateRecyclerAdapter.entries = educatePresenter.getEntries()
 
-        val currBalance = view.findViewById<TextView>(R.id.textView_balance)
-
+        //Get current balance
         currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
 
         view.addButton.setOnClickListener {
