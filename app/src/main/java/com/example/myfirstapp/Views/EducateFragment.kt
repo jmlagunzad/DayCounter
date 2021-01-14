@@ -34,10 +34,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [EducateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EducateFragment : Fragment() {
+class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var balance = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +56,14 @@ class EducateFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_educate, container, false)
     }
 
-
-
+    override fun recompute(computed: Double) {
+        view!!.findViewById<TextView>(R.id.textView_balance).text = computed.toString()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val educatePresenter = EducatePresenter(view)
-        val educateRecyclerAdapter = EducateRecyclerAdapter()
+        val educateRecyclerAdapter = EducateRecyclerAdapter(this)
         val currBalance = view.findViewById<TextView>(R.id.textView_balance)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
@@ -162,4 +164,7 @@ class EducateFragment : Fragment() {
                 }
             }
     }
+
+
+
 }

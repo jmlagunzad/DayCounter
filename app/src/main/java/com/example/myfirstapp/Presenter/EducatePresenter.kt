@@ -31,4 +31,8 @@ class EducatePresenter(view: View) {
         return total
     }
 
+    interface OnEditOrDelete {
+        fun recompute(computed: Double)
+    }
+
 }
