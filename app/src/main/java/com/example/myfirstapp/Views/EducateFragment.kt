@@ -53,7 +53,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val educatePresenter = EducatePresenter(view)
-        val educateRecyclerAdapter = EducateRecyclerAdapter(this)
+        val educateRecyclerAdapter = EducateRecyclerAdapter(view,this)
         val currBalance = view.findViewById<TextView>(R.id.textView_balance)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)

@@ -1,34 +1,32 @@
 package com.example.myfirstapp.Presenter
 
+import android.view.View
+import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Views.EducateRecyclerAdapter
 import com.example.myfirstapp.Model.Transaction
 
-class EducateRecyclerAdapterPresenter(adapter: EducateRecyclerAdapter) {
+class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapter) {
 
     private var transactionHistory: MutableList<Transaction> = ArrayList()
     private var adapter = adapter
+    private val transactionHandler = TransactionDBHandler(view.context)
 
-//    fun gettransactionHistory(): MutableList<Transaction>{
-//        return transactionHistory
-//    }
+    var query = "SELECT * from transactions"
 
     fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>{
         //println("Hello world, presenter here!");
-        var Transaction = Transaction(title, amount.toDouble())
-        transactionHistory = adapter.transactions
-        transactionHistory.set(position, Transaction)
+        var transaction = Transaction(title, amount.toDouble())
+//        transactionHistory = adapter.transactions
+//        transactionHistory.set(position, Transaction)
+        transactionHandler.updateData(position, transaction)
+        transactionHistory = transactionHandler.readData(query)
         return transactionHistory
-        //adapter.notifyDataSetChanged()
-        //adapter.notifyItemChanged(position)
-        //transactionHistory.add(Transaction)
     }
 
-//    fun addNegativeTransaction(title: String, amount: String){
-//        //println("Hello world, presenter here!");
-//        var Transaction = Transaction(title, amount.toDouble() * -1)
-//        transactionHistory.add(Transaction)
-//    }
-//
+    fun deleteTransaction(id: Int){
+        transactionHandler.deleteData(id)
+    }
+
     fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
         var total = 0.0
         for(Transaction in transactionHistory) {

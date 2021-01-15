@@ -54,8 +54,10 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
                 var transaction = Transaction(
                     result.getString(result.getColumnIndex(COL_NAME)),
                     result.getString(result.getColumnIndex(COL_AMOUNT)).toDouble()
+
                 )
                 transaction.id = result.getString(0).toInt()
+                transaction.transaction_date = result.getString(result.getColumnIndex(COL_DATE)).toString()
                 list.add(transaction)
             }while(result.moveToNext())
         }

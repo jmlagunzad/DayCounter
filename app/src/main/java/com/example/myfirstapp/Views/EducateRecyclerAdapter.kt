@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +18,13 @@ import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import kotlin.collections.ArrayList
 
 
-class EducateRecyclerAdapter(listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<CustomViewHolder>() {
+class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<CustomViewHolder>() {
+
+    private val listener = listener
 
     var transactions: MutableList<Transaction> = ArrayList()
-    val adapterPresenter = EducateRecyclerAdapterPresenter(this)
-    private val listener = listener
+    val adapterPresenter = EducateRecyclerAdapterPresenter(view, this)
+
 
     override fun getItemCount(): Int {
         return transactions.size
@@ -36,8 +39,11 @@ class EducateRecyclerAdapter(listener: EducatePresenter.OnEditOrDelete): Recycle
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder?.view?.textView_mainTitle?.text = transactions.get(position).title
         holder?.view?.textView_description?.text = transactions.get(position).amount.toString()
-        if(transactions.get(position).amount < 0){
+        if(transactions.get(position).amount < 0.0){
             holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+        }
+        else{
+            holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
         }
 
         holder?.itemView.setOnLongClickListener{
@@ -81,7 +87,7 @@ class EducateRecyclerAdapter(listener: EducatePresenter.OnEditOrDelete): Recycle
                     transactions = adapterPresenter.updateTransaction(
                         entryTitle.toString(),
                         entryDescription.toString(),
-                        position
+                        transactions.get(position).id
                     )
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
@@ -101,6 +107,7 @@ class EducateRecyclerAdapter(listener: EducatePresenter.OnEditOrDelete): Recycle
 
             //LISTENER FOR DELETE
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
+                adapterPresenter.deleteTransaction(transactions.get(position).id)
                 this.transactions.removeAt(position)
                 this.notifyItemRemoved(position)
                 this.notifyItemRangeChanged(position, this.transactions.size);
