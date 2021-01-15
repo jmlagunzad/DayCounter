@@ -34,9 +34,15 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
                 "curr VARCHAR(10) NOT NULL," +
                 "deadline VARCHAR(256) NULL)"
 
+        val createTable4 = "CREATE TABLE transactions ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title VARCHAR(256) NOT NULL," +
+                "amount REAL NOT NULL," +
+                "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+
         db?.execSQL(createTable)
         db?.execSQL(createTable2)
         db?.execSQL(createTable3)
+        db?.execSQL(createTable4)
 
 
     }
