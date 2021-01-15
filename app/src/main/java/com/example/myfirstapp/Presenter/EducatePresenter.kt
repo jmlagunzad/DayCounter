@@ -1,32 +1,32 @@
 package com.example.myfirstapp.Presenter
 
 import android.view.View
-import com.example.myfirstapp.Model.Entry
+import com.example.myfirstapp.Model.Transaction
 
 class EducatePresenter(view: View) {
 
-    private var entries: MutableList<Entry> = ArrayList()
+    private var transactionHistory: MutableList<Transaction> = ArrayList()
 
-    fun getEntries(): MutableList<Entry>{
-        return entries
+    fun getTransactions(): MutableList<Transaction>{
+        return transactionHistory
     }
 
-    fun addEntry(title: String, amount: String){
+    fun addTransaction(title: String, amount: String){
         //println("Hello world, presenter here!");
-        var entry = Entry(title, amount.toDouble())
-        entries.add(entry)
+        var Transaction = Transaction(title, amount.toDouble())
+        transactionHistory.add(Transaction)
     }
 
-    fun addNegativeEntry(title: String, amount: String){
+    fun addNegativeTransaction(title: String, amount: String){
         //println("Hello world, presenter here!");
-        var entry = Entry(title, amount.toDouble() * -1)
-        entries.add(entry)
+        var Transaction = Transaction(title, amount.toDouble() * -1)
+        transactionHistory.add(Transaction)
     }
 
-    fun computeBalance(entries: MutableList<Entry>): Double{
+    fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
         var total = 0.0
-        for(entry in entries) {
-            total += entry.amount
+        for(Transaction in transactionHistory) {
+            total += Transaction.amount
         }
         return total
     }

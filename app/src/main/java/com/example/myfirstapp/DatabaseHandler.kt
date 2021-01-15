@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
 import androidx.core.database.getStringOrNull
-import com.example.myfirstapp.Model.Entry
 import java.lang.Exception
 
 private val DATABASE_NAME = "Personal"
@@ -50,7 +49,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         var cv = ContentValues()
 
         cv.put(COL_TITLE, entry.title)
-        cv.put(COL_DESCRIPTION, entry.amount)
+        cv.put(COL_DESCRIPTION, entry.description)
 
         var result = db.insert(TABLE_NAME,null,cv)
         if(result == -1.toLong()){
@@ -70,7 +69,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         if(result.moveToFirst()){
             do {
                 var entry = Entry(result.getString(result.getColumnIndex(COL_TITLE)),
-                                                    result.getStringOrNull(result.getColumnIndex(COL_DESCRIPTION))!!.toDouble())
+                                                    result.getString(result.getColumnIndex(COL_DESCRIPTION)))
                 entry.id = result.getString(0).toInt()
                 list.add(entry)
             }while(result.moveToNext())
@@ -85,7 +84,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
             var cv = ContentValues()
 
             cv.put(COL_TITLE, entry.title)
-            cv.put(COL_DESCRIPTION, entry.amount)
+            cv.put(COL_DESCRIPTION, entry.description)
 
             db.update(TABLE_NAME, cv, "$COL_ID = ?", arrayOf(id.toString()))
 

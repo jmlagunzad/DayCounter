@@ -1,10 +1,10 @@
-package com.example.myfirstapp.Model
+package com.example.myfirstapp
 
-data class Entry(var title: String, var amount: Double){
+data class Entry(var title: String, var description: String?){
 
     var id = 0
 
-    constructor() : this("",0.0)
+    constructor() : this("","")
 
 
 }

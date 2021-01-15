@@ -69,11 +69,11 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_educate.adapter = educateRecyclerAdapter
 
-        //Get latest entries
-        educateRecyclerAdapter.entries = educatePresenter.getEntries()
+        //Get latest transactions
+        educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
         //Get current balance
-        currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
+        currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
@@ -92,13 +92,13 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                educatePresenter.addEntry(entryTitle.toString(), entryAmount.toString())
-                educateRecyclerAdapter.entries = educatePresenter.getEntries()
+                educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString())
+                educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.entries.size)
+                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
                 educateRecyclerAdapter.notifyDataSetChanged()
 
-                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
+                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
 
                 customDialog.dismiss()
             }
@@ -124,13 +124,13 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                educatePresenter.addNegativeEntry(entryTitle.toString(), entryAmount.toString())
-                educateRecyclerAdapter.entries = educatePresenter.getEntries()
+                educatePresenter.addNegativeTransaction(entryTitle.toString(), entryAmount.toString())
+                educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.entries.size)
+                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
                 educateRecyclerAdapter.notifyDataSetChanged()
 
-                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.entries).toString()
+                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
 
                 customDialog.dismiss()
             }

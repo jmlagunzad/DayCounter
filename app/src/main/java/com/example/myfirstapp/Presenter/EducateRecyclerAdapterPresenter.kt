@@ -2,38 +2,38 @@ package com.example.myfirstapp.Presenter
 
 import android.view.View
 import com.example.myfirstapp.EducateRecyclerAdapter
-import com.example.myfirstapp.Model.Entry
+import com.example.myfirstapp.Model.Transaction
 
 class EducateRecyclerAdapterPresenter(adapter: EducateRecyclerAdapter) {
 
-    private var entries: MutableList<Entry> = ArrayList()
+    private var transactionHistory: MutableList<Transaction> = ArrayList()
     private var adapter = adapter
 
-//    fun getEntries(): MutableList<Entry>{
-//        return entries
+//    fun gettransactionHistory(): MutableList<Transaction>{
+//        return transactionHistory
 //    }
 
-    fun updateEntry(title: String, amount: String, position: Int): MutableList<Entry>{
+    fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>{
         //println("Hello world, presenter here!");
-        var entry = Entry(title, amount.toDouble())
-        entries = adapter.entries
-        entries.set(position, entry)
-        return entries
+        var Transaction = Transaction(title, amount.toDouble())
+        transactionHistory = adapter.transactions
+        transactionHistory.set(position, Transaction)
+        return transactionHistory
         //adapter.notifyDataSetChanged()
         //adapter.notifyItemChanged(position)
-        //entries.add(entry)
+        //transactionHistory.add(Transaction)
     }
 
-//    fun addNegativeEntry(title: String, amount: String){
+//    fun addNegativeTransaction(title: String, amount: String){
 //        //println("Hello world, presenter here!");
-//        var entry = Entry(title, amount.toDouble() * -1)
-//        entries.add(entry)
+//        var Transaction = Transaction(title, amount.toDouble() * -1)
+//        transactionHistory.add(Transaction)
 //    }
 //
-    fun computeBalance(entries: MutableList<Entry>): Double{
+    fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
         var total = 0.0
-        for(entry in entries) {
-            total += entry.amount
+        for(Transaction in transactionHistory) {
+            total += Transaction.amount
         }
         return total
     }
