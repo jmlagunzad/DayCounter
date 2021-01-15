@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -9,16 +9,11 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
-import com.example.myfirstapp.Presenter.EducatePresenter.OnEditOrDelete
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
+import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.educate_row.view.*
-import kotlinx.android.synthetic.main.fragment_educate.*
-import kotlinx.android.synthetic.main.fragment_educate.view.*
-import kotlinx.android.synthetic.main.frame_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
-import okhttp3.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 

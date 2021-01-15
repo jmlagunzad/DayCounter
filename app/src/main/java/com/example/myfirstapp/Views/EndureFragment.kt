@@ -13,11 +13,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myfirstapp.EndureDBHandler
-import com.example.myfirstapp.EndureRecyclerAdapter
+import com.example.myfirstapp.Handlers.EndureDBHandler
 import com.example.myfirstapp.Model.Attempt
 import com.example.myfirstapp.R
-import com.example.myfirstapp.ReminderBroadcast
 import kotlinx.android.synthetic.main.fragment_endure.*
 import java.text.DecimalFormat
 import java.time.LocalDate

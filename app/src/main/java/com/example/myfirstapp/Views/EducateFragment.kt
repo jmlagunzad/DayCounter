@@ -9,20 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myfirstapp.EducateDBHandler
-import com.example.myfirstapp.EducateRecyclerAdapter
-import com.example.myfirstapp.ExploreRecyclerAdapter
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
-import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
-import kotlinx.android.synthetic.main.fragment_explore.*
-import okhttp3.*
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-import java.io.IOException
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

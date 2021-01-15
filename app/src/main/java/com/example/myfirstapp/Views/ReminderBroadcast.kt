@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.myfirstapp.Views.SplashScreenActivity
+import com.example.myfirstapp.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -26,8 +26,12 @@ class ReminderBroadcast : BroadcastReceiver() {
         }
         val pendingIntent = PendingIntent.getActivity(context,0,mainIntent, 0)
 
-        val bitmap = BitmapFactory.decodeResource(context.applicationContext.resources, R.mipmap.joker_crit_foreground)
-        val bitmapSmall = BitmapFactory.decodeResource(context.applicationContext.resources, R.mipmap.morgana_icon_foreground)
+        val bitmap = BitmapFactory.decodeResource(context.applicationContext.resources,
+            R.mipmap.joker_crit_foreground
+        )
+        val bitmapSmall = BitmapFactory.decodeResource(context.applicationContext.resources,
+            R.mipmap.morgana_icon_foreground
+        )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.im_icon_foreground)

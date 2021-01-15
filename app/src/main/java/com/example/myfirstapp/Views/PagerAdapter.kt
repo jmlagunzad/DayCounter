@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

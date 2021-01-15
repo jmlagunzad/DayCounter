@@ -12,8 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myfirstapp.EducateDBHandler
-import com.example.myfirstapp.ExploreRecyclerAdapter
+import com.example.myfirstapp.Handlers.EducateDBHandler
 import com.example.myfirstapp.Model.Wish
 import com.example.myfirstapp.R
 import com.google.gson.GsonBuilder

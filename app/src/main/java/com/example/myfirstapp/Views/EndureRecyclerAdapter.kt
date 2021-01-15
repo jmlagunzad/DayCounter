@@ -1,9 +1,11 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapp.Handlers.EndureDBHandler
 import com.example.myfirstapp.Model.Attempt
+import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.frame_row.view.*
 
 

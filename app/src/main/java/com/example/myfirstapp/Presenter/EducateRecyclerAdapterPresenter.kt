@@ -1,7 +1,6 @@
 package com.example.myfirstapp.Presenter
 
-import android.view.View
-import com.example.myfirstapp.EducateRecyclerAdapter
+import com.example.myfirstapp.Views.EducateRecyclerAdapter
 import com.example.myfirstapp.Model.Transaction
 
 class EducateRecyclerAdapterPresenter(adapter: EducateRecyclerAdapter) {

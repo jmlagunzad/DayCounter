@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.Views
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapp.Handlers.EducateDBHandler
 import com.example.myfirstapp.Model.Wish
+import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
