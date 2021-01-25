@@ -45,6 +45,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
         else{
             holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
         }
+        holder?.view?.textView_deadline?.text = transactions.get(position).transaction_date
 
         holder?.itemView.setOnLongClickListener{
 
