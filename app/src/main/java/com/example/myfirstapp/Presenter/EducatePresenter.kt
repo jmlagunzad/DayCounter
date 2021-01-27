@@ -16,18 +16,28 @@ class EducatePresenter(view: View) {
         return transactionHistory
     }
 
-    fun addTransaction(title: String, amount: String){
-        //println("Hello world, presenter here!");
-        var transaction = Transaction(title, amount.toDouble())
-        //transactionHistory.add(Transaction)
-        transactionHandler.insertData(transaction)
+    fun addTransaction(title: String, amount: String): Boolean{
+        try{
+            var transaction = Transaction(title, amount.toDouble())
+            transactionHandler.insertData(transaction)
+        }
+        catch(e: Exception){
+            println(e.toString())
+            return false
+        }
+        return true
     }
 
-    fun addNegativeTransaction(title: String, amount: String){
-        //println("Hello world, presenter here!");
-        var transaction = Transaction(title, amount.toDouble() * -1)
-        //transactionHistory.add(Transaction)
-        transactionHandler.insertData(transaction)
+    fun addNegativeTransaction(title: String, amount: String): Boolean{
+        try{
+            var transaction = Transaction(title, amount.toDouble() * -1)
+            transactionHandler.insertData(transaction)
+        }
+        catch(e: Exception){
+            println(e.toString())
+            return false
+        }
+        return true
     }
 
     fun computeBalance(transactionHistory: MutableList<Transaction>): Double{

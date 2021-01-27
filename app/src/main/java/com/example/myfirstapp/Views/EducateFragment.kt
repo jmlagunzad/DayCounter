@@ -82,15 +82,22 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString())
-                educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
-                educateRecyclerAdapter.notifyDataSetChanged()
+                if(educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString())){
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+                    educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
+                    educateRecyclerAdapter.notifyDataSetChanged()
 
-                customDialog.dismiss()
+                    currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+
+                    customDialog.dismiss()
+                }
+
+                else{
+                    Toast.makeText(view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
+                }
+
             }
 
 
@@ -114,15 +121,21 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                educatePresenter.addNegativeTransaction(entryTitle.toString(), entryAmount.toString())
-                educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
-                educateRecyclerAdapter.notifyDataSetChanged()
+                if(educatePresenter.addNegativeTransaction(entryTitle.toString(), entryAmount.toString())){
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
-                currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+                    educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
+                    educateRecyclerAdapter.notifyDataSetChanged()
 
-                customDialog.dismiss()
+                    currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+
+                    customDialog.dismiss()
+                }
+
+                else{
+                    Toast.makeText(view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
+                }
             }
 
 

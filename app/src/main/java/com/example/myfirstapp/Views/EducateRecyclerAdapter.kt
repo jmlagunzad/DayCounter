@@ -15,6 +15,7 @@ import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
+import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
@@ -83,13 +84,13 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
             //LISTENER FOR EDIT
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
-                if(entryTitle.isNotEmpty()){
+                try {
 
                     transactions = adapterPresenter.updateTransaction(
                         entryTitle.toString(),
                         entryDescription.toString(),
                         transactions.get(position).id
-                    )
+                    )!!
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
                     listener.recompute(adapterPresenter.computeBalance(transactions))
@@ -101,8 +102,9 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                else{
-                    Toast.makeText(holder.view.context, "Enter an entry title!", Toast.LENGTH_LONG).show()
+                catch(e: Exception){
+                    println(e.toString())
+                    Toast.makeText(holder.view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
                 }
             }
 

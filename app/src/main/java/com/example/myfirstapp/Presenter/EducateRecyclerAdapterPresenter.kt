@@ -13,13 +13,19 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
 
     var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions"
 
-    fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>{
-        //println("Hello world, presenter here!");
-        var transaction = Transaction(title, amount.toDouble())
+    fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>?{
+        try{
+            //println("Hello world, presenter here!");
+            var transaction = Transaction(title, amount.toDouble())
 //        transactionHistory = adapter.transactions
 //        transactionHistory.set(position, Transaction)
-        transactionHandler.updateData(position, transaction)
-        transactionHistory = transactionHandler.readData(query)
+            transactionHandler.updateData(position, transaction)
+            transactionHistory = transactionHandler.readData(query)
+        }
+        catch(e: Exception){
+            println(e.toString())
+            return null
+        }
         return transactionHistory
     }
 
