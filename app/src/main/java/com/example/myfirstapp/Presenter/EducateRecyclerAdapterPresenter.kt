@@ -11,7 +11,7 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
     private var adapter = adapter
     private val transactionHandler = TransactionDBHandler(view.context)
 
-    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions"
+    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
 
     fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>?{
         try{

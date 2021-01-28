@@ -9,7 +9,7 @@ class EducatePresenter(view: View) {
     private var transactionHistory: MutableList<Transaction> = ArrayList()
     private val transactionHandler = TransactionDBHandler(view.context)
 
-    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions"
+    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
 
     fun getTransactions(): MutableList<Transaction>{
         transactionHistory = transactionHandler.readData(query)
