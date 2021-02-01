@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myfirstapp.Handlers.EducateDBHandler
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.EvolveRecyclerAdapter
+import com.example.myfirstapp.Views.Adapters.ExploreRecyclerAdapter
+import kotlinx.android.synthetic.main.fragment_explore.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +41,16 @@ class EvolveFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_evolve, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val mAdapter = EvolveRecyclerAdapter()
+        //val db = EducateDBHandler(this.context!!)
+
+        recyclerView.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView.adapter = mAdapter
+
     }
 
     companion object {
