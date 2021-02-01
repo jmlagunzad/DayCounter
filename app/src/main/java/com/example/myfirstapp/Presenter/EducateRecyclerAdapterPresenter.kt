@@ -2,7 +2,7 @@ package com.example.myfirstapp.Presenter
 
 import android.view.View
 import com.example.myfirstapp.Handlers.TransactionDBHandler
-import com.example.myfirstapp.Views.EducateRecyclerAdapter
+import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Model.Transaction
 
 class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapter) {

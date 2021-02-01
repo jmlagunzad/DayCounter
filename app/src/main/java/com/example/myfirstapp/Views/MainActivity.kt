@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myfirstapp.Handlers.DatabaseHandler
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 2 -> {
                     tab.text = "Educate"
+                }
+                3 -> {
+                    tab.text = "*NEW* Evolve"
                 }
                 else -> {
                     tab.text = "About"

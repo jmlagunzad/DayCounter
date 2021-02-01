@@ -1,4 +1,4 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Handlers.EducateDBHandler
 import com.example.myfirstapp.Model.Wish
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.ExploreRecyclerAdapter
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_explore.*
 import okhttp3.*

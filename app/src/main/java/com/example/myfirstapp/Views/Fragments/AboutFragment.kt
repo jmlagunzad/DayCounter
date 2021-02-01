@@ -1,4 +1,4 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Fragments
 
 import android.content.Intent
 import android.net.Uri

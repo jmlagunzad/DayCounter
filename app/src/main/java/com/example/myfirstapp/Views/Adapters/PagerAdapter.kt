@@ -1,12 +1,9 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myfirstapp.Views.AboutFragment
-import com.example.myfirstapp.Views.EducateFragment
-import com.example.myfirstapp.Views.EndureFragment
-import com.example.myfirstapp.Views.ExploreFragment
+import com.example.myfirstapp.Views.Fragments.*
 
 class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
@@ -21,6 +18,9 @@ class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
             2 -> {
                 EducateFragment()
             }
+            3 -> {
+                EvolveFragment()
+            }
             else -> {
                 AboutFragment()
             }
@@ -28,7 +28,7 @@ class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
     }
 
     override fun getItemCount(): Int{
-        return 4
+        return 5
     }
 
     /*

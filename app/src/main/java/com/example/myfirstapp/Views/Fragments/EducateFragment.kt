@@ -1,4 +1,4 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
 

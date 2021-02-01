@@ -1,4 +1,4 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Adapters
 
 import android.app.AlertDialog
 import android.content.DialogInterface

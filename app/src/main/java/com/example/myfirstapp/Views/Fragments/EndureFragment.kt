@@ -1,4 +1,4 @@
-package com.example.myfirstapp.Views
+package com.example.myfirstapp.Views.Fragments
 
 import android.app.*
 import android.content.Context
@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Handlers.EndureDBHandler
 import com.example.myfirstapp.Model.Attempt
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.EndureRecyclerAdapter
+import com.example.myfirstapp.Views.ReminderBroadcast
 import kotlinx.android.synthetic.main.fragment_endure.*
 import java.text.DecimalFormat
 import java.time.LocalDate
