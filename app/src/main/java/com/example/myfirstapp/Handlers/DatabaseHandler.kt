@@ -39,16 +39,29 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
                 "amount REAL NOT NULL," +
                 "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
 
+        val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title VARCHAR(256) NOT NULL," +
+                "value REAL NOT NULL," +
+                "unit VARCHAR(256) NOT NULL," +
+                "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+
         db?.execSQL(createTable)
         db?.execSQL(createTable2)
         db?.execSQL(createTable3)
         db?.execSQL(createTable4)
+        db?.execSQL(createTable5)
 
 
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title VARCHAR(256) NOT NULL," +
+                "value REAL NOT NULL," +
+                "unit VARCHAR(256) NOT NULL," +
+                "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+
+        db?.execSQL(createTable5)
     }
 
     fun insertData(entry: Entry){
