@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapp.Model.Log
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
@@ -21,10 +22,10 @@ import kotlin.collections.ArrayList
 
 class EvolveRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
-    var entries : MutableList<Int> = mutableListOf(1,2,3)
+    var logs : MutableList<Log> = ArrayList()
 
     override fun getItemCount(): Int {
-        return entries.size
+        return logs.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -34,7 +35,8 @@ class EvolveRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.textView_mainTitle?.text = entries.get(position).toString()
+        holder?.view?.textView_mainTitle?.text = logs.get(position).title
+        holder?.view?.textView_description?.text = logs.get(position).value.toString()
     }
 
 

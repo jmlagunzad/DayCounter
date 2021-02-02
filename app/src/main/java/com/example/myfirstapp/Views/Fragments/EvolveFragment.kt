@@ -1,15 +1,24 @@
 package com.example.myfirstapp.Views.Fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Handlers.EducateDBHandler
+import com.example.myfirstapp.Presenter.EducatePresenter
+import com.example.myfirstapp.Presenter.EvolvePresenter
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Views.Adapters.EvolveRecyclerAdapter
 import com.example.myfirstapp.Views.Adapters.ExploreRecyclerAdapter
+import kotlinx.android.synthetic.main.fragment_educate.view.*
+import kotlinx.android.synthetic.main.fragment_educate.view.addButton
+import kotlinx.android.synthetic.main.fragment_evolve.view.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,11 +54,61 @@ class EvolveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val evolvePresenter = EvolvePresenter(view)
         val mAdapter = EvolveRecyclerAdapter()
         //val db = EducateDBHandler(this.context!!)
 
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = mAdapter
+
+        mAdapter.logs = evolvePresenter.getLogs()
+
+        view.evolve_addButton.setOnClickListener {
+            //educatePresenter.test()
+            val dialog = AlertDialog.Builder(this.context!!)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog, null)
+            val logTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+            val logAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+            val unitSpinner = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+
+            //LOAD UNIT CHOICES FOR SPINNER
+            val units = arrayListOf("KG","LBS")
+            val unitAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,units)
+            unitSpinner.adapter = unitAdapter
+
+            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Add new log"
+
+            dialogView.findViewById<TextView>(R.id.textView_title).text = "Title"
+            dialogView.findViewById<EditText>(R.id.editText_title).hint = "Enter log title"
+
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Value"
+            dialogView.findViewById<EditText>(R.id.editText_description).hint = "Enter weight value"
+
+            dialog.setView(dialogView)
+            dialog.setCancelable(true)
+            dialog.setPositiveButton("Add", { dialogInterface: DialogInterface, i: Int -> })
+            val customDialog = dialog.create()
+            customDialog.show()
+
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+
+                if(evolvePresenter.addLog(logTitle.toString(), logAmount.toString(), unitSpinner.selectedItem.toString())){
+                    mAdapter.logs = evolvePresenter.getLogs()
+                    mAdapter.notifyItemInserted(mAdapter.logs.size)
+                    mAdapter.notifyDataSetChanged()
+
+                    customDialog.dismiss()
+                }
+
+                else{
+                    Toast.makeText(view.context, "Enter a proper numeric value", Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+
+
+        }
 
     }
 
