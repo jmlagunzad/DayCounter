@@ -6,7 +6,7 @@ import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Views.Adapters.EvolveRecyclerAdapter
 
-class EvolveRecyclerAdapterPresenter(view: View, adapter: EvolveRecyclerAdapter) {
+class EvolveRecyclerAdapterPresenter() {
 
 //    private var transactionHistory: MutableList<Transaction> = ArrayList()
 //    private var adapter = adapter
@@ -34,12 +34,20 @@ class EvolveRecyclerAdapterPresenter(view: View, adapter: EvolveRecyclerAdapter)
 //        transactionHandler.deleteData(id)
 //    }
 //
-//    fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
-//        var total = 0.0
-//        for(Transaction in transactionHistory) {
-//            total += Transaction.amount
-//        }
-//        return total
-//    }
+
+    fun displayConversion(value: Double, unit: String): String{
+        var result = ""
+        result = when(unit){
+            "KG" -> {
+                var converted = Math.round((Math.round(( Math.round((value * 2.20462) * 1000.0) / 1000.0) * 100.0) / 100.0) * 10.0) / 10.0
+                "$value $unit - $converted LBS"
+            }
+            else -> {
+                var converted = Math.round((Math.round(( Math.round((value * 0.453592) * 1000.0) / 1000.0) * 100.0) / 100.0) * 10.0) / 10.0
+                "$value $unit - $converted KG"
+            }
+        }
+        return result
+    }
 
 }
