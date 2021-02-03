@@ -81,7 +81,7 @@ class ExploreRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
             //LOAD CURRENCY CHOICES FOR SPINNER
             val spinnerCurrency = dialogView.findViewById<Spinner>(R.id.spinner_currency)
-            val currencies = arrayListOf<String>("HKD","USD","PHP")
+            val currencies = arrayListOf("HKD","USD","PHP")
             val currAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,currencies)
             spinnerCurrency.adapter = currAdapter
 

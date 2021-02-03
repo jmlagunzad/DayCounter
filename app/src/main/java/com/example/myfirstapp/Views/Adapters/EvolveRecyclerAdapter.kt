@@ -40,6 +40,91 @@ class EvolveRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
         holder?.view?.textView_mainTitle?.text = logs.get(position).title
         holder?.view?.textView_description?.text = presenter.displayConversion(logs.get(position).value,logs.get(position).unit)
         holder?.view?.textView_deadline?.text = logs.get(position).log_date
+
+        holder?.itemView.setOnLongClickListener{
+
+            //CHOOSE TEMPLATE FOR EACH FRAME
+            val dialog = AlertDialog.Builder(holder.view.context)
+            val layoutInflater = LayoutInflater.from(holder.view.context)
+            val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog, null)
+
+            //SET TEXT WITHIN FRAME
+            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit log"
+            dialogView.findViewById<TextView>(R.id.textView_title).text = "Title"
+            dialogView.findViewById<TextView>(R.id.textView_description).text = "Value"
+            dialogView.findViewById<EditText>(R.id.editText_title).setText(logs.get(position).title)
+            dialogView.findViewById<EditText>(R.id.editText_description).setText(logs.get(position).value.toString())
+
+            //LOAD UNIT CHOICES FOR SPINNER
+            val unitSpinner = dialogView.findViewById<Spinner>(R.id.spinner_currency)
+            val units = arrayListOf("KG","LBS")
+            val unitAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,units)
+            unitSpinner.adapter = unitAdapter
+            unitSpinner.setSelection(unitAdapter.getPosition(logs.get(position).unit))
+
+            //GET VALUES FROM EDIT TEXT FIELDS
+            val logTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+            val logValue = dialogView.findViewById<EditText>(R.id.editText_description).text
+
+            //SETUP VALUES FOR DIALOGVIEW
+            dialog.setView(dialogView)
+            dialog.setCancelable(true)
+            dialog.setPositiveButton(
+                "Save Changes",
+                { dialogInterface: DialogInterface, i: Int -> })
+            dialog.setNegativeButton(
+                "Delete Entry",
+                { dialogInterface: DialogInterface, i: Int -> })
+            val customDialog = dialog.create()
+            customDialog.show()
+
+            //LISTENER FOR EDIT
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
+
+//                try {
+//
+//                    logs = presenter.updateTransaction(
+//                        entryTitle.toString(),
+//                        entryDescription.toString(),
+//                        logs.get(position).id
+//                    )!!
+//                    this.notifyDataSetChanged()
+//                    this.notifyItemChanged(position)
+//                    listener.recompute(adapterPresenter.computeBalance(transactions))
+//                    customDialog.dismiss()
+//
+//                    Toast.makeText(
+//                        holder.view.context,
+//                        "Entry ${position + 1} updated.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//                catch(e: Exception){
+//                    println(e.toString())
+//                    Toast.makeText(holder.view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
+//                }
+            }
+
+            //LISTENER FOR DELETE
+            customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
+//                adapterPresenter.deleteTransaction(transactions.get(position).id)
+//                this.transactions.removeAt(position)
+//                this.notifyItemRemoved(position)
+//                this.notifyItemRangeChanged(position, this.transactions.size);
+//                listener.recompute(adapterPresenter.computeBalance(transactions))
+//                customDialog.dismiss()
+//                Toast.makeText(
+//                    holder.view.context,
+//                    "Entry ${position + 1} deleted.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+            }
+
+            true
+
+
+
+        }
     }
 
 
