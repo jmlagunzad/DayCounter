@@ -55,7 +55,7 @@ class EvolveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val evolvePresenter = EvolvePresenter(view)
-        val mAdapter = EvolveRecyclerAdapter()
+        val mAdapter = EvolveRecyclerAdapter(view)
         //val db = EducateDBHandler(this.context!!)
 
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)

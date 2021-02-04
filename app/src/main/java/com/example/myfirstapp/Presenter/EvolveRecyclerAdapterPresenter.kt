@@ -1,16 +1,17 @@
 package com.example.myfirstapp.Presenter
 
 import android.view.View
+import com.example.myfirstapp.Handlers.EvolveDBHandler
 import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Views.Adapters.EvolveRecyclerAdapter
 
-class EvolveRecyclerAdapterPresenter() {
+class EvolveRecyclerAdapterPresenter(view: View) {
 
 //    private var transactionHistory: MutableList<Transaction> = ArrayList()
 //    private var adapter = adapter
-//    private val transactionHandler = TransactionDBHandler(view.context)
+    private val logHandler = EvolveDBHandler(view.context)
 //
 //    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
 //
@@ -30,9 +31,9 @@ class EvolveRecyclerAdapterPresenter() {
 //        return transactionHistory
 //    }
 //
-//    fun deleteTransaction(id: Int){
-//        transactionHandler.deleteData(id)
-//    }
+    fun deleteRecord(id: Int){
+        logHandler.deleteData(id)
+    }
 //
 
     fun displayConversion(value: Double, unit: String): String{

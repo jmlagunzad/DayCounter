@@ -21,10 +21,10 @@ import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
-class EvolveRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
+class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>() {
 
     var logs : MutableList<Log> = ArrayList()
-    private val presenter = EvolveRecyclerAdapterPresenter()
+    private val presenter = EvolveRecyclerAdapterPresenter(view)
 
     override fun getItemCount(): Int {
         return logs.size
@@ -107,17 +107,17 @@ class EvolveRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
 
             //LISTENER FOR DELETE
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
-//                adapterPresenter.deleteTransaction(transactions.get(position).id)
-//                this.transactions.removeAt(position)
-//                this.notifyItemRemoved(position)
-//                this.notifyItemRangeChanged(position, this.transactions.size);
-//                listener.recompute(adapterPresenter.computeBalance(transactions))
-//                customDialog.dismiss()
-//                Toast.makeText(
-//                    holder.view.context,
-//                    "Entry ${position + 1} deleted.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
+                presenter.deleteRecord(logs.get(position).id)
+                this.logs.removeAt(position)
+                this.notifyItemRemoved(position)
+                this.notifyItemRangeChanged(position, this.logs.size)
+
+                customDialog.dismiss()
+                Toast.makeText(
+                    holder.view.context,
+                    "Entry ${position + 1} deleted.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             true
