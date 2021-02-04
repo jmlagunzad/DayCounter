@@ -3,38 +3,35 @@ package com.example.myfirstapp.Presenter
 import android.view.View
 import com.example.myfirstapp.Handlers.EvolveDBHandler
 import com.example.myfirstapp.Handlers.TransactionDBHandler
+import com.example.myfirstapp.Model.Log
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Views.Adapters.EvolveRecyclerAdapter
 
 class EvolveRecyclerAdapterPresenter(view: View) {
 
-//    private var transactionHistory: MutableList<Transaction> = ArrayList()
-//    private var adapter = adapter
+    private var logs: MutableList<Log> = ArrayList()
     private val logHandler = EvolveDBHandler(view.context)
-//
-//    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
-//
-//    fun updateTransaction(title: String, amount: String, position: Int): MutableList<Transaction>?{
-//        try{
-//            //println("Hello world, presenter here!");
-//            var transaction = Transaction(title, amount.toDouble())
-////        transactionHistory = adapter.transactions
-////        transactionHistory.set(position, Transaction)
-//            transactionHandler.updateData(position, transaction)
-//            transactionHistory = transactionHandler.readData(query)
-//        }
-//        catch(e: Exception){
-//            println(e.toString())
-//            return null
-//        }
-//        return transactionHistory
-//    }
-//
+
+    var query = "SELECT id, title, value, unit, strftime('%m/%d',log_date) as log_date from logs"
+
+    fun updateTransaction(title: String, value: String, unit: String, id: Int): MutableList<Log>?{
+        try{
+            //println("Hello world, presenter here!");
+            var log = Log(title, value.toDouble(), unit)
+            logHandler.updateData(id, log)
+            logs = logHandler.readData(query)
+        }
+        catch(e: Exception){
+            println(e.toString())
+            return null
+        }
+        return logs
+    }
+
     fun deleteRecord(id: Int){
         logHandler.deleteData(id)
     }
-//
 
     fun displayConversion(value: Double, unit: String): String{
         var result = ""

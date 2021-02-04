@@ -30,12 +30,5 @@ class EvolvePresenter(view: View) {
         return true
     }
 
-//    fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
-//        var total = 0.0
-//        for(Transaction in transactionHistory) {
-//            total += Transaction.amount
-//        }
-//        return total
-//    }
 
 }

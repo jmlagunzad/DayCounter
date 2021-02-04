@@ -81,28 +81,28 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
             //LISTENER FOR EDIT
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
-//                try {
-//
-//                    logs = presenter.updateTransaction(
-//                        entryTitle.toString(),
-//                        entryDescription.toString(),
-//                        logs.get(position).id
-//                    )!!
-//                    this.notifyDataSetChanged()
-//                    this.notifyItemChanged(position)
-//                    listener.recompute(adapterPresenter.computeBalance(transactions))
-//                    customDialog.dismiss()
-//
-//                    Toast.makeText(
-//                        holder.view.context,
-//                        "Entry ${position + 1} updated.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//                catch(e: Exception){
-//                    println(e.toString())
-//                    Toast.makeText(holder.view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
-//                }
+                try {
+
+                    logs = presenter.updateTransaction(
+                        logTitle.toString(),
+                        logValue.toString(),
+                        unitSpinner.selectedItem.toString(),
+                        logs.get(position).id
+                    )!!
+                    this.notifyDataSetChanged()
+                    this.notifyItemChanged(position)
+                    customDialog.dismiss()
+
+                    Toast.makeText(
+                        holder.view.context,
+                        "Entry ${position + 1} updated.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                catch(e: Exception){
+                    println(e.toString())
+                    Toast.makeText(holder.view.context, "Enter a proper value", Toast.LENGTH_LONG).show()
+                }
             }
 
             //LISTENER FOR DELETE
