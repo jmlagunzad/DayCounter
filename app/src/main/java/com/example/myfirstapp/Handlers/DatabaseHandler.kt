@@ -15,53 +15,46 @@ private val COL_TITLE = "title"
 private val COL_DESCRIPTION = "description"
 private val COL_ID = "id"
 
-class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1){
+class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 2){
+
+
+    val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "$COL_TITLE VARCHAR(256)," +
+            "$COL_DESCRIPTION VARCHAR(256) NULL)"
+
+    val createTable2 = "CREATE TABLE Attempts (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "start_date VARCHAR(256)," +
+            "end_date VARCHAR(256) NULL," +
+            "days INTEGER NULL)"
+
+    val createTable3 = "CREATE TABLE wishes ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name VARCHAR(256) NOT NULL," +
+            "price REAL NOT NULL," +
+            "curr VARCHAR(10) NOT NULL," +
+            "deadline VARCHAR(256) NULL)"
+
+    val createTable4 = "CREATE TABLE transactions ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "title VARCHAR(256) NOT NULL," +
+            "amount REAL NOT NULL," +
+            "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+
+    val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "title VARCHAR(256) NOT NULL," +
+            "value REAL NOT NULL," +
+            "unit VARCHAR(256) NOT NULL," +
+            "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
 
     override fun onCreate(db: SQLiteDatabase?) {
-
-        val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COL_TITLE VARCHAR(256)," +
-                "$COL_DESCRIPTION VARCHAR(256) NULL)"
-
-        val createTable2 = "CREATE TABLE Attempts (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "start_date VARCHAR(256)," +
-                "end_date VARCHAR(256) NULL," +
-                "days INTEGER NULL)"
-
-        val createTable3 = "CREATE TABLE wishes ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "name VARCHAR(256) NOT NULL," +
-                "price REAL NOT NULL," +
-                "curr VARCHAR(10) NOT NULL," +
-                "deadline VARCHAR(256) NULL)"
-
-        val createTable4 = "CREATE TABLE transactions ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "title VARCHAR(256) NOT NULL," +
-                "amount REAL NOT NULL," +
-                "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
-
-        val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "title VARCHAR(256) NOT NULL," +
-                "value REAL NOT NULL," +
-                "unit VARCHAR(256) NOT NULL," +
-                "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
-
         db?.execSQL(createTable)
         db?.execSQL(createTable2)
         db?.execSQL(createTable3)
         db?.execSQL(createTable4)
         db?.execSQL(createTable5)
 
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "title VARCHAR(256) NOT NULL," +
-                "value REAL NOT NULL," +
-                "unit VARCHAR(256) NOT NULL," +
-                "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
-
-        db?.execSQL(createTable5)
+        db?.execSQL(this.createTable5)
     }
 
     fun insertData(entry: Entry){
