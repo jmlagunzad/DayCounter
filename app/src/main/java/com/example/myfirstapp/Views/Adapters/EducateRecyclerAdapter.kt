@@ -33,7 +33,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        var cellForRow = layoutInflater.inflate(R.layout.educate_row, parent, false)
+        var cellForRow = layoutInflater.inflate(R.layout.educate_row_v2, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
