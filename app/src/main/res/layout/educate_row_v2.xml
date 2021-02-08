@@ -75,5 +75,6 @@
         app:layout_constraintBottom_toTopOf="@+id/divider6"
         app:layout_constraintEnd_toEndOf="@+id/textView_deadline"
         app:layout_constraintStart_toStartOf="@+id/textView_deadline"
-        app:layout_constraintTop_toBottomOf="@+id/textView_deadline" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_deadline"
+        android:checked="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

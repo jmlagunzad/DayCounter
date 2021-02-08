@@ -41,4 +41,13 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
         return total
     }
 
+    fun tempBalance(total: String, value: Double, isActive: Boolean): Double{
+        if(isActive){
+            return (total.toDouble() + value)
+        }
+        return (total.toDouble() - value)
+    }
+
+
+
 }

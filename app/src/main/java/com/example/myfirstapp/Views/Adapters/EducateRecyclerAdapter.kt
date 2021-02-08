@@ -13,6 +13,10 @@ import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
 import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.educate_row.view.*
+import kotlinx.android.synthetic.main.educate_row.view.layout_background
+import kotlinx.android.synthetic.main.educate_row.view.textView_deadline
+import kotlinx.android.synthetic.main.educate_row_v2.view.*
+import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 import java.lang.Exception
@@ -23,6 +27,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
     private val listener = listener
 
+    var currView = view
     var transactions: MutableList<Transaction> = ArrayList()
     val adapterPresenter = EducateRecyclerAdapterPresenter(view, this)
 
@@ -47,6 +52,11 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
             holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
         }
         holder?.view?.textView_deadline?.text = transactions.get(position).transaction_date
+
+        holder?.view?.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
+                listener.recompute(adapterPresenter.tempBalance(this.currView.findViewById<TextView>(R.id.textView_balance).text as String,
+                transactions.get(position).amount, isChecked))
+        }
 
         holder?.itemView.setOnLongClickListener{
 
