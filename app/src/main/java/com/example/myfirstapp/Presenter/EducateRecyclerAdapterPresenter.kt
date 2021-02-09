@@ -35,17 +35,24 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
 
     fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
         var total = 0.0
-        for(Transaction in transactionHistory) {
-            total += Transaction.amount
+        for(transaction in transactionHistory) {
+            total += transaction.amount
         }
         return total
     }
 
-    fun tempBalance(total: String, value: Double, isActive: Boolean): Double{
-        if(isActive){
-            return (total.toDouble() + value)
+    fun tempBalance(transactionHistory: MutableList<Transaction>, isActive: Boolean, position:Int): Double{
+        var total = 0.0
+
+        transactionHistory.get(position).active = isActive
+
+        for(transaction in transactionHistory) {
+            if(transaction.active){
+                total += transaction.amount
+            }
         }
-        return (total.toDouble() - value)
+
+        return total
     }
 
 

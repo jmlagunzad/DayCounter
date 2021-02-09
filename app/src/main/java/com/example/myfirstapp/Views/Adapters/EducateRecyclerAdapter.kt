@@ -52,10 +52,10 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
             holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
         }
         holder?.view?.textView_deadline?.text = transactions.get(position).transaction_date
+        holder?.view?.switch_active.isChecked = transactions.get(position).active
 
         holder?.view?.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
-                listener.recompute(adapterPresenter.tempBalance(this.currView.findViewById<TextView>(R.id.textView_balance).text as String,
-                transactions.get(position).amount, isChecked))
+            listener.recompute(adapterPresenter.tempBalance(transactions, isChecked, position))
         }
 
         holder?.itemView.setOnLongClickListener{
