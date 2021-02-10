@@ -33,7 +33,12 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
 
     override fun getItemCount(): Int {
-        return transactions.size
+        if (transactions.size < 21){
+            return transactions.size
+        }
+        else{
+            return 20
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
