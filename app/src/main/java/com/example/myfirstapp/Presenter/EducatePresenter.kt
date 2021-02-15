@@ -50,6 +50,7 @@ class EducatePresenter(view: View) {
 
     interface OnEditOrDelete {
         fun recompute(computed: Double)
+        fun recomputePair(computed: Pair<Double, Double>)
     }
 
 }

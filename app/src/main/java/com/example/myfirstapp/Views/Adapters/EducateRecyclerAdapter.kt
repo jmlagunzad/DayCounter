@@ -27,7 +27,6 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
     private val listener = listener
 
-    var currView = view
     var transactions: MutableList<Transaction> = ArrayList()
     val adapterPresenter = EducateRecyclerAdapterPresenter(view, this)
 
@@ -60,7 +59,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
         holder?.view?.switch_active.isChecked = transactions.get(position).active
 
         holder?.view?.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
-            listener.recompute(adapterPresenter.tempBalance(transactions, isChecked, position))
+            listener.recomputePair(adapterPresenter.tempBalance(transactions, isChecked, position))
         }
 
         holder?.itemView.setOnLongClickListener{

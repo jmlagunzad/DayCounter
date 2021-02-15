@@ -41,18 +41,24 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
         return total
     }
 
-    fun tempBalance(transactionHistory: MutableList<Transaction>, isActive: Boolean, position:Int): Double{
+    fun tempBalance(transactionHistory: MutableList<Transaction>, isActive: Boolean, position:Int): Pair<Double, Double>{
         var total = 0.0
+        var difference = 0.0
 
         transactionHistory.get(position).active = isActive
+//        var activeHistory = transactionHistory.filter { it.active == true }
+//        var inactiveHistory = transactionHistory.filter { it.active == false }
 
         for(transaction in transactionHistory) {
             if(transaction.active){
                 total += transaction.amount
             }
+            else{
+                difference += transaction.amount
+            }
         }
 
-        return total
+        return Pair(total, difference)
     }
 
 

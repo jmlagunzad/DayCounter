@@ -49,7 +49,15 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
     override fun recompute(computed: Double) {
         view!!.findViewById<TextView>(R.id.textView_balance).text = computed.toString()
+        view!!.findViewById<TextView>(R.id.textView_difference).text = ""
     }
+
+    override fun recomputePair(computed: Pair<Double, Double>) {
+        val (total, difference) = computed
+        view!!.findViewById<TextView>(R.id.textView_balance).text = total.toString()
+        view!!.findViewById<TextView>(R.id.textView_difference).text = difference.toString()
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -68,6 +76,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         //Get current balance
         currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+        view!!.findViewById<TextView>(R.id.textView_difference).text = ""
+
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
@@ -93,7 +103,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
                     educateRecyclerAdapter.notifyDataSetChanged()
 
-                    currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
 
                     customDialog.dismiss()
                 }
@@ -135,7 +145,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
                     educateRecyclerAdapter.notifyDataSetChanged()
 
-                    currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
+                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
 
                     customDialog.dismiss()
                 }
