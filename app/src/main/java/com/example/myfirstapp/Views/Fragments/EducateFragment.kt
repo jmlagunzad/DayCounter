@@ -2,6 +2,7 @@ package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
+import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
 
@@ -53,9 +55,17 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     }
 
     override fun recomputePair(computed: Pair<Double, Double>) {
-        val (total, difference) = computed
+        var (total, difference) = computed
+        difference *= -1
         view!!.findViewById<TextView>(R.id.textView_balance).text = total.toString()
         view!!.findViewById<TextView>(R.id.textView_difference).text = difference.toString()
+
+        if(difference < 0.0){
+            view!!.findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#f44336"))
+        }
+        else{
+            view!!.findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#646B70"))
+        }
     }
 
 
