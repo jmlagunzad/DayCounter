@@ -61,23 +61,21 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val itemViewType = 0
+        //Init values
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
-        val currBalance = view.findViewById<TextView>(R.id.textView_balance)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_educate.adapter = educateRecyclerAdapter
 
-        recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(itemViewType, 0)
+        //Prevent recyclerview from reloading on scroll
+        recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
         //Get latest transactions
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
         //Get current balance
-        currBalance.text = educatePresenter.computeBalance(educateRecyclerAdapter.transactions).toString()
-        view!!.findViewById<TextView>(R.id.textView_difference).text = ""
-
+        recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
