@@ -16,7 +16,7 @@ private val COL_AMOUNT= "amount"
 private val COL_DATE= "transaction_date"
 private val COL_ID = "id"
 
-class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 2){
+class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
 
     override fun onCreate(db: SQLiteDatabase?) {
 

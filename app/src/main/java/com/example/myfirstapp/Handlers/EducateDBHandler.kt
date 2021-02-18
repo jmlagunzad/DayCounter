@@ -17,7 +17,7 @@ private val COL_CURR= "curr"
 private val COL_DEADLINE= "deadline"
 private val COL_ID = "id"
 
-class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 2){
+class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
 
     override fun onCreate(db: SQLiteDatabase?) {
 

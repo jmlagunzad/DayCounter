@@ -15,7 +15,7 @@ private val COL_TITLE = "title"
 private val COL_DESCRIPTION = "description"
 private val COL_ID = "id"
 
-class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 2){
+class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
 
 
     val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -36,6 +36,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
     val createTable4 = "CREATE TABLE transactions ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "title VARCHAR(256) NOT NULL," +
             "amount REAL NOT NULL," +
+            "category VARCHAR(256) 'General'," +
             "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
 
     val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -43,6 +44,9 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
             "value REAL NOT NULL," +
             "unit VARCHAR(256) NOT NULL," +
             "log_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+
+    val alterTable4 = "ALTER TABLE transactions " +
+            "ADD COLUMN category VARCHAR(256) DEFAULT 'General' NOT NULL"
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(createTable)
@@ -54,7 +58,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL(this.createTable5)
+        db?.execSQL(this.alterTable4)
     }
 
     fun insertData(entry: Entry){

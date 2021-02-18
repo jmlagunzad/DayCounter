@@ -15,7 +15,7 @@ private val COL_END = "end_date"
 private val COL_DAYS = "days"
 private val COL_ID = "id"
 
-class EndureDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 2){
+class EndureDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
 
     override fun onCreate(db: SQLiteDatabase?) {
 
