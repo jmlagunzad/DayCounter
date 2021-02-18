@@ -18,7 +18,7 @@ private val COL_UNIT= "unit"
 private val COL_DATE= "log_date"
 private val COL_ID = "id"
 
-class EvolveDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
+class EvolveDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4){
 
     override fun onCreate(db: SQLiteDatabase?) {
 

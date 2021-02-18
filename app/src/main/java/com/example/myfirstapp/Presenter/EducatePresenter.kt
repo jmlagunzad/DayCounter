@@ -9,16 +9,16 @@ class EducatePresenter(view: View) {
     private var transactionHistory: MutableList<Transaction> = ArrayList()
     private val transactionHandler = TransactionDBHandler(view.context)
 
-    var query = "SELECT id, title, amount, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
+    var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
 
     fun getTransactions(): MutableList<Transaction>{
         transactionHistory = transactionHandler.readData(query)
         return transactionHistory
     }
 
-    fun addTransaction(title: String, amount: String): Boolean{
+    fun addTransaction(title: String, amount: String, category: String): Boolean{
         try{
-            var transaction = Transaction(title, amount.toDouble())
+            var transaction = Transaction(title, amount.toDouble(), category)
             transactionHandler.insertData(transaction)
         }
         catch(e: Exception){
@@ -28,9 +28,9 @@ class EducatePresenter(view: View) {
         return true
     }
 
-    fun addNegativeTransaction(title: String, amount: String): Boolean{
+    fun addNegativeTransaction(title: String, amount: String, category: String): Boolean{
         try{
-            var transaction = Transaction(title, amount.toDouble() * -1)
+            var transaction = Transaction(title, amount.toDouble() * -1, category)
             transactionHandler.insertData(transaction)
         }
         catch(e: Exception){

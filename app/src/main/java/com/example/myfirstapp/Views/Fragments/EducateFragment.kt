@@ -93,6 +93,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+            val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Added"
             dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount added"
@@ -105,7 +106,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
 
-                if(educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString())){
+                if(educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString(), entryCategory.toString())){
                     educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
                     educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
@@ -132,6 +133,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+            val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Deducted"
             dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount used"
@@ -146,7 +148,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
                 if(educatePresenter.addNegativeTransaction(
                         entryTitle.toString(),
-                        entryAmount.toString()
+                        entryAmount.toString(),
+                        entryCategory.toString()
                     )){
                     educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 

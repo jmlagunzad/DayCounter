@@ -15,7 +15,7 @@ private val COL_TITLE = "title"
 private val COL_DESCRIPTION = "description"
 private val COL_ID = "id"
 
-class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
+class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4){
 
 
     val createTable = "CREATE TABLE $TABLE_NAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +

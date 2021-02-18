@@ -15,8 +15,9 @@ private val COL_NAME = "title"
 private val COL_AMOUNT= "amount"
 private val COL_DATE= "transaction_date"
 private val COL_ID = "id"
+private val COL_CATEGORY = "category"
 
-class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
+class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4){
 
     override fun onCreate(db: SQLiteDatabase?) {
 
@@ -53,8 +54,8 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
             do {
                 var transaction = Transaction(
                     result.getString(result.getColumnIndex(COL_NAME)),
-                    result.getString(result.getColumnIndex(COL_AMOUNT)).toDouble()
-
+                    result.getString(result.getColumnIndex(COL_AMOUNT)).toDouble(),
+                    result.getString(result.getColumnIndex(COL_CATEGORY))
                 )
                 transaction.id = result.getString(0).toInt()
                 transaction.transaction_date = result.getString(result.getColumnIndex(COL_DATE)).toString()
@@ -72,6 +73,7 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
 
             cv.put(COL_NAME, transaction.title)
             cv.put(COL_AMOUNT, transaction.amount)
+            cv.put(COL_CATEGORY, transaction.category)
 
             db.update(TABLE_NAME, cv, "$COL_ID = ?", arrayOf(id.toString()))
 

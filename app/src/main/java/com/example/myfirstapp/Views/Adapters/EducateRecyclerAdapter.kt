@@ -41,47 +41,45 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         var cellForRow = layoutInflater.inflate(R.layout.educate_row_v2, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.textView_mainTitle?.text = transactions.get(position).title
-        holder?.view?.textView_description?.text = transactions.get(position).amount.toString()
+        holder.view.textView_mainTitle?.text = transactions.get(position).title
+        holder.view.textView_description?.text = transactions.get(position).amount.toString()
         if(transactions.get(position).amount < 0.0){
-            holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+            holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
         }
         else{
-            holder?.view?.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+            holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
         }
-        holder?.view?.textView_deadline?.text = transactions.get(position).transaction_date
-        holder?.view?.switch_active.isChecked = transactions.get(position).active
+        holder.view.textView_deadline?.text = transactions.get(position).transaction_date
+        holder.view.switch_active.isChecked = transactions.get(position).active
 
-        holder?.view?.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
+        holder.view.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
             listener.recomputePair(adapterPresenter.tempBalance(transactions, isChecked, position))
         }
 
-        holder?.itemView.setOnLongClickListener{
+        holder.itemView.setOnLongClickListener{
 
             //CHOOSE TEMPLATE FOR EACH FRAME
             val dialog = AlertDialog.Builder(holder.view.context)
             val layoutInflater = LayoutInflater.from(holder.view.context)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
 
             //SET TEXT WITHIN FRAME
             dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
             dialogView.findViewById<EditText>(R.id.editText_title).setText(transactions.get(position).title)
-            dialogView.findViewById<EditText>(R.id.editText_description).setText(
-                transactions.get(
-                    position
-                ).amount.toString()
-            )
+            dialogView.findViewById<EditText>(R.id.editText_description).setText(transactions.get(position).amount.toString())
 
             //GET VALUES FROM EDIT TEXT FIELDS
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
+            var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+
 
             //SETUP VALUES FOR DIALOGVIEW
             dialog.setView(dialogView)
@@ -103,6 +101,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
                     transactions = adapterPresenter.updateTransaction(
                         entryTitle.toString(),
                         entryDescription.toString(),
+                        entryCategory.toString(),
                         transactions.get(position).id
                     )!!
                     this.notifyDataSetChanged()

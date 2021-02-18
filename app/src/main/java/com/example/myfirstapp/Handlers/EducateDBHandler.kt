@@ -17,14 +17,13 @@ private val COL_CURR= "curr"
 private val COL_DEADLINE= "deadline"
 private val COL_ID = "id"
 
-class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 3){
+class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4){
 
     override fun onCreate(db: SQLiteDatabase?) {
 
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
     }
 
     fun insertData(wish: Wish){
