@@ -57,6 +57,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
         }
         holder.view.textView_deadline?.text = transactions.get(position).transaction_date
         holder.view.switch_active.isChecked = transactions.get(position).active
+        holder.view.textView_category.text = transactions.get(position).category
 
         holder.view.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
             listener.recomputePair(adapterPresenter.tempBalance(transactions, isChecked, position))
@@ -74,6 +75,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
             dialogView.findViewById<EditText>(R.id.editText_title).setText(transactions.get(position).title)
             dialogView.findViewById<EditText>(R.id.editText_description).setText(transactions.get(position).amount.toString())
+            dialogView.findViewById<EditText>(R.id.editText_category).setText(transactions.get(position).category)
 
             //GET VALUES FROM EDIT TEXT FIELDS
             var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text

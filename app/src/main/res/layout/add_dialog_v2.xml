@@ -14,12 +14,12 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Enter cost category"
-        android:inputType="numberSigned|numberDecimal"
+        android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_category" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_lblCategory" />
 
     <TextView
-        android:id="@+id/textView_category"
+        android:id="@+id/textView_lblCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -122,7 +122,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView_category"
+        app:layout_constraintEnd_toEndOf="@+id/textView_lblCategory"
         app:layout_constraintStart_toEndOf="@+id/editText_category"
-        app:layout_constraintTop_toBottomOf="@+id/textView_category" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_lblCategory" />
 </androidx.constraintlayout.widget.ConstraintLayout>

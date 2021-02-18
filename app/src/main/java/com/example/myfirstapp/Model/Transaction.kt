@@ -6,7 +6,7 @@ data class Transaction(var title: String, var amount: Double, var category: Stri
     var transaction_date = ""
     var active = true
 
-    constructor() : this("",0.0, "General")
+    constructor() : this("",0.0, "")
 
 
 }

@@ -33,6 +33,7 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
 
         cv.put(COL_NAME, transaction.title)
         cv.put(COL_AMOUNT, transaction.amount)
+        cv.put(COL_CATEGORY, transaction.category)
         //cv.put(COL_DATE, )
 
         var result = db.insert(TABLE_NAME,null,cv)

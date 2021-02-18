@@ -90,7 +90,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         view.addButton.setOnClickListener {
             //educatePresenter.test()
             val dialog = AlertDialog.Builder(this.context!!)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
             val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
@@ -130,7 +130,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         view.minusButton.setOnClickListener {
             //educatePresenter.test()
             val dialog = AlertDialog.Builder(this.context!!)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog, null)
+            val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
             val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
             val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
