@@ -77,11 +77,22 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
             dialogView.findViewById<EditText>(R.id.editText_description).setText(transactions.get(position).amount.toString())
             dialogView.findViewById<EditText>(R.id.editText_category).setText(transactions.get(position).category)
 
-            //GET VALUES FROM EDIT TEXT FIELDS
-            var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
-            var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+            //LOAD CATEGORIES FOR SPINNER
+            val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
+            val categories = adapterPresenter.getCategories()
+            val categoryAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,categories)
+            categorySpinner.adapter = categoryAdapter
+            categorySpinner.setSelection(categoryAdapter.getPosition(transactions.get(position).category))
 
+            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    dialogView.findViewById<EditText>(R.id.editText_category).setText(categorySpinner.selectedItem.toString())
+                }
+            }
 
             //SETUP VALUES FOR DIALOGVIEW
             dialog.setView(dialogView)
@@ -97,6 +108,11 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
             //LISTENER FOR EDIT
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
+
+                //GET VALUES FROM EDIT TEXT FIELDS
+                var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+                var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
+                var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
                 try {
 

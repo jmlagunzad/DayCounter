@@ -91,12 +91,26 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             //educatePresenter.test()
             val dialog = AlertDialog.Builder(this.context!!)
             val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
-            val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
-            val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+
+            //LOAD CATEGORIES FOR SPINNER
+            val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
+            val categories = educatePresenter.getCategories()
+            val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
+            categorySpinner.adapter = categoryAdapter
+            categorySpinner.setSelection(categoryAdapter.getPosition(""))
 
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Added"
             dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount added"
+
+            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    dialogView.findViewById<EditText>(R.id.editText_category).setText(categorySpinner.selectedItem.toString())
+                }
+            }
 
             dialog.setView(dialogView)
             dialog.setCancelable(true)
@@ -105,6 +119,9 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+                val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+                val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
                 if(educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString(), entryCategory.toString())){
                     educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
@@ -131,9 +148,23 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             //educatePresenter.test()
             val dialog = AlertDialog.Builder(this.context!!)
             val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
-            val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
-            val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+
+            //LOAD CATEGORIES FOR SPINNER
+            val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
+            val categories = educatePresenter.getCategories()
+            val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
+            categorySpinner.adapter = categoryAdapter
+            categorySpinner.setSelection(categoryAdapter.getPosition(""))
+
+            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    dialogView.findViewById<EditText>(R.id.editText_category).setText(categorySpinner.selectedItem.toString())
+                }
+            }
 
             dialogView.findViewById<TextView>(R.id.textView_description).text = "Amount Deducted"
             dialogView.findViewById<TextView>(R.id.textView_description).hint = "Enter amount used"
@@ -145,6 +176,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+
+                val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+                val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
+                val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
                 if(educatePresenter.addNegativeTransaction(
                         entryTitle.toString(),

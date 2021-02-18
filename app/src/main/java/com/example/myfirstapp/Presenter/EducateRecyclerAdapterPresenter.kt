@@ -29,6 +29,10 @@ class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapte
         return transactionHistory
     }
 
+    fun getCategories(): MutableList<String>{
+        return transactionHandler.readCategories()
+    }
+
     fun deleteTransaction(id: Int){
         transactionHandler.deleteData(id)
     }

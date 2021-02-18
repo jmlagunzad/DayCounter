@@ -6,14 +6,16 @@ import com.example.myfirstapp.Model.Transaction
 
 class EducatePresenter(view: View) {
 
-    private var transactionHistory: MutableList<Transaction> = ArrayList()
     private val transactionHandler = TransactionDBHandler(view.context)
 
     var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
 
     fun getTransactions(): MutableList<Transaction>{
-        transactionHistory = transactionHandler.readData(query)
-        return transactionHistory
+        return transactionHandler.readData(query)
+    }
+
+    fun getCategories(): MutableList<String> {
+        return transactionHandler.readCategories()
     }
 
     fun addTransaction(title: String, amount: String, category: String): Boolean{
