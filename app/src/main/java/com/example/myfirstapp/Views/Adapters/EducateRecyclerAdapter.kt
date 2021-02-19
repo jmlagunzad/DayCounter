@@ -79,7 +79,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
             //LOAD CATEGORIES FOR SPINNER
             val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
-            val categories = adapterPresenter.getCategories()
+            val categories = mutableListOf("").plus(adapterPresenter.getCategories())
             val categoryAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,categories)
             categorySpinner.adapter = categoryAdapter
             categorySpinner.setSelection(categoryAdapter.getPosition(transactions.get(position).category))

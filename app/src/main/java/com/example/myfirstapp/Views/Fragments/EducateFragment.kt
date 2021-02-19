@@ -83,10 +83,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         //Load categories for filtering
         val filterSpinner = view.findViewById<Spinner>(R.id.spinner_filterCategory)
-        val categories = educatePresenter.getCategories()
+        val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
         val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
         filterSpinner.adapter = categoryAdapter
-        filterSpinner.setSelection(categoryAdapter.getPosition(""))
+        filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
 
         //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
@@ -101,7 +101,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
             //LOAD CATEGORIES FOR SPINNER
             val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
-            val categories = educatePresenter.getCategories()
+            val categories = mutableListOf("").plus(educatePresenter.getCategories())
             val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
             categorySpinner.adapter = categoryAdapter
             categorySpinner.setSelection(categoryAdapter.getPosition(""))
@@ -158,7 +158,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
             //LOAD CATEGORIES FOR SPINNER
             val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
-            val categories = educatePresenter.getCategories()
+            val categories = mutableListOf("").plus(educatePresenter.getCategories())
             val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
             categorySpinner.adapter = categoryAdapter
             categorySpinner.setSelection(categoryAdapter.getPosition(""))

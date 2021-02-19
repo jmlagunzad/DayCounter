@@ -68,7 +68,7 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
     }
 
     fun readCategories(): MutableList<String>{
-        val list = mutableListOf("")
+        val list : MutableList<String> = ArrayList()
         val db = this.readableDatabase
 
         val result = db.rawQuery("SELECT DISTINCT category FROM transactions ORDER by category", null)
