@@ -81,7 +81,14 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         //Prevent recyclerview from reloading on scroll
         recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
-        //Get latest transactions
+        //Load categories for filtering
+        val filterSpinner = view.findViewById<Spinner>(R.id.spinner_filterCategory)
+        val categories = educatePresenter.getCategories()
+        val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        filterSpinner.adapter = categoryAdapter
+        filterSpinner.setSelection(categoryAdapter.getPosition(""))
+
+        //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
         //Get current balance
