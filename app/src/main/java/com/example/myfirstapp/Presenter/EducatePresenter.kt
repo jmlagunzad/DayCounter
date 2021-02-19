@@ -1,6 +1,7 @@
 package com.example.myfirstapp.Presenter
 
 import android.view.View
+import android.widget.Spinner
 import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Model.Transaction
 
@@ -12,6 +13,14 @@ class EducatePresenter(view: View) {
 
     fun getTransactions(): MutableList<Transaction>{
         return transactionHandler.readData(query)
+    }
+
+    fun getTransactions(filter: String): MutableList<Transaction>{
+        var filterQuery = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                "from transactions " +
+                "where category = '$filter' " +
+                "ORDER BY id DESC"
+        return transactionHandler.readData(filterQuery)
     }
 
     fun getCategories(): MutableList<String> {
@@ -53,6 +62,7 @@ class EducatePresenter(view: View) {
     interface OnEditOrDelete {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
+        fun refreshFilterSpinner(categories: List<String>)
     }
 
 }

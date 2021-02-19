@@ -68,12 +68,21 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         }
     }
 
+    override fun refreshFilterSpinner(categories: List<String>){
+        //Load categories for filtering
+        //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
+        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
+        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        filterSpinner.adapter = categoryAdapter
+        filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Init values
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
+        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_educate.adapter = educateRecyclerAdapter
@@ -81,18 +90,32 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         //Prevent recyclerview from reloading on scroll
         recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
-        //Load categories for filtering
-        val filterSpinner = view.findViewById<Spinner>(R.id.spinner_filterCategory)
-        val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
-        val categoryAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_dropdown_item,categories)
-        filterSpinner.adapter = categoryAdapter
-        filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+        //Get initial category list
+        refreshFilterSpinner(mutableListOf("ALL").plus(educatePresenter.getCategories()))
 
         //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 
         //Get current balance
         recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+
+        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var filter = filterSpinner.selectedItem.toString()
+                if(filter == "ALL"){
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+                }
+                else{
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filterSpinner.selectedItem.toString())
+                }
+                educateRecyclerAdapter.notifyDataSetChanged();
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+            }
+        }
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
@@ -137,7 +160,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-
+                    refreshFilterSpinner(mutableListOf("ALL").plus(educatePresenter.getCategories()))
                     customDialog.dismiss()
                 }
 
@@ -183,7 +206,6 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             customDialog.show()
 
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-
                 val entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
                 val entryAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
                 val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
@@ -199,7 +221,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-
+                    refreshFilterSpinner(mutableListOf("ALL").plus(educatePresenter.getCategories()))
                     customDialog.dismiss()
                 }
 
