@@ -48,9 +48,9 @@
         android:id="@+id/divider6"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="#717171"
-        app:layout_constraintTop_toBottomOf="@+id/textView_category"
+        app:layout_constraintTop_toBottomOf="@+id/switch_active"
         tools:layout_editor_absoluteX="1dp" />
 
     <TextView
@@ -80,14 +80,11 @@
         android:id="@+id/switch_active"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:checked="true"
         android:switchMinWidth="60dp"
         android:textColorHighlight="#FFFFFF"
         android:textColorLink="#FFFFFF"
         android:theme="@style/SwitchTheme"
-        app:layout_constraintBottom_toTopOf="@+id/divider6"
         app:layout_constraintStart_toStartOf="@+id/textView_description"
-        app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_category" />
 </androidx.constraintlayout.widget.ConstraintLayout>
