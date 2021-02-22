@@ -62,7 +62,8 @@ class EducatePresenter(view: View) {
     interface OnEditOrDelete {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
-        fun refreshFilterSpinner(categories: List<String>)
+        fun refreshFilterSpinner(categories: List<String>, currentCategory: String)
+        fun getCurrentFilter(): String
     }
 
 }

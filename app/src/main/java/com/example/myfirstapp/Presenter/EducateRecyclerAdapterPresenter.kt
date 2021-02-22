@@ -5,10 +5,9 @@ import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import com.example.myfirstapp.Model.Transaction
 
-class EducateRecyclerAdapterPresenter(view: View, adapter: EducateRecyclerAdapter) {
+class EducateRecyclerAdapterPresenter(view: View) {
 
     private var transactionHistory: MutableList<Transaction> = ArrayList()
-    private var adapter = adapter
     private val transactionHandler = TransactionDBHandler(view.context)
 
     var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"

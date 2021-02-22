@@ -23,12 +23,12 @@ import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
-class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<CustomViewHolder>() {
+class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<CustomViewHolder>() {
 
     private val listener = listener
 
     var transactions: MutableList<Transaction> = ArrayList()
-    val adapterPresenter = EducateRecyclerAdapterPresenter(view, this)
+    val adapterPresenter = EducateRecyclerAdapterPresenter(view)
 
 
     override fun getItemCount(): Int {
@@ -125,7 +125,7 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
                     listener.recompute(adapterPresenter.computeBalance(transactions))
-                    listener.refreshFilterSpinner(mutableListOf("ALL").plus(adapterPresenter.getCategories()))
+                    listener.refreshFilterSpinner(mutableListOf("ALL").plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                     customDialog.dismiss()
 
                     Toast.makeText(
@@ -142,12 +142,14 @@ class EducateRecyclerAdapter(view: View,listener: EducatePresenter.OnEditOrDelet
 
             //LISTENER FOR DELETE
             customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
+                var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+
                 adapterPresenter.deleteTransaction(transactions.get(position).id)
                 this.transactions.removeAt(position)
                 this.notifyItemRemoved(position)
                 this.notifyItemRangeChanged(position, this.transactions.size);
                 listener.recompute(adapterPresenter.computeBalance(transactions))
-                listener.refreshFilterSpinner(mutableListOf("ALL").plus(adapterPresenter.getCategories()))
+                listener.refreshFilterSpinner(mutableListOf("ALL").plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                 customDialog.dismiss()
                 Toast.makeText(
                     holder.view.context,
