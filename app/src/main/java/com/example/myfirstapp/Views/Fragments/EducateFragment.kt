@@ -75,7 +75,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
         filterSpinner.adapter = categoryAdapter
         val currentFilter = categoryAdapter.getPosition(currentCategory)
-        println(currentFilter)
+        //println(currentFilter)
         if(currentFilter == -1){
             filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
         }
