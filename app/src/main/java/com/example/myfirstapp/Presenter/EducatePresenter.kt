@@ -16,10 +16,20 @@ class EducatePresenter(view: View) {
     }
 
     fun getTransactions(filter: String): MutableList<Transaction>{
-        var filterQuery = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
-                "from transactions " +
-                "where category = '$filter' " +
-                "ORDER BY id DESC"
+        var filterQuery = when(filter){
+            "INCOME" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where amount > 0.0 " +
+                    "ORDER BY id DESC"
+            "EXPENSES" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where amount < 0.0 " +
+                    "ORDER BY id DESC"
+            else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where category = '$filter' " +
+                    "ORDER BY id DESC"
+        }
         return transactionHandler.readData(filterQuery)
     }
 
