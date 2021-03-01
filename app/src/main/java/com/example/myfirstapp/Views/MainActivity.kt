@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                     tab.text = "Educate"
                 }
                 3 -> {
-                    tab.text = "*NEW* Evolve"
+                    tab.text = "Evolve"
                 }
                 else -> {
                     tab.text = "About"
