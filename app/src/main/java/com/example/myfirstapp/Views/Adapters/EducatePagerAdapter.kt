@@ -1,34 +1,24 @@
 package com.example.myfirstapp.Views.Adapters
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myfirstapp.Views.Fragments.*
 
-class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
+class EducatePagerAdapter(fa: EducateViewPagerFragment) : FragmentStateAdapter(fa) {
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> {
-                EndureFragment()
-            }
-            1 -> {
-                ExploreFragment()
-            }
-            2 -> {
-                EducateViewPagerFragment()
-            }
-            3 -> {
-                EvolveFragment()
+                EducateFragment()
             }
             else -> {
-                AboutFragment()
+                EducateSummaryFragment()
             }
         }
     }
 
     override fun getItemCount(): Int{
-        return 5
+        return 2
     }
 
     /*
