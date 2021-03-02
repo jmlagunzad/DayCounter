@@ -1,11 +1,18 @@
 package com.example.myfirstapp.Views.Fragments
 
+import android.R.attr.data
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TableLayout
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
+import kotlinx.android.synthetic.main.fragment_educate.view.*
+import org.w3c.dom.Text
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +43,22 @@ class EducateSummaryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_educate_summary, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val presenter = EducatePresenter(view)
+
+        var items = presenter.getTransactions()
+
+        val table = view.findViewById<TableLayout>(R.id.educate_table)
+
+        for(item in items){
+            val tableRow = LayoutInflater.from(this.context).inflate(R.layout.educate_summary_table_row, null, false)
+            tableRow.findViewById<TextView>(R.id.cell_title).text = item.title
+            tableRow.findViewById<TextView>(R.id.cell_balance).text = item.amount.toString()
+            table.addView(tableRow)
+        }
     }
 
     companion object {

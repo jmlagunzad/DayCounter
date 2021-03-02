@@ -21,14 +21,5 @@ class EducatePagerAdapter(fa: EducateViewPagerFragment) : FragmentStateAdapter(f
         return 2
     }
 
-    /*
-    override fun getPageTitle(position: Int): CharSequence? {
-        return when(position){
-            0 -> "ENDURE"
-            1 -> "EXPLORE"
-            2 -> "EDUCATE"
-            else -> ""
-        }
-    }*/
 
 }
