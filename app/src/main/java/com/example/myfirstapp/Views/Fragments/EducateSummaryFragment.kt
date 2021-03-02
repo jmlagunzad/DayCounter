@@ -1,6 +1,5 @@
 package com.example.myfirstapp.Views.Fragments
 
-import android.R.attr.data
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.fragment_educate.view.*
-import org.w3c.dom.Text
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,7 +54,12 @@ class EducateSummaryFragment : Fragment() {
         for(item in items){
             val tableRow = LayoutInflater.from(this.context).inflate(R.layout.educate_summary_table_row, null, false)
             tableRow.findViewById<TextView>(R.id.cell_title).text = item.title
-            tableRow.findViewById<TextView>(R.id.cell_balance).text = item.amount.toString()
+            if(item.amount < 0){
+                tableRow.findViewById<TextView>(R.id.cell_credit).text = item.amount.toString()
+            }
+            else{
+                tableRow.findViewById<TextView>(R.id.cell_debit).text = item.amount.toString()
+            }
             table.addView(tableRow)
         }
     }
