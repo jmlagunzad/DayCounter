@@ -8,6 +8,13 @@
     android:background="#3b5998"
     tools:context=".Views.Fragments.EducateSummaryFragment">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        tools:ignore="MissingConstraints">
+
     <TableLayout
         android:id="@+id/educate_table"
         android:layout_width="match_parent"
@@ -74,5 +81,7 @@
                 android:background="#FFFFFF" />
         </TableRow>
     </TableLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
