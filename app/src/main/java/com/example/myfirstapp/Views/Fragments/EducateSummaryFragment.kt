@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
+import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
-import kotlinx.android.synthetic.main.fragment_educate.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,10 +23,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [EducateSummaryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EducateSummaryFragment : Fragment() {
+class EducateSummaryFragment : Fragment(){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var currView = this.view
+    private var presenter : EducatePresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +46,16 @@ class EducateSummaryFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_educate_summary, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    fun loadTable(data: MutableList<Transaction>){
+        val table = view!!.findViewById<TableLayout>(R.id.educate_table)
+        table.removeViews(2, table.getChildCount() - 2)
 
-        val presenter = EducatePresenter(view)
-
-        var items = presenter.getTransactions()
-
-        val table = view.findViewById<TableLayout>(R.id.educate_table)
-
-        for(item in items){
-            val tableRow = LayoutInflater.from(this.context).inflate(R.layout.educate_summary_table_row, null, false)
+        for(item in data){
+            val tableRow = LayoutInflater.from(this.context).inflate(
+                R.layout.educate_summary_table_row,
+                null,
+                false
+            )
             tableRow.findViewById<TextView>(R.id.cell_title).text = item.title
             if(item.amount < 0){
                 tableRow.findViewById<TextView>(R.id.cell_credit).text = item.amount.toString()
@@ -60,9 +63,22 @@ class EducateSummaryFragment : Fragment() {
             else{
                 tableRow.findViewById<TextView>(R.id.cell_debit).text = item.amount.toString()
             }
+
             table.addView(tableRow)
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        currView = view
+        presenter = EducatePresenter(currView!!)
+        loadTable(presenter!!.getTransactions())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadTable(presenter!!.getTransactions())
+    }
+
 
     companion object {
         /**
@@ -83,4 +99,6 @@ class EducateSummaryFragment : Fragment() {
                 }
             }
     }
+
+
 }
