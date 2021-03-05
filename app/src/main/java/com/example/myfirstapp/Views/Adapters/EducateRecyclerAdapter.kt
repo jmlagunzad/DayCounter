@@ -29,15 +29,18 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     var transactions: MutableList<Transaction> = ArrayList()
     val adapterPresenter = EducateRecyclerAdapterPresenter(view)
+    val view = view
 
 
     override fun getItemCount(): Int {
-        if (transactions.size < 21){
-            return transactions.size
+        if (transactions.size > 21){
+            if(view.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString() == "ALL"){
+                return 20
+            }
         }
-        else{
-            return 20
-        }
+
+        return transactions.size
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
