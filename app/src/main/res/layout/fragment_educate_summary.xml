@@ -64,6 +64,16 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/cell_balance"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:text="Balance"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
         </TableRow>
 
         <TableRow

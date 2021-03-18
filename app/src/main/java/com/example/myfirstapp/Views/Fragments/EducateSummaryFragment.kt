@@ -50,6 +50,8 @@ class EducateSummaryFragment : Fragment(){
         val table = view!!.findViewById<TableLayout>(R.id.educate_table)
         table.removeViews(2, table.getChildCount() - 2)
 
+        var balance : Double = data.sumByDouble { it.amount }
+
         for(item in data){
             val tableRow = LayoutInflater.from(this.context).inflate(
                 R.layout.educate_summary_table_row,
@@ -63,6 +65,9 @@ class EducateSummaryFragment : Fragment(){
             else{
                 tableRow.findViewById<TextView>(R.id.cell_debit).text = item.amount.toString()
             }
+
+            tableRow.findViewById<TextView>(R.id.cell_balance).text = balance.toString()
+            balance -= item.amount
 
             table.addView(tableRow)
         }
