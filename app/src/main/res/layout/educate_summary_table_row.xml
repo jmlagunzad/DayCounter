@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:gravity="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#BAFFC9" />
 
         <TextView
             android:id="@+id/cell_credit"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:gravity="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFB3BA" />
 
         <TextView
             android:id="@+id/cell_balance"
