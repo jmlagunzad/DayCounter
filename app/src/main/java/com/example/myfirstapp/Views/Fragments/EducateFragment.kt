@@ -103,7 +103,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
         //Get initial category list
-        refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES").plus(educatePresenter.getCategories()),"ALL")
+        refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF").plus(educatePresenter.getCategories()),"ALL")
 
         //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
@@ -172,7 +172,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES").plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF").plus(educatePresenter.getCategories()), entryCategory.toString())
                     customDialog.dismiss()
                 }
 
@@ -233,7 +233,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES").plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF").plus(educatePresenter.getCategories()), entryCategory.toString())
                     customDialog.dismiss()
                 }
 
