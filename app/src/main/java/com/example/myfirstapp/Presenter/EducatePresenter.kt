@@ -48,6 +48,23 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     "ORDER BY id DESC"
+            "LAST CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where CASE " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
+                    "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-10',datetime('now')) " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
+                    "THEN transaction_date between strftime('%Y-%m-10',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-25',datetime('now','start of month','-1 months')) " +
+
+                    "ELSE transaction_date between strftime('%Y-%m-10',datetime('now')) " +
+                    "AND strftime('%Y-%m-25',datetime('now')) " +
+
+                    "END " +
+                    "ORDER BY id DESC"
             else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where category = '$filter' " +
