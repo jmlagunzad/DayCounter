@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myfirstapp.Model.Transaction
@@ -73,17 +72,52 @@ class EducateSummaryFragment : Fragment(){
         }
     }
 
+    fun refreshFilterSpinner(categories: List<String>, currentCategory: String){
+        //Load categories for filtering
+        //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
+        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
+        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        filterSpinner.adapter = categoryAdapter
+        val currentFilter = categoryAdapter.getPosition(currentCategory)
+        //println(currentFilter)
+        if(currentFilter == -1){
+            filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+        }
+        else{
+            filterSpinner.setSelection(categoryAdapter.getPosition(currentCategory))
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
         currView = view
         presenter = EducatePresenter(currView!!)
+        refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(
+            presenter!!.getCategories()),"ALL")
         loadTable(presenter!!.getTransactions())
+
+        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var filter = filterSpinner.selectedItem.toString()
+                if(filter == "ALL"){
+                    loadTable(presenter!!.getTransactions())
+                }
+                else{
+                    loadTable(presenter!!.getTransactions(filterSpinner.selectedItem.toString()))
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         loadTable(presenter!!.getTransactions())
     }
-
 
     companion object {
         /**
