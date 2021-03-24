@@ -28,6 +28,8 @@ class EducateSummaryFragment : Fragment(){
     private var param2: String? = null
     private var currView = this.view
     private var presenter : EducatePresenter? = null
+    private var currentFilter = "ALL"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +91,6 @@ class EducateSummaryFragment : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
         currView = view
         presenter = EducatePresenter(currView!!)
@@ -103,12 +104,12 @@ class EducateSummaryFragment : Fragment(){
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var filter = filterSpinner.selectedItem.toString()
-                if(filter == "ALL"){
+                currentFilter = filterSpinner.selectedItem.toString()
+                if(currentFilter == "ALL"){
                     loadTable(presenter!!.getTransactions())
                 }
                 else{
-                    loadTable(presenter!!.getTransactions(filterSpinner.selectedItem.toString()))
+                    loadTable(presenter!!.getTransactions(currentFilter))
                 }
             }
         }
@@ -116,7 +117,12 @@ class EducateSummaryFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-        loadTable(presenter!!.getTransactions())
+        if(currentFilter == "ALL"){
+            loadTable(presenter!!.getTransactions())
+        }else{
+            loadTable(presenter!!.getTransactions(currentFilter))
+        }
+
     }
 
     companion object {
