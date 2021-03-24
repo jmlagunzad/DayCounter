@@ -122,7 +122,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
                 }
                 else{
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filterSpinner.selectedItem.toString())
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter)
                 }
                 educateRecyclerAdapter.notifyDataSetChanged();
                 recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
