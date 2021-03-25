@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3b5998"
+    android:background="#ffc107"
     tools:context=".Views.Fragments.EducateSummaryFragment">
 
     <Spinner
@@ -17,16 +17,22 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:layout_width="407dp"
-        android:layout_height="686dp"
-        android:layout_marginTop="15dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
+        android:background="#3b5998"
         android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_summary_filterCategory"
         tools:ignore="MissingConstraints">
 
