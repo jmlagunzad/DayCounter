@@ -37,14 +37,14 @@ class EducatePresenter(view: View) {
 
                     "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
                     "THEN transaction_date between strftime('%Y-%m-11',datetime('now')) " +
-                    "AND strftime('%Y-%m-25',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','localtime')) " +
 
                     "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
                     "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
-                    "AND strftime('%Y-%m-10',datetime('now')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
 
                     "ELSE transaction_date between strftime('%Y-%m-26',datetime('now')) " +
-                    "AND strftime('%Y-%m-10',datetime('now','start of month','+1 months')) " +
+                    "AND strftime('%Y-%m-11',datetime('now','start of month','+1 months')) " +
 
                     "END " +
                     "ORDER BY id DESC"
@@ -54,14 +54,14 @@ class EducatePresenter(view: View) {
 
                     "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
                     "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
-                    "AND strftime('%Y-%m-10',datetime('now')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
 
                     "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
-                    "THEN transaction_date between strftime('%Y-%m-10',datetime('now','start of month','-1 months')) " +
-                    "AND strftime('%Y-%m-25',datetime('now','start of month','-1 months')) " +
+                    "THEN transaction_date between strftime('%Y-%m-11',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
 
-                    "ELSE transaction_date between strftime('%Y-%m-10',datetime('now')) " +
-                    "AND strftime('%Y-%m-25',datetime('now')) " +
+                    "ELSE transaction_date between strftime('%Y-%m-11',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now')) " +
 
                     "END " +
                     "ORDER BY id DESC"
