@@ -92,6 +92,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Init values
+        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF")
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
@@ -103,7 +104,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
         //Get initial category list
-        refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(educatePresenter.getCategories()),"ALL")
+        refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()),"ALL")
 
         //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
@@ -172,7 +173,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
                     customDialog.dismiss()
                 }
 
@@ -233,7 +234,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
                     customDialog.dismiss()
                 }
 

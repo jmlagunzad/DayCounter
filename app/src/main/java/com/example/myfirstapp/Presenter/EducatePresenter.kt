@@ -9,8 +9,6 @@ class EducatePresenter(view: View) {
 
     private val transactionHandler = TransactionDBHandler(view.context)
 
-
-
     fun getTransactions(): MutableList<Transaction>{
         var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
         return transactionHandler.readData(query)

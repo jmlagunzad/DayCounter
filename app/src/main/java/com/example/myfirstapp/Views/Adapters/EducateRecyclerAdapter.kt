@@ -27,6 +27,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     private val listener = listener
 
+    val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF")
     var transactions: MutableList<Transaction> = ArrayList()
     val adapterPresenter = EducateRecyclerAdapterPresenter(view)
     val view = view
@@ -128,7 +129,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
                     listener.recompute(adapterPresenter.computeBalance(transactions))
-                    listener.refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
+                    listener.refreshFilterSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                     customDialog.dismiss()
 
                     Toast.makeText(
@@ -152,7 +153,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 this.notifyItemRemoved(position)
                 this.notifyItemRangeChanged(position, this.transactions.size);
                 listener.recompute(adapterPresenter.computeBalance(transactions))
-                listener.refreshFilterSpinner(mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF").plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
+                listener.refreshFilterSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                 customDialog.dismiss()
                 Toast.makeText(
                     holder.view.context,
