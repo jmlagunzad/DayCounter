@@ -63,6 +63,21 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     "ORDER BY id DESC"
+            "THIS MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now', 'start of month')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
+
+                    "ORDER BY id DESC"
+
+            "LAST MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
+
+                    "ORDER BY id DESC"
             else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where category = '$filter' " +
