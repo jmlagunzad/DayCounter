@@ -92,7 +92,11 @@ class EducateSummaryFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
-        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF","THIS MONTH","LAST MONTH")
+        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES",
+            "THIS CUTOFF","THIS CUTOFF - INCOME","THIS CUTOFF - EXPENSES",
+            "LAST CUTOFF","LAST CUTOFF - INCOME","LAST CUTOFF - EXPENSES",
+            "THIS MONTH", "THIS MONTH - INCOME", "THIS MONTH - EXPENSES",
+            "LAST MONTH", "LAST MONTH - INCOME", "LAST MONTH - EXPENSES")
         currView = view
                 presenter = EducatePresenter(currView!!)
         refreshFilterSpinner(constantFilters.plus(
