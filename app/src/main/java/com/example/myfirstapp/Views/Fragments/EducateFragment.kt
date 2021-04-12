@@ -84,6 +84,22 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         }
     }
 
+    fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String){
+        //Load categories for filtering
+        //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
+
+        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        spinner.adapter = categoryAdapter
+        val currentFilter = categoryAdapter.getPosition(currentCategory)
+        //println(currentFilter)
+        if(currentFilter == -1){
+            spinner.setSelection(categoryAdapter.getPosition("ALL"))
+        }
+        else{
+            spinner.setSelection(categoryAdapter.getPosition(currentCategory))
+        }
+    }
+
     override fun getCurrentFilter(): String {
         //println(view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString())
         return view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString()
@@ -92,10 +108,22 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Init values
+<<<<<<< Updated upstream
         val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
+=======
+        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES",
+            "THIS CUTOFF","THIS CUTOFF - INCOME","THIS CUTOFF - EXPENSES",
+            "LAST CUTOFF","LAST CUTOFF - INCOME","LAST CUTOFF - EXPENSES",
+            "THIS MONTH", "THIS MONTH - INCOME", "THIS MONTH - EXPENSES",
+            "LAST MONTH", "LAST MONTH - INCOME", "LAST MONTH - EXPENSES")
+
+        val typeFilters = mutableListOf("ALL", "INCOME", "EXPENSES")
+>>>>>>> Stashed changes
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
+
+        val typeSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterType)
 
         recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_educate.adapter = educateRecyclerAdapter
@@ -105,6 +133,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         //Get initial category list
         refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()),"ALL")
+        refreshSpinner(view!!.findViewById<Spinner>(R.id.spinner_filterType), typeFilters, "ALL")
 
         //Get latest transactions and categories
         educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
