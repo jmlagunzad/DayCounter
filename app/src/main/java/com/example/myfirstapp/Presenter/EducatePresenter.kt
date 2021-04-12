@@ -46,6 +46,49 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     "ORDER BY id DESC"
+            "THIS CUTOFF - INCOME" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where CASE " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
+                    "THEN transaction_date between strftime('%Y-%m-11',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','localtime')) " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
+                    "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
+
+                    "ELSE transaction_date between strftime('%Y-%m-26',datetime('now')) " +
+                    "AND strftime('%Y-%m-11',datetime('now','start of month','+1 months')) " +
+
+
+
+                    "END " +
+
+                    "and amount > 0.0 " +
+
+                    "ORDER BY id DESC"
+            "THIS CUTOFF - EXPENSES" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where CASE " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
+                    "THEN transaction_date between strftime('%Y-%m-11',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','localtime')) " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
+                    "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
+
+                    "ELSE transaction_date between strftime('%Y-%m-26',datetime('now')) " +
+                    "AND strftime('%Y-%m-11',datetime('now','start of month','+1 months')) " +
+
+
+
+                    "END " +
+
+                    "and amount < 0.0 " +
+                    "ORDER BY id DESC"
             "LAST CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where CASE " +
@@ -63,6 +106,49 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     "ORDER BY id DESC"
+            "LAST CUTOFF - INCOME" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where CASE " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
+                    "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
+                    "THEN transaction_date between strftime('%Y-%m-11',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+
+                    "ELSE transaction_date between strftime('%Y-%m-11',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now')) " +
+
+
+
+                    "END " +
+
+                    "and amount > 0.0 " +
+
+                    "ORDER BY id DESC"
+            "LAST CUTOFF - EXPENSES" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+                    "where CASE " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) > 10 AND CAST(strftime('%d',datetime('now')) as integer) < 26 " +
+                    "THEN transaction_date between strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-11',datetime('now')) " +
+
+                    "WHEN CAST(strftime('%d',datetime('now')) as integer) < 11 " +
+                    "THEN transaction_date between strftime('%Y-%m-11',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-26',datetime('now','start of month','-1 months')) " +
+
+                    "ELSE transaction_date between strftime('%Y-%m-11',datetime('now')) " +
+                    "AND strftime('%Y-%m-26',datetime('now')) " +
+
+
+
+                    "END " +
+
+                    "and amount < 0.0 " +
+                    "ORDER BY id DESC"
             "THIS MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
 
@@ -70,13 +156,44 @@ class EducatePresenter(view: View) {
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
 
                     "ORDER BY id DESC"
+            "THIS MONTH - INCOME" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
 
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now', 'start of month')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
+
+                    "and amount > 0.0 " +
+                    "ORDER BY id DESC"
+            "THIS MONTH - EXPENSES" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now', 'start of month')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
+
+                    "and amount < 0.0 " +
+                    "ORDER BY id DESC"
             "LAST MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
 
                     "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now','start of month','-1 months')) " +
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
 
+                    "ORDER BY id DESC"
+            "LAST MONTH - INCOME" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
+
+                    "and amount > 0.0 " +
+                    "ORDER BY id DESC"
+            "LAST MONTH - EXPENSES" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                    "from transactions " +
+
+                    "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now','start of month','-1 months')) " +
+                    "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
+
+                    "and amount < 0.0 " +
                     "ORDER BY id DESC"
             else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
