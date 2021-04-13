@@ -110,7 +110,7 @@ class EducateSummaryFragment : Fragment(){
                     loadTable(presenter!!.getTransactions())
                 }
                 else{
-                    loadTable(presenter!!.getTransactions(currentFilter))
+                    loadTable(presenter!!.getTransactions(currentFilter,"ALL"))
                 }
             }
         }
@@ -121,7 +121,7 @@ class EducateSummaryFragment : Fragment(){
         if(currentFilter == "ALL"){
             loadTable(presenter!!.getTransactions())
         }else{
-            loadTable(presenter!!.getTransactions(currentFilter))
+            loadTable(presenter!!.getTransactions(currentFilter, "ALL"))
         }
 
     }

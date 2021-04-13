@@ -84,7 +84,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         }
     }
 
-    fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String){
+    private fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String){
         //Load categories for filtering
         //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
 
@@ -108,17 +108,9 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Init values
-<<<<<<< Updated upstream
-        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
-=======
-        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES",
-            "THIS CUTOFF","THIS CUTOFF - INCOME","THIS CUTOFF - EXPENSES",
-            "LAST CUTOFF","LAST CUTOFF - INCOME","LAST CUTOFF - EXPENSES",
-            "THIS MONTH", "THIS MONTH - INCOME", "THIS MONTH - EXPENSES",
-            "LAST MONTH", "LAST MONTH - INCOME", "LAST MONTH - EXPENSES")
-
+        val constantFilters = mutableListOf("ALL","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
         val typeFilters = mutableListOf("ALL", "INCOME", "EXPENSES")
->>>>>>> Stashed changes
+
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
@@ -132,11 +124,11 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         recyclerView_educate.getRecycledViewPool().setMaxRecycledViews(0, 0)
 
         //Get initial category list
-        refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()),"ALL")
-        refreshSpinner(view!!.findViewById<Spinner>(R.id.spinner_filterType), typeFilters, "ALL")
+        refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()),"ALL")
+        refreshSpinner(typeSpinner, typeFilters, "ALL")
 
         //Get latest transactions and categories
-        educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+        educateRecyclerAdapter.transactions = educatePresenter.getTransactions("ALL","ALL")
 
         //Get current balance
         recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
@@ -148,12 +140,32 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var filter = filterSpinner.selectedItem.toString()
-                if(filter == "ALL"){
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
-                }
-                else{
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter)
-                }
+                var type = typeSpinner.selectedItem.toString()
+//                if(filter == "ALL"){
+//                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+//                }
+//                else{
+                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter,type)
+               // }
+                educateRecyclerAdapter.notifyDataSetChanged();
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+            }
+        }
+
+        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var filter = filterSpinner.selectedItem.toString()
+                var type = typeSpinner.selectedItem.toString()
+//                if(filter == "ALL"){
+//                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+//                }
+//                else{
+                educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter,type)
+                // }
                 educateRecyclerAdapter.notifyDataSetChanged();
                 recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
             }
@@ -202,7 +214,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()),entryCategory.toString())
+                    refreshSpinner(typeSpinner, typeFilters, "ALL")
                     customDialog.dismiss()
                 }
 
@@ -263,7 +276,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                     educateRecyclerAdapter.notifyDataSetChanged()
 
                     recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
-                    refreshFilterSpinner(constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
+                    refreshSpinner(typeSpinner, typeFilters, "ALL")
                     customDialog.dismiss()
                 }
 

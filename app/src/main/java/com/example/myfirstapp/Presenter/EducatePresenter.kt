@@ -10,7 +10,9 @@ class EducatePresenter(view: View) {
     private val transactionHandler = TransactionDBHandler(view.context)
 
     fun getTransactions(): MutableList<Transaction>{
-        var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date from transactions ORDER BY id DESC"
+        var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                "from transactions " +
+                "ORDER BY id DESC"
         return transactionHandler.readData(query)
     }
 
@@ -19,15 +21,25 @@ class EducatePresenter(view: View) {
 //        return transactionHandler.readData(query)
 //    }
 
-    fun getTransactions(filter: String): MutableList<Transaction>{
+    fun getTransactions(filter: String, type: String): MutableList<Transaction>{
+        var typeFilter = when(type){
+            "INCOME" -> " AND amount > 0.0 "
+            "EXPENSES" -> " AND amount < 0.0 "
+            else -> " "
+        }
+
         var filterQuery = when(filter){
-            "INCOME" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+//            "INCOME" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+//                    "from transactions " +
+//                    "where amount > 0.0 " +
+//                    "ORDER BY id DESC"
+//            "EXPENSES" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+//                    "from transactions " +
+//                    "where amount < 0.0 " +
+//                    "ORDER BY id DESC"
+            "ALL" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
-                    "where amount > 0.0 " +
-                    "ORDER BY id DESC"
-            "EXPENSES" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
-                    "from transactions " +
-                    "where amount < 0.0 " +
+                    typeFilter +
                     "ORDER BY id DESC"
             "THIS CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
@@ -45,6 +57,7 @@ class EducatePresenter(view: View) {
                     "AND strftime('%Y-%m-11',datetime('now','start of month','+1 months')) " +
 
                     "END " +
+                    typeFilter +
                     "ORDER BY id DESC"
             "LAST CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
@@ -62,6 +75,7 @@ class EducatePresenter(view: View) {
                     "AND strftime('%Y-%m-26',datetime('now')) " +
 
                     "END " +
+                    typeFilter +
                     "ORDER BY id DESC"
             "THIS MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
@@ -69,6 +83,7 @@ class EducatePresenter(view: View) {
                     "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now', 'start of month')) " +
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
 
+                    typeFilter +
                     "ORDER BY id DESC"
 
             "LAST MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
@@ -77,10 +92,12 @@ class EducatePresenter(view: View) {
                     "WHERE transaction_date between strftime('%Y-%m-%d',datetime('now','start of month','-1 months')) " +
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
 
+                    typeFilter +
                     "ORDER BY id DESC"
             else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where category = '$filter' " +
+                    typeFilter +
                     "ORDER BY id DESC"
         }
         return transactionHandler.readData(filterQuery)
