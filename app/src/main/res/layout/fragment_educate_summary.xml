@@ -10,17 +10,22 @@
 
     <Spinner
         android:id="@+id/spinner_summary_filterCategory"
-        android:layout_width="0dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_summary_filterType"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinner_summary_filterCategory"
+        app:layout_constraintTop_toTopOf="@+id/spinner_summary_filterCategory" />
 
     <ScrollView
         android:id="@+id/scrollView2"

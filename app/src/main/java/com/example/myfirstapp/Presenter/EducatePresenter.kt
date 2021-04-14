@@ -38,7 +38,7 @@ class EducatePresenter(view: View) {
 //                    "where amount < 0.0 " +
 //                    "ORDER BY id DESC"
             "ALL" -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
-                    "from transactions " +
+                    "from transactions where 1 " +
                     typeFilter +
                     "ORDER BY id DESC"
             "THIS CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +

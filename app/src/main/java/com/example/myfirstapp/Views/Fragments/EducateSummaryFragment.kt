@@ -29,6 +29,7 @@ class EducateSummaryFragment : Fragment(){
     private var currView = this.view
     private var presenter : EducatePresenter? = null
     private var currentFilter = "ALL"
+    private var currentType = "ALL"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,29 +75,49 @@ class EducateSummaryFragment : Fragment(){
         }
     }
 
-    fun refreshFilterSpinner(categories: List<String>, currentCategory: String){
+//    fun refreshFilterSpinner(categories: List<String>, currentCategory: String){
+//        //Load categories for filtering
+//        //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
+//        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
+//        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+//        filterSpinner.adapter = categoryAdapter
+//        val currentFilter = categoryAdapter.getPosition(currentCategory)
+//        //println(currentFilter)
+//        if(currentFilter == -1){
+//            filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+//        }
+//        else{
+//            filterSpinner.setSelection(categoryAdapter.getPosition(currentCategory))
+//        }
+//    }
+
+    private fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String){
         //Load categories for filtering
         //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
-        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
+
         val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
-        filterSpinner.adapter = categoryAdapter
+        spinner.adapter = categoryAdapter
         val currentFilter = categoryAdapter.getPosition(currentCategory)
         //println(currentFilter)
         if(currentFilter == -1){
-            filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+            spinner.setSelection(categoryAdapter.getPosition("ALL"))
         }
         else{
-            filterSpinner.setSelection(categoryAdapter.getPosition(currentCategory))
+            spinner.setSelection(categoryAdapter.getPosition(currentCategory))
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterCategory)
-        val constantFilters = mutableListOf("ALL","INCOME","EXPENSES","THIS CUTOFF","LAST CUTOFF","THIS MONTH","LAST MONTH")
+        val typeSpinner = view!!.findViewById<Spinner>(R.id.spinner_summary_filterType)
+        val constantFilters = mutableListOf("ALL","THIS CUTOFF","LAST CUTOFF","THIS MONTH","LAST MONTH")
+        val typeFilters = mutableListOf("ALL","INCOME","EXPENSES")
+
         currView = view
                 presenter = EducatePresenter(currView!!)
-        refreshFilterSpinner(constantFilters.plus(
+        refreshSpinner(filterSpinner,constantFilters.plus(
             presenter!!.getCategories()),"ALL")
+        refreshSpinner(typeSpinner,typeFilters,"ALL")
         loadTable(presenter!!.getTransactions())
 
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -106,24 +127,37 @@ class EducateSummaryFragment : Fragment(){
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 currentFilter = filterSpinner.selectedItem.toString()
-                if(currentFilter == "ALL"){
-                    loadTable(presenter!!.getTransactions())
-                }
-                else{
-                    loadTable(presenter!!.getTransactions(currentFilter,"ALL"))
-                }
+                currentType = typeSpinner.selectedItem.toString()
+//                if(currentFilter == "ALL"){
+//                    loadTable(presenter!!.getTransactions())
+//                }
+//                else{
+                    loadTable(presenter!!.getTransactions(currentFilter,currentType))
+//                }
+            }
+        }
+
+        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                currentFilter = filterSpinner.selectedItem.toString()
+                currentType = typeSpinner.selectedItem.toString()
+//                if(currentFilter == "ALL"){
+//                    loadTable(presenter!!.getTransactions())
+//                }
+//                else{
+                loadTable(presenter!!.getTransactions(currentFilter,currentType))
+//                }
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if(currentFilter == "ALL"){
-            loadTable(presenter!!.getTransactions())
-        }else{
-            loadTable(presenter!!.getTransactions(currentFilter, "ALL"))
-        }
-
+        loadTable(presenter!!.getTransactions(currentFilter,currentType))
     }
 
     companion object {
