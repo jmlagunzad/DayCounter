@@ -16,11 +16,6 @@ class EducatePresenter(view: View) {
         return transactionHandler.readData(query)
     }
 
-//    fun getSummaryTransactions(): MutableList<Transaction>{
-//        var query = "SELECT id, title, amount as transaction_date from transactions ORDER BY id DESC"
-//        return transactionHandler.readData(query)
-//    }
-
     fun getTransactions(filter: String, type: String): MutableList<Transaction>{
         var typeFilter = when(type){
             "INCOME" -> " AND amount > 0.0 "
@@ -142,7 +137,7 @@ class EducatePresenter(view: View) {
     interface OnEditOrDelete {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
-        fun refreshFilterSpinner(categories: List<String>, currentCategory: String)
+        fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String)
         fun getCurrentFilter(): String
     }
 

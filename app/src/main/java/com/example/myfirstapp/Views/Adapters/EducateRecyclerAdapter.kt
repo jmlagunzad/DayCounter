@@ -129,7 +129,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
                     listener.recompute(adapterPresenter.computeBalance(transactions))
-                    listener.refreshFilterSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
+                    listener.refreshSpinner(categorySpinner,constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                     customDialog.dismiss()
 
                     Toast.makeText(
@@ -153,7 +153,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 this.notifyItemRemoved(position)
                 this.notifyItemRangeChanged(position, this.transactions.size);
                 listener.recompute(adapterPresenter.computeBalance(transactions))
-                listener.refreshFilterSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
+                listener.refreshSpinner(categorySpinner,constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
                 customDialog.dismiss()
                 Toast.makeText(
                     holder.view.context,
