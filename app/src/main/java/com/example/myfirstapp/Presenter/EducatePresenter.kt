@@ -138,6 +138,7 @@ class EducatePresenter(view: View) {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
         fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String)
+        fun refreshSpinner(categories: List<String>, currentCategory: String)
         fun getCurrentFilter(): String
     }
 

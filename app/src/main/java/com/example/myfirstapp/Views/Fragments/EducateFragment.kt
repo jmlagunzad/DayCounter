@@ -84,6 +84,23 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         }
     }
 
+    override fun refreshSpinner(categories: List<String>, currentCategory: String){
+        //Load categories for filtering
+        //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
+
+        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
+        filterSpinner.adapter = categoryAdapter
+        val currentFilter = categoryAdapter.getPosition(currentCategory)
+        //println(currentFilter)
+        if(currentFilter == -1){
+            filterSpinner.setSelection(categoryAdapter.getPosition("ALL"))
+        }
+        else{
+            filterSpinner.setSelection(categoryAdapter.getPosition(currentCategory))
+        }
+    }
+
     override fun getCurrentFilter(): String {
         //println(view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString())
         return view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString()
