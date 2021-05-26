@@ -111,9 +111,9 @@ class ExploreRecyclerAdapter(): RecyclerView.Adapter<CustomViewHolder>() {
                     if(entryDescription.toString().matches("(?<=^| )\\d+(\\.\\d+)?(?=\$| )".toRegex())) {
                         //DAY COUNTER
                         val c =  Calendar.getInstance();
-                        val year = c.get(Calendar.YEAR)
-                        val month = c.get(Calendar.MONTH)
-                        val day = c.get(Calendar.DAY_OF_MONTH)
+                        val year = wishes.get(position).getYear()
+                        val month = wishes.get(position).getMonth()-1
+                        val day =wishes.get(position).getDay()
 
                         val chosenDate = DatePickerDialog(holder.view.context, DatePickerDialog.OnDateSetListener{ view, choiceYear:Int, choiceMonth:Int, choiceDay:Int ->
 
