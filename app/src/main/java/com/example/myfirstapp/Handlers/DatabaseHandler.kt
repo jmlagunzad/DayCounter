@@ -36,7 +36,7 @@ class DatabaseHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
     val createTable4 = "CREATE TABLE transactions ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "title VARCHAR(256) NOT NULL," +
             "amount REAL NOT NULL," +
-            "category VARCHAR(256) 'General'," +
+            "category VARCHAR(256) DEFAULT \"General\"," +
             "transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
 
     val createTable5 = "CREATE TABLE logs ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
