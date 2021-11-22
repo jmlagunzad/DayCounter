@@ -2,6 +2,7 @@ package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.database.Cursor
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,15 @@ import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
+
+import com.opencsv.CSVWriter
+import android.database.sqlite.SQLiteDatabase
+import android.os.Environment
+
+import java.io.File
+import java.io.FileWriter
+import java.lang.Exception
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -288,6 +298,38 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             }
 
 
+
+        }
+
+        view.exportButton.setOnClickListener {
+//            Toast.makeText(view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
+//            val dbhelper = DBHelper(ApplicationProvider.getApplicationContext())
+//            val exportDir = File(Environment.getExternalStorageDirectory(), "")
+//            if (!exportDir.exists()) {
+//                exportDir.mkdirs()
+//            }
+//
+//            val file = File(exportDir, "csvname.csv")
+//            try {
+//                file.createNewFile()
+//                val csvWrite = CSVWriter(FileWriter(file))
+////                val db: SQLiteDatabase = dbhelper.getReadableDatabase()
+//                val curCSV: Cursor = educatePresenter.getTransactions()
+//                csvWrite.writeNext(curCSV.getColumnNames())
+//                while (curCSV.moveToNext()) {
+//                    //Which column you want to exprort
+//                    val arrStr = arrayOf<String>(
+//                        curCSV.getString(0),
+//                        curCSV.getString(1),
+//                        curCSV.getString(2)
+//                    )
+//                    csvWrite.writeNext(arrStr)
+//                }
+//                csvWrite.close()
+//                curCSV.close()
+//            } catch (sqlEx: Exception) {
+//                Log.e("MainActivity", sqlEx.message, sqlEx)
+//            }
 
         }
 
