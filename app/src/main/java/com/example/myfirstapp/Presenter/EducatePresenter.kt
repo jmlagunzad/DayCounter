@@ -1,9 +1,20 @@
 package com.example.myfirstapp.Presenter
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.database.Cursor
+import android.os.Build
+import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Model.Transaction
+import com.opencsv.CSVWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
 
 class EducatePresenter(view: View) {
 
@@ -11,6 +22,13 @@ class EducatePresenter(view: View) {
 
     fun getTransactions(): MutableList<Transaction>{
         var query = "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
+                "from transactions " +
+                "ORDER BY id DESC"
+        return transactionHandler.readData(query)
+    }
+
+    fun getTransactionsFullDate(): MutableList<Transaction>{
+        var query = "SELECT id, title, amount, category, transaction_date " +
                 "from transactions " +
                 "ORDER BY id DESC"
         return transactionHandler.readData(query)
@@ -134,12 +152,76 @@ class EducatePresenter(view: View) {
         return total
     }
 
+//    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun exportData(context: Context): Boolean{
+        //            val dbhelper = DBHelper(ApplicationProvider.getApplicationContext())
+        val exportDir = File(Environment.getExternalStorageDirectory(),"MyMorgana")
+        if (!exportDir.exists()) {
+            exportDir.mkdirs()
+        }
+
+//        val fos : FileOutputStream? = null
+//        val fos : FileOutputStream = context!!.openFileOutput("csvname.csv", MODE_PRIVATE)
+//        fos = context!!.openFileOutput("csvname.csv", MODE_PRIVATE)
+
+
+//        if (!context!!.filesDir.exists()) {
+//            context!!.filesDir.mkdirs()
+//        }
+
+//        val file = File(context!!.filesDir, "csvname2.csv")
+//        if (!Environment.DIRECTORY_DOCUMENTS.exists()) {
+//            Environment.DIRECTORY_DOCUMENTS.mkdirs()
+//        }
+//        if(file.exists()){
+//            file.delete()
+//        }
+        val file = File(exportDir, "EducateFile.csv")
+        try {
+            file.createNewFile()
+            val csvWrite = CSVWriter(FileWriter(file))
+//                val db: SQLiteDatabase = dbhelper.getReadableDatabase()
+            val curCSV = getTransactionsFullDate()
+//            csvWrite.writeNext(curCSV[0].getColumnNames())
+            csvWrite.writeNext(arrayOf("title","amount","category","transaction_date"))
+//            while (curCSV.moveToNext()) {
+//                //Which column you want to exprort
+//                val arrStr = arrayOf<String>(
+//                    curCSV.getString(0),
+//                    curCSV.getString(1),
+//                    curCSV.getString(2)
+//                )
+//                csvWrite.writeNext(arrStr)
+//            }
+            curCSV.forEach{
+                csvWrite.writeNext(arrayOf(
+                    it.title,
+                    it.amount.toString(),
+                    it.category,
+                    it.transaction_date
+                ))
+            }
+            csvWrite.close()
+//            curCSV.close()
+            return true
+        } catch (sqlEx: java.lang.Exception) {
+//            return sqlEx.toString()
+
+            Log.e("MainActivity", sqlEx.message, sqlEx)
+            return false
+        }
+
+
+    }
+
     interface OnEditOrDelete {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
         fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String)
         fun refreshSpinner(categories: List<String>, currentCategory: String)
         fun getCurrentFilter(): String
+//        fun exportData()
     }
 
 }

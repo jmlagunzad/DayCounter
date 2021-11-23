@@ -1,6 +1,7 @@
 package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.database.Cursor
 import android.graphics.Color
@@ -17,14 +18,11 @@ import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
-
-import com.opencsv.CSVWriter
-import android.database.sqlite.SQLiteDatabase
+import android.content.Intent
+import android.os.Build
 import android.os.Environment
-
-import java.io.File
-import java.io.FileWriter
-import java.lang.Exception
+import android.provider.Settings
+import androidx.annotation.RequiresApi
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -116,6 +114,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         return view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Init values
@@ -302,38 +301,24 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         }
 
         view.exportButton.setOnClickListener {
-//            Toast.makeText(view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
-//            val dbhelper = DBHelper(ApplicationProvider.getApplicationContext())
-//            val exportDir = File(Environment.getExternalStorageDirectory(), "")
-//            if (!exportDir.exists()) {
-//                exportDir.mkdirs()
-//            }
-//
-//            val file = File(exportDir, "csvname.csv")
-//            try {
-//                file.createNewFile()
-//                val csvWrite = CSVWriter(FileWriter(file))
-////                val db: SQLiteDatabase = dbhelper.getReadableDatabase()
-//                val curCSV: Cursor = educatePresenter.getTransactions()
-//                csvWrite.writeNext(curCSV.getColumnNames())
-//                while (curCSV.moveToNext()) {
-//                    //Which column you want to exprort
-//                    val arrStr = arrayOf<String>(
-//                        curCSV.getString(0),
-//                        curCSV.getString(1),
-//                        curCSV.getString(2)
-//                    )
-//                    csvWrite.writeNext(arrStr)
-//                }
-//                csvWrite.close()
-//                curCSV.close()
-//            } catch (sqlEx: Exception) {
-//                Log.e("MainActivity", sqlEx.message, sqlEx)
-//            }
+
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intent)
+//                return
+            }
+
+//            createDir()
+//            Toast.makeText(view.context, educatePresenter.exportData(context), Toast.LENGTH_LONG).show()
+
+            if(educatePresenter.exportData(context!!)){
+                Toast.makeText(view.context, "Data CSV downloaded!", Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(view.context, "Data export failed!", Toast.LENGTH_LONG).show()
+            }
 
         }
-
-
 
 
     }
