@@ -155,7 +155,6 @@ class EducatePresenter(view: View) {
 //    @RequiresApi(Build.VERSION_CODES.KITKAT)
     @RequiresApi(Build.VERSION_CODES.R)
     fun exportData(context: Context): Boolean{
-        //            val dbhelper = DBHelper(ApplicationProvider.getApplicationContext())
         val exportDir = File(Environment.getExternalStorageDirectory(),"MyMorgana")
         if (!exportDir.exists()) {
             exportDir.mkdirs()
@@ -165,35 +164,13 @@ class EducatePresenter(view: View) {
 //        val fos : FileOutputStream = context!!.openFileOutput("csvname.csv", MODE_PRIVATE)
 //        fos = context!!.openFileOutput("csvname.csv", MODE_PRIVATE)
 
-
-//        if (!context!!.filesDir.exists()) {
-//            context!!.filesDir.mkdirs()
-//        }
-
-//        val file = File(context!!.filesDir, "csvname2.csv")
-//        if (!Environment.DIRECTORY_DOCUMENTS.exists()) {
-//            Environment.DIRECTORY_DOCUMENTS.mkdirs()
-//        }
-//        if(file.exists()){
-//            file.delete()
-//        }
         val file = File(exportDir, "EducateFile.csv")
         try {
             file.createNewFile()
             val csvWrite = CSVWriter(FileWriter(file))
-//                val db: SQLiteDatabase = dbhelper.getReadableDatabase()
             val curCSV = getTransactionsFullDate()
-//            csvWrite.writeNext(curCSV[0].getColumnNames())
+
             csvWrite.writeNext(arrayOf("title","amount","category","transaction_date"))
-//            while (curCSV.moveToNext()) {
-//                //Which column you want to exprort
-//                val arrStr = arrayOf<String>(
-//                    curCSV.getString(0),
-//                    curCSV.getString(1),
-//                    curCSV.getString(2)
-//                )
-//                csvWrite.writeNext(arrStr)
-//            }
             curCSV.forEach{
                 csvWrite.writeNext(arrayOf(
                     it.title,
@@ -203,11 +180,8 @@ class EducatePresenter(view: View) {
                 ))
             }
             csvWrite.close()
-//            curCSV.close()
             return true
         } catch (sqlEx: java.lang.Exception) {
-//            return sqlEx.toString()
-
             Log.e("MainActivity", sqlEx.message, sqlEx)
             return false
         }
