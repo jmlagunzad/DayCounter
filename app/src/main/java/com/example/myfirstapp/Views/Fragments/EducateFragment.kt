@@ -305,13 +305,9 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             if (!Environment.isExternalStorageManager()) {
                 val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
                 startActivity(intent)
-//                return
             }
 
-//            createDir()
-//            Toast.makeText(view.context, educatePresenter.exportData(context), Toast.LENGTH_LONG).show()
-
-            if(educatePresenter.exportData(context!!)){
+            if(educatePresenter.exportData()){
                 Toast.makeText(view.context, "Data CSV downloaded!", Toast.LENGTH_LONG).show()
             }
             else{

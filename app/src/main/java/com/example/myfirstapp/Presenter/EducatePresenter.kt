@@ -154,7 +154,7 @@ class EducatePresenter(view: View) {
 
 //    @RequiresApi(Build.VERSION_CODES.KITKAT)
     @RequiresApi(Build.VERSION_CODES.R)
-    fun exportData(context: Context): Boolean{
+    fun exportData(): Boolean{
         val exportDir = File(Environment.getExternalStorageDirectory(),"MyMorgana")
         if (!exportDir.exists()) {
             exportDir.mkdirs()
