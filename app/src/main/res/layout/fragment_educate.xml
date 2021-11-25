@@ -55,6 +55,22 @@
         app:maxImageSize="36dp"
         tools:ignore="MissingConstraints" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/importButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:scaleType="center"
+        android:src="@android:drawable/stat_notify_sync"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView_educate"
+        app:layout_constraintEnd_toStartOf="@+id/exportButton"
+        app:maxImageSize="36dp"
+        tools:ignore="MissingConstraints" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_educate"
         android:layout_width="411dp"

@@ -316,6 +316,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         }
 
+        view.importButton.setOnClickListener {
+            Toast.makeText(view.context, "Data CSV imported!", Toast.LENGTH_LONG).show()
+        }
+
 
     }
 
