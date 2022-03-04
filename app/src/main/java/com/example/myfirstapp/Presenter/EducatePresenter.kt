@@ -3,6 +3,7 @@ package com.example.myfirstapp.Presenter
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -12,9 +13,8 @@ import androidx.annotation.RequiresApi
 import com.example.myfirstapp.Handlers.TransactionDBHandler
 import com.example.myfirstapp.Model.Transaction
 import com.opencsv.CSVWriter
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileWriter
+import java.io.*
+
 
 class EducatePresenter(view: View) {
 
@@ -189,13 +189,49 @@ class EducatePresenter(view: View) {
 
     }
 
+    fun importData(uri: Uri, context: Context): Boolean{
+
+        var reader: BufferedReader? = null
+
+        try {
+            reader = BufferedReader(InputStreamReader(context.contentResolver.openInputStream(uri)))
+            var line: String? = ""
+            reader.readLine() //to skip columns
+            while (reader.readLine().also({ line = it }) != null) {
+//                val sb = StringBuilder(str1)
+                val str = line!!.replace("\"", "").split(",").toTypedArray()
+                try{
+                    val transaction = Transaction(str[0], str[1].replace("\"", "").toDouble(), str[2])
+                    transaction.transaction_date = str[3]
+                    transactionHandler.insertData(transaction)
+//                    sb.append("'" + str[0] + "',")
+//                    sb.append(str[1] + "',")
+//                    sb.append(str[2] + "',")
+//                    sb.append(str[3] + "'")
+//                    sb.append(str[4] + "'")
+//                    sb.append(str2)
+//                    Log.e("MainActivity", "Line added: " + transaction)
+                }catch(e: Exception){
+                    Log.e("MainActivity", "Line skipped. ", e)
+                    continue
+                }
+            }
+
+            return true
+        }catch (e: IOException) {
+            Log.e("MainActivity", e.message, e)
+            return false
+        }
+
+
+    }
+
     interface OnEditOrDelete {
         fun recompute(computed: Double)
         fun recomputePair(computed: Pair<Double, Double>)
         fun refreshSpinner(spinner: Spinner, categories: List<String>, currentCategory: String)
         fun refreshSpinner(categories: List<String>, currentCategory: String)
         fun getCurrentFilter(): String
-//        fun exportData()
     }
 
 }

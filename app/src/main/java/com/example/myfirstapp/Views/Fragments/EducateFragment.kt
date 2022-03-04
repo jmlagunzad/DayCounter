@@ -19,9 +19,11 @@ import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 
 
@@ -316,9 +318,50 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         }
 
-        view.importButton.setOnClickListener {
-            Toast.makeText(view.context, "Data CSV imported!", Toast.LENGTH_LONG).show()
+        val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            // Handle the returned Uri
+            if(educatePresenter.importData(uri!!,view.context)){
+                Toast.makeText(view.context, "Data CSV imported!", Toast.LENGTH_LONG).show()
+
+                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
+                educateRecyclerAdapter.notifyDataSetChanged()
+
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+//                refreshSpinner(filterSpinner,constantFilters,entryCategory.toString())
+                refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()), "ALL")
+                refreshSpinner(typeSpinner, typeFilters, "ALL")
+            }
+            else{
+                Toast.makeText(view.context, "Data import failed!", Toast.LENGTH_LONG).show()
+            }
         }
+
+        view.importButton.setOnClickListener {
+
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intent)
+            }
+
+
+            getContent.launch("text/*")
+
+//            Toast.makeText(view.context, "Data CSV imported!", Toast.LENGTH_LONG).show()
+        }
+
+
+
+//        override fun onCreate(savedInstanceState: Bundle?) {
+//            // ...
+//
+//            val selectButton = findViewById<Button>(R.id.select_button)
+
+//            selectButton.setOnClickListener {
+//                // Pass in the mime type you'd like to allow the user to select
+//                // as the input
+//
+//            }
+//        }
 
 
     }
