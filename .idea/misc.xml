@@ -3,7 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/activity_splash_screen.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/add_choose_dialog.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/add_dialog.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/add_dialog_v2.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/educate_row.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/educate_row_v2.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/educate_summary_table_row.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_about.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_about_large.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_about_large_scroll.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_about_scroll.xml" value="0.2128623188405797" />
         <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_educate.xml" value="0.2" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_educate_summary.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_educate_view_pager.xml" value="0.152" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_endure.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_evolve.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/fragment_explore.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/Jm/Desktop/MyMorgana/DayCounter/app/src/main/res/layout/frame_row.xml" value="0.2128623188405797" />
       </map>
     </option>
   </component>
