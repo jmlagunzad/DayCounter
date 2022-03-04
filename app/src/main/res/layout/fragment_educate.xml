@@ -73,7 +73,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_educate"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
         android:background="#3b5998"
@@ -89,8 +89,8 @@
         android:id="@+id/textView6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="Current Balance:"
         android:textColor="#504c2d"
@@ -126,8 +126,10 @@
 
     <Spinner
         android:id="@+id/spinner_filterCategory"
-        android:layout_width="180dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="6dp"
         app:layout_constraintEnd_toStartOf="@+id/spinner_filterType"
         app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +137,7 @@
 
     <Spinner
         android:id="@+id/spinner_filterType"
-        android:layout_width="180dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
@@ -144,7 +146,7 @@
 
     <View
         android:id="@+id/divider7"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:background="?android:attr/listDivider"
