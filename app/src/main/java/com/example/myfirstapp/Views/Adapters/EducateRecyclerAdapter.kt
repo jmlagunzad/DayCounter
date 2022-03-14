@@ -3,6 +3,7 @@ package com.example.myfirstapp.Views.Adapters
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
-class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<CustomViewHolder>() {
+class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<EducateViewHolder>() {
 
     private val listener = listener
 
@@ -44,13 +45,15 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EducateViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         var cellForRow = layoutInflater.inflate(R.layout.educate_row_v2, parent, false)
-        return CustomViewHolder(cellForRow)
+        return EducateViewHolder(cellForRow)
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EducateViewHolder, position: Int) {
         holder.view.textView_mainTitle?.text = transactions.get(position).title
         holder.view.textView_description?.text = transactions.get(position).amount.toString()
         if(transactions.get(position).amount < 0.0){
@@ -65,6 +68,25 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
         holder.view.switch_active.setOnCheckedChangeListener{ _ , isChecked ->
             listener.recomputePair(adapterPresenter.tempBalance(transactions, isChecked, position))
+        }
+
+        holder.itemView.setOnClickListener{
+            transactions.get(position).selected = !transactions.get(position).selected
+            if(transactions.get(position).selected){
+                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
+            else{
+                if(transactions.get(position).amount < 0.0){
+                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+                }
+                else{
+                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+                }
+            }
+
+//            Log.e("MainActivity", "clicked. ")
+//            Toast.makeText(holder.view.context, "Clicked "+ position + "!", Toast.LENGTH_LONG).show()
+            true
         }
 
         holder.itemView.setOnLongClickListener{
@@ -171,5 +193,9 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
     }
 
 
+
+}
+
+class EducateViewHolder(val view: View): RecyclerView.ViewHolder(view){
 
 }
