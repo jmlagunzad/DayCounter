@@ -1,15 +1,18 @@
 package com.example.myfirstapp.Views.Fragments
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
-import android.database.Cursor
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Environment
+import android.provider.Settings
+import android.view.*
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Presenter.EducatePresenter
@@ -18,13 +21,6 @@ import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.Settings
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,7 +45,12 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+//        setHasOptionsMenu(true)
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        return inflater.inflate(R.menu.educate_menu,menu)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

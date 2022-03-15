@@ -3,16 +3,16 @@ package com.example.myfirstapp.Views.Adapters
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
 import com.example.myfirstapp.R
+import com.google.android.material.internal.ContextUtils.getActivity
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.educate_row.view.layout_background
 import kotlinx.android.synthetic.main.educate_row.view.textView_deadline
@@ -20,13 +20,12 @@ import kotlinx.android.synthetic.main.educate_row_v2.view.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
-import java.lang.Exception
-import kotlin.collections.ArrayList
 
 
 class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<EducateViewHolder>() {
 
     private val listener = listener
+    private var educateActionMode: ActionMode? = null
 
     val constantFilters = mutableListOf("ALL","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
     var transactions: MutableList<Transaction> = ArrayList()
@@ -70,26 +69,68 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             listener.recomputePair(adapterPresenter.tempBalance(transactions, isChecked, position))
         }
 
-        holder.itemView.setOnClickListener{
-            transactions.get(position).selected = !transactions.get(position).selected
-            if(transactions.get(position).selected){
-                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        class callback : ActionMode.Callback{
+
+            override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                mode!!.menuInflater.inflate(R.menu.educate_menu,menu)
+                mode.setTitle("Choose option")
+                return true
             }
-            else{
-                if(transactions.get(position).amount < 0.0){
-                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-                }
-                else{
-                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+
+                when(item!!.itemId){
+                    R.id.item1 -> {
+                        Toast.makeText(
+                            holder.view.context,
+                            "Entry ${position + 1} updated.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        mode!!.finish()
+                        return true
+                    }
+                    else -> return false
                 }
             }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                educateActionMode = null
+            }
+
+        }
+
+        holder.itemView.setOnLongClickListener{
+            //Change color when selected
+//            transactions.get(position).selected = !transactions.get(position).selected
+//            if(transactions.get(position).selected){
+//                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//            }
+//            else{
+//                if(transactions.get(position).amount < 0.0){
+//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+//                }
+//                else{
+//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+//                }
+//            }
+
+            if(educateActionMode != null){
+                false
+            }
+
+            educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
 
 //            Log.e("MainActivity", "clicked. ")
 //            Toast.makeText(holder.view.context, "Clicked "+ position + "!", Toast.LENGTH_LONG).show()
             true
         }
 
-        holder.itemView.setOnLongClickListener{
+
+        holder.itemView.setOnClickListener{
 
             //CHOOSE TEMPLATE FOR EACH FRAME
             val dialog = AlertDialog.Builder(holder.view.context)
