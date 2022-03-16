@@ -31,6 +31,8 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
     var transactions: MutableList<Transaction> = ArrayList()
     val adapterPresenter = EducateRecyclerAdapterPresenter(view)
     val view = view
+    val selectedItemsPosition = mutableListOf<Int>()
+    val selectedItemsId = mutableListOf<Int>()
 
 
     override fun getItemCount(): Int {
@@ -44,12 +46,28 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EducateViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         var cellForRow = layoutInflater.inflate(R.layout.educate_row_v2, parent, false)
         return EducateViewHolder(cellForRow)
+    }
+
+    fun selectItem(position: Int, id: Int): Boolean{
+        if(selectedItemsPosition.contains(position)){
+            selectedItemsPosition.remove(position)
+            selectedItemsId.remove(id)
+            return false
+        }
+        else{
+            selectedItemsPosition.add(position)
+            selectedItemsId.add(id)
+            return true
+        }
+    }
+
+    fun resetSelectedItems(){
+        selectedItemsPosition.clear()
+        selectedItemsId.clear()
     }
 
     override fun onBindViewHolder(holder: EducateViewHolder, position: Int) {
@@ -98,6 +116,8 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             }
 
             override fun onDestroyActionMode(mode: ActionMode?) {
+                resetSelectedItems()
+                notifyDataSetChanged()
                 educateActionMode = null
             }
 
@@ -119,6 +139,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 //            }
 
             if(educateActionMode != null){
+
                 false
             }
 
@@ -132,98 +153,147 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
         holder.itemView.setOnClickListener{
 
-            //CHOOSE TEMPLATE FOR EACH FRAME
-            val dialog = AlertDialog.Builder(holder.view.context)
-            val layoutInflater = LayoutInflater.from(holder.view.context)
-            val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
-
-            //SET TEXT WITHIN FRAME
-            dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
-            dialogView.findViewById<TextView>(R.id.textView_description).text = "Edit item price"
-            dialogView.findViewById<EditText>(R.id.editText_title).setText(transactions.get(position).title)
-            dialogView.findViewById<EditText>(R.id.editText_description).setText(transactions.get(position).amount.toString())
-            dialogView.findViewById<EditText>(R.id.editText_category).setText(transactions.get(position).category)
-
-            //LOAD CATEGORIES FOR SPINNER
-            val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
-            val categories = mutableListOf("").plus(adapterPresenter.getCategories())
-            val categoryAdapter = ArrayAdapter<String>(holder.view.context, android.R.layout.simple_spinner_dropdown_item,categories)
-            categorySpinner.adapter = categoryAdapter
-            categorySpinner.setSelection(categoryAdapter.getPosition(transactions.get(position).category))
-
-            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
+            if(educateActionMode != null){
+//                transactions.get(position).selected = !transactions.get(position).selected
+                if(selectItem(position,transactions.get(position).id)){
+                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                }
+                else{
+                    if(transactions.get(position).amount < 0.0){
+                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+                    }
+                    else{
+                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+                    }
                 }
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    dialogView.findViewById<EditText>(R.id.editText_category).setText(categorySpinner.selectedItem.toString())
-                }
+
+                Toast.makeText(holder.view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
             }
+            else{
 
-            //SETUP VALUES FOR DIALOGVIEW
-            dialog.setView(dialogView)
-            dialog.setCancelable(true)
-            dialog.setPositiveButton(
-                "Save Changes",
-                { dialogInterface: DialogInterface, i: Int -> })
-            dialog.setNegativeButton(
-                "Delete Entry",
-                { dialogInterface: DialogInterface, i: Int -> })
-            val customDialog = dialog.create()
-            customDialog.show()
 
-            //LISTENER FOR EDIT
-            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
+                //CHOOSE TEMPLATE FOR EACH FRAME
+                val dialog = AlertDialog.Builder(holder.view.context)
+                val layoutInflater = LayoutInflater.from(holder.view.context)
+                val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
 
-                //GET VALUES FROM EDIT TEXT FIELDS
-                var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-                var entryDescription = dialogView.findViewById<EditText>(R.id.editText_description).text
-                var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
+                //SET TEXT WITHIN FRAME
+                dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Edit item name"
+                dialogView.findViewById<TextView>(R.id.textView_description).text =
+                    "Edit item price"
+                dialogView.findViewById<EditText>(R.id.editText_title)
+                    .setText(transactions.get(position).title)
+                dialogView.findViewById<EditText>(R.id.editText_description)
+                    .setText(transactions.get(position).amount.toString())
+                dialogView.findViewById<EditText>(R.id.editText_category)
+                    .setText(transactions.get(position).category)
 
-                try {
+                //LOAD CATEGORIES FOR SPINNER
+                val categorySpinner = dialogView.findViewById<Spinner>(R.id.spinner_category)
+                val categories = mutableListOf("").plus(adapterPresenter.getCategories())
+                val categoryAdapter = ArrayAdapter<String>(
+                    holder.view.context,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    categories
+                )
+                categorySpinner.adapter = categoryAdapter
+                categorySpinner.setSelection(categoryAdapter.getPosition(transactions.get(position).category))
 
-                    transactions = adapterPresenter.updateTransaction(
-                        entryTitle.toString(),
-                        entryDescription.toString(),
-                        entryCategory.toString(),
-                        transactions.get(position).id
-                    )!!
-                    this.notifyDataSetChanged()
-                    this.notifyItemChanged(position)
+                categorySpinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            dialogView.findViewById<EditText>(R.id.editText_category)
+                                .setText(categorySpinner.selectedItem.toString())
+                        }
+                    }
+
+                //SETUP VALUES FOR DIALOGVIEW
+                dialog.setView(dialogView)
+                dialog.setCancelable(true)
+                dialog.setPositiveButton(
+                    "Save Changes",
+                    { dialogInterface: DialogInterface, i: Int -> })
+                dialog.setNegativeButton(
+                    "Delete Entry",
+                    { dialogInterface: DialogInterface, i: Int -> })
+                val customDialog = dialog.create()
+                customDialog.show()
+
+                //LISTENER FOR EDIT
+                customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+
+                    //GET VALUES FROM EDIT TEXT FIELDS
+                    var entryTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+                    var entryDescription =
+                        dialogView.findViewById<EditText>(R.id.editText_description).text
+                    var entryCategory =
+                        dialogView.findViewById<EditText>(R.id.editText_category).text
+
+                    try {
+
+                        transactions = adapterPresenter.updateTransaction(
+                            entryTitle.toString(),
+                            entryDescription.toString(),
+                            entryCategory.toString(),
+                            transactions.get(position).id
+                        )!!
+                        this.notifyDataSetChanged()
+                        this.notifyItemChanged(position)
+                        listener.recompute(adapterPresenter.computeBalance(transactions))
+                        listener.refreshSpinner(
+                            constantFilters.plus(adapterPresenter.getCategories()),
+                            listener.getCurrentFilter()
+                        )
+                        customDialog.dismiss()
+
+                        Toast.makeText(
+                            holder.view.context,
+                            "Entry ${position + 1} updated.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        println(e.toString())
+                        Toast.makeText(
+                            holder.view.context,
+                            "Enter a proper amount",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+                //LISTENER FOR DELETE
+                customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+                    var entryCategory =
+                        dialogView.findViewById<EditText>(R.id.editText_category).text
+
+                    adapterPresenter.deleteTransaction(transactions.get(position).id)
+                    this.transactions.removeAt(position)
+                    this.notifyItemRemoved(position)
+                    this.notifyItemRangeChanged(position, this.transactions.size);
                     listener.recompute(adapterPresenter.computeBalance(transactions))
-                    listener.refreshSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
+                    listener.refreshSpinner(
+                        constantFilters.plus(adapterPresenter.getCategories()),
+                        listener.getCurrentFilter()
+                    )
                     customDialog.dismiss()
-
                     Toast.makeText(
                         holder.view.context,
-                        "Entry ${position + 1} updated.",
+                        "Entry ${position + 1} deleted.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                catch(e: Exception){
-                    println(e.toString())
-                    Toast.makeText(holder.view.context, "Enter a proper amount", Toast.LENGTH_LONG).show()
-                }
             }
 
-            //LISTENER FOR DELETE
-            customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener{
-                var entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
-
-                adapterPresenter.deleteTransaction(transactions.get(position).id)
-                this.transactions.removeAt(position)
-                this.notifyItemRemoved(position)
-                this.notifyItemRangeChanged(position, this.transactions.size);
-                listener.recompute(adapterPresenter.computeBalance(transactions))
-                listener.refreshSpinner(constantFilters.plus(adapterPresenter.getCategories()), listener.getCurrentFilter())
-                customDialog.dismiss()
-                Toast.makeText(
-                    holder.view.context,
-                    "Entry ${position + 1} deleted.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
             true
 
