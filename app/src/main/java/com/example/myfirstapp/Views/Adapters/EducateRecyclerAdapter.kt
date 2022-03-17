@@ -3,6 +3,7 @@ package com.example.myfirstapp.Views.Adapters
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.opengl.Visibility
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.educate_row.view.layout_background
 import kotlinx.android.synthetic.main.educate_row.view.textView_deadline
 import kotlinx.android.synthetic.main.educate_row_v2.view.*
+import kotlinx.android.synthetic.main.fragment_educate.view.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
@@ -138,6 +140,23 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         selectedItemsId.clear()
     }
 
+    fun toggleButtons(){
+        if(educateActionMode != null){
+            view.addButton.visibility = View.INVISIBLE
+            view.minusButton.visibility = View.INVISIBLE
+            view.exportButton.visibility = View.INVISIBLE
+            view.importButton.visibility = View.INVISIBLE
+        }
+        else{
+            view.addButton.visibility = View.VISIBLE
+            view.minusButton.visibility = View.VISIBLE
+            view.exportButton.visibility = View.VISIBLE
+            view.importButton.visibility = View.VISIBLE
+        }
+
+
+    }
+
     override fun onBindViewHolder(holder: EducateViewHolder, position: Int) {
         holder.view.textView_mainTitle?.text = transactions.get(position).title
         holder.view.textView_description?.text = transactions.get(position).amount.toString()
@@ -198,6 +217,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 resetSelectedItems()
                 notifyDataSetChanged()
                 educateActionMode = null
+                toggleButtons()
             }
 
         }
@@ -223,6 +243,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             else{
                 educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
                 selectItemHolder(holder,position,transactions.get(position).id)
+                toggleButtons()
             }
 
 //            Log.e("MainActivity", "clicked. ")
