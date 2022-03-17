@@ -3,6 +3,7 @@ package com.example.myfirstapp.Views.Adapters
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,6 @@ import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
 import com.example.myfirstapp.R
-import com.google.android.material.internal.ContextUtils.getActivity
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.educate_row.view.layout_background
 import kotlinx.android.synthetic.main.educate_row.view.textView_deadline
@@ -34,6 +34,13 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
     val selectedItemsPosition = mutableListOf<Int>()
     val selectedItemsId = mutableListOf<Int>()
 
+    var mRecyclerView: RecyclerView? = null
+
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecyclerView = recyclerView
+    }
 
     override fun getItemCount(): Int {
         if (transactions.size > 21){
@@ -63,6 +70,67 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             selectedItemsId.add(id)
             return true
         }
+    }
+
+    fun selectItemHolder(holder: EducateViewHolder, position: Int, id: Int): Boolean{
+
+        if(selectedItemsPosition.contains(position)){
+            selectedItemsPosition.remove(position)
+            selectedItemsId.remove(id)
+            if(transactions.get(position).amount < 0.0){
+                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+            }
+            else{
+                holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+            }
+            return false
+        }
+        else{
+            selectedItemsPosition.add(position)
+            selectedItemsId.add(id)
+            holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            return true
+        }
+    }
+
+    fun selectAll(){
+//        for (var childCount = recyclerView.getChildCount(), i = 0; i < childCount; ++i) {
+//            final ViewHolder holder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
+//
+//        }
+
+        for(ctr in 0..mRecyclerView!!.childCount){
+//            val child = mRecyclerView!!.getChildAt(ctr)
+//            val holder = mRecyclerView!!.findViewHolderForLayoutPosition(ctr);
+//                mRecyclerView!!.findViewHolderForAdapterPosition(ctr) as EducateViewHolder
+//            recyclerView!!.getChildViewHolder(recyclerView!!.getChildAt(ctr)) as EducateViewHolder
+//            selectItemHolder(
+//                holder as EducateViewHolder,
+//                ctr,
+//                transactions.get(ctr).id)
+            Log.e("MainActivity", ctr.toString())
+        }
+
+    }
+
+    fun deleteSelectedItems(){
+//        var entryCategory =
+//            dialogView.findViewById<EditText>(R.id.editText_category).text
+
+        adapterPresenter.deleteTransactions(selectedItemsId)
+//        for(position in selectedItemsPosition..)
+        selectedItemsPosition.sortDescending()
+        selectedItemsPosition.forEach{
+            this.transactions.removeAt(it)
+            this.notifyItemRemoved(it)
+        }
+
+        this.notifyItemRangeChanged(selectedItemsPosition[selectedItemsPosition.lastIndex], this.transactions.size);
+        listener.recompute(adapterPresenter.computeBalance(transactions))
+        listener.refreshSpinner(
+            constantFilters.plus(adapterPresenter.getCategories()),
+            listener.getCurrentFilter()
+        )
     }
 
     fun resetSelectedItems(){
@@ -102,10 +170,21 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
 
                 when(item!!.itemId){
-                    R.id.item1 -> {
+                    R.id.item_select_all -> {
+                        selectAll()
                         Toast.makeText(
                             holder.view.context,
-                            "Entry ${position + 1} updated.",
+                            "Select all",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        mode!!.finish()
+                        return true
+                    }
+                    R.id.item_delete -> {
+                        deleteSelectedItems()
+                        Toast.makeText(
+                            holder.view.context,
+                            "Entries deleted!",
                             Toast.LENGTH_SHORT
                         ).show()
                         mode!!.finish()
@@ -139,11 +218,12 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 //            }
 
             if(educateActionMode != null){
-
-                false
+                selectItemHolder(holder,position,transactions.get(position).id)
             }
-
-            educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
+            else{
+                educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
+                selectItemHolder(holder,position,transactions.get(position).id)
+            }
 
 //            Log.e("MainActivity", "clicked. ")
 //            Toast.makeText(holder.view.context, "Clicked "+ position + "!", Toast.LENGTH_LONG).show()
@@ -154,18 +234,19 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         holder.itemView.setOnClickListener{
 
             if(educateActionMode != null){
+                selectItemHolder(holder,position,transactions.get(position).id)
 //                transactions.get(position).selected = !transactions.get(position).selected
-                if(selectItem(position,transactions.get(position).id)){
-                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
-                }
-                else{
-                    if(transactions.get(position).amount < 0.0){
-                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-                    }
-                    else{
-                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
-                    }
-                }
+//                if(selectItem(position,transactions.get(position).id)){
+//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//                }
+//                else{
+//                    if(transactions.get(position).amount < 0.0){
+//                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+//                    }
+//                    else{
+//                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+//                    }
+//                }
 
 
                 Toast.makeText(holder.view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()

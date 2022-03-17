@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 import com.example.myfirstapp.Model.Transaction
 import java.lang.Exception
@@ -100,6 +101,19 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
     fun deleteData(id: Int){
         val db = this.writableDatabase
         db.delete(TABLE_NAME,"$COL_ID = ?", arrayOf(id.toString()))
+        db.close()
+    }
+
+    fun deleteMultiple(ids: MutableList<Int>){
+        val db = this.writableDatabase
+//        val list = ids.map { it.toString() }.toTypedArray()
+//        list[0] = "(".plus(list[0])
+//        list[list.lastIndex] += ")"
+        val list = ids.joinToString()
+//        list.forEach {
+//            Log.e("Handler",it)
+//        }
+        db.delete(TABLE_NAME,"$COL_ID IN ( $list )",null)
         db.close()
     }
 

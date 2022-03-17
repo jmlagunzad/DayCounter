@@ -89,4 +89,11 @@ class EducateDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
     }
 
+    fun deleteMultiple(ids: MutableList<Int>){
+        val db = this.writableDatabase
+        val list: Array<String> = arrayOf(ids.toString())
+        db.delete(TABLE_NAME,"$COL_ID IN ?", list)
+        db.close()
+    }
+
 }

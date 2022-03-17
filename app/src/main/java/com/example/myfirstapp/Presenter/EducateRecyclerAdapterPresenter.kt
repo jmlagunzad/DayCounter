@@ -36,6 +36,10 @@ class EducateRecyclerAdapterPresenter(view: View) {
         transactionHandler.deleteData(id)
     }
 
+    fun deleteTransactions(ids: MutableList<Int>){
+        transactionHandler.deleteMultiple(ids)
+    }
+
     fun computeBalance(transactionHistory: MutableList<Transaction>): Double{
         var total = 0.0
         for(transaction in transactionHistory) {

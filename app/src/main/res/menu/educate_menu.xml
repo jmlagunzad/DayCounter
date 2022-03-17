@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/item1"
-        android:icon="@drawable/ic_delete_trash"
+    <item android:id="@+id/item_select_all"
+        android:icon="@drawable/ic_select_all"
         android:title="Select ALl"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/item2"
+    <item android:id="@+id/item_delete"
         android:icon="@drawable/ic_delete_trash"
         android:title="Delete"
         app:showAsAction="ifRoom" />
