@@ -1,7 +1,7 @@
 package com.example.myfirstapp.Views.Adapters
 
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content .DialogInterface
 import android.graphics.Color
 import android.opengl.Visibility
 import android.util.Log
@@ -10,10 +10,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
 import com.example.myfirstapp.R
+import com.example.myfirstapp.Views.MainActivity
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.educate_row.view.layout_background
 import kotlinx.android.synthetic.main.educate_row.view.textView_deadline
@@ -61,20 +63,20 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         return EducateViewHolder(cellForRow)
     }
 
-    fun selectItem(position: Int, id: Int): Boolean{
-        if(selectedItemsPosition.contains(position)){
-            selectedItemsPosition.remove(position)
-            selectedItemsId.remove(id)
-            return false
-        }
-        else{
-            selectedItemsPosition.add(position)
-            selectedItemsId.add(id)
-            return true
-        }
-    }
+//    fun selectItem(position: Int, id: Int): Boolean{
+//        if(selectedItemsPosition.contains(position)){
+//            selectedItemsPosition.remove(position)
+//            selectedItemsId.remove(id)
+//            return false
+//        }
+//        else{
+//            selectedItemsPosition.add(position)
+//            selectedItemsId.add(id)
+//            return true
+//        }
+//    }
 
-    fun selectItemHolder(holder: EducateViewHolder, position: Int, id: Int): Boolean{
+    fun selectItem(holder: EducateViewHolder, position: Int, id: Int): Boolean{
 
         if(selectedItemsPosition.contains(position)){
             selectedItemsPosition.remove(position)
@@ -154,7 +156,6 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             view.importButton.visibility = View.VISIBLE
         }
 
-
     }
 
     override fun onBindViewHolder(holder: EducateViewHolder, position: Int) {
@@ -179,6 +180,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 mode!!.menuInflater.inflate(R.menu.educate_menu,menu)
                 mode.setTitle("Choose option")
+//                view.findViewById<ViewPager2>(R.id.educateViewPager).visibility = View.INVISIBLE
                 return true
             }
 
@@ -238,12 +240,13 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 //            }
 
             if(educateActionMode != null){
-                selectItemHolder(holder,position,transactions.get(position).id)
+                selectItem(holder,position,transactions.get(position).id)
             }
             else{
                 educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
-                selectItemHolder(holder,position,transactions.get(position).id)
+                selectItem(holder,position,transactions.get(position).id)
                 toggleButtons()
+//                (view.context as AppCompatActivity?)?.findViewById<ViewPager2>(R.id.educateViewPager)?.visibility ?: View.INVISIBLE
             }
 
 //            Log.e("MainActivity", "clicked. ")
@@ -255,7 +258,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         holder.itemView.setOnClickListener{
 
             if(educateActionMode != null){
-                selectItemHolder(holder,position,transactions.get(position).id)
+                selectItem(holder,position,transactions.get(position).id)
 //                transactions.get(position).selected = !transactions.get(position).selected
 //                if(selectItem(position,transactions.get(position).id)){
 //                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))

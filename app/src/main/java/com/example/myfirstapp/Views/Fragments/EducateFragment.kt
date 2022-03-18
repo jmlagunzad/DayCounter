@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
+import com.example.myfirstapp.Views.MainActivity
 import kotlinx.android.synthetic.main.educate_row.view.*
 import kotlinx.android.synthetic.main.fragment_educate.*
 import kotlinx.android.synthetic.main.fragment_educate.view.*
@@ -45,6 +46,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
 //        setHasOptionsMenu(true)
     }
 
@@ -61,21 +63,21 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     }
 
     override fun recompute(computed: Double) {
-        view!!.findViewById<TextView>(R.id.textView_balance).text = computed.toString()
-        view!!.findViewById<TextView>(R.id.textView_difference).text = ""
+        requireView().findViewById<TextView>(R.id.textView_balance).text = computed.toString()
+        requireView().findViewById<TextView>(R.id.textView_difference).text = ""
     }
 
     override fun recomputePair(computed: Pair<Double, Double>) {
         var (total, difference) = computed
         difference *= -1
-        view!!.findViewById<TextView>(R.id.textView_balance).text = total.toString()
-        view!!.findViewById<TextView>(R.id.textView_difference).text = difference.toString()
+        requireView().findViewById<TextView>(R.id.textView_balance).text = total.toString()
+        requireView().findViewById<TextView>(R.id.textView_difference).text = difference.toString()
 
         if(difference < 0.0){
-            view!!.findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#f44336"))
+            requireView().findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#f44336"))
         }
         else{
-            view!!.findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#646B70"))
+            requireView().findViewById<TextView>(R.id.textView_difference).setTextColor(Color.parseColor("#646B70"))
         }
     }
 
@@ -83,7 +85,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         //Load categories for filtering
         //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
 
-        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
+        val categoryAdapter = ArrayAdapter<String>(requireView().context, android.R.layout.simple_spinner_dropdown_item,categories)
         spinner.adapter = categoryAdapter
         val currentFilter = categoryAdapter.getPosition(currentCategory)
         //println(currentFilter)
@@ -99,8 +101,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         //Load categories for filtering
         //val categories = mutableListOf("ALL").plus(educatePresenter.getCategories())
 
-        val categoryAdapter = ArrayAdapter<String>(view!!.context, android.R.layout.simple_spinner_dropdown_item,categories)
-        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
+        val categoryAdapter = ArrayAdapter<String>(requireView().context, android.R.layout.simple_spinner_dropdown_item,categories)
+        val filterSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterCategory)
         filterSpinner.adapter = categoryAdapter
         val currentFilter = categoryAdapter.getPosition(currentCategory)
         //println(currentFilter)
@@ -114,7 +116,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
     override fun getCurrentFilter(): String {
         //println(view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString())
-        return view!!.findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString()
+        return requireView().findViewById<Spinner>(R.id.spinner_filterCategory).selectedItem.toString()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -126,11 +128,11 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
-        val filterSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterCategory)
+        val filterSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterCategory)
 
-        val typeSpinner = view!!.findViewById<Spinner>(R.id.spinner_filterType)
+        val typeSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterType)
 
-        recyclerView_educate.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView_educate.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_educate.adapter = educateRecyclerAdapter
 
         //Prevent recyclerview from reloading on scroll
@@ -186,7 +188,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
-            val dialog = AlertDialog.Builder(this.context!!)
+            val dialog = AlertDialog.Builder(this.requireContext())
             val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
 
             //LOAD CATEGORIES FOR SPINNER
@@ -244,7 +246,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         view.minusButton.setOnClickListener {
             //educatePresenter.test()
-            val dialog = AlertDialog.Builder(this.context!!)
+            val dialog = AlertDialog.Builder(this.requireContext())
             val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
 
             //LOAD CATEGORIES FOR SPINNER

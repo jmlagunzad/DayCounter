@@ -3,6 +3,8 @@ package com.example.myfirstapp.Views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.view.ActionMode
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myfirstapp.Handlers.DatabaseHandler
 import com.example.myfirstapp.R
@@ -11,6 +13,10 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
+
+//    public var actionMode : ActionMode? = null
+
+    private var currViewPager : ViewPager2? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +28,15 @@ class MainActivity : AppCompatActivity() {
         var tabLayout = findViewById<TabLayout>(R.id.tabMenu)
         //var tabExplore = findViewById<TabItem>(R.id.tabExplore)
         //var tabEndure = findViewById<TabItem>(R.id.tabEndure)
-        var viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
         val fragmentAdapter = PagerAdapter(this)
         viewPager.adapter = fragmentAdapter
         viewPager.offscreenPageLimit = 2
+
+        currViewPager = viewPager
+
+
 //
 //        tabLayout.setupWithViewPager(viewPager)
 
@@ -52,7 +62,16 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
         //tabLayout(viewPager)
+//
+//        class callback : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                actionMode = educateActionMode
+//            }
+//        }
+    }
 
+    fun pauseViewer(){
+        currViewPager?.visibility ?: View.INVISIBLE
     }
 
 }
