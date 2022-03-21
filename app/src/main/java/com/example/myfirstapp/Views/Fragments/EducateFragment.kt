@@ -155,11 +155,15 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
 
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                educateRecyclerAdapter.educateActionMode?.finish()
+
                 var filter = filterSpinner.selectedItem.toString()
                 var type = typeSpinner.selectedItem.toString()
 //                if(filter == "ALL"){
@@ -179,6 +183,8 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                educateRecyclerAdapter.educateActionMode?.finish()
+
                 var filter = filterSpinner.selectedItem.toString()
                 var type = typeSpinner.selectedItem.toString()
 //                if(filter == "ALL"){

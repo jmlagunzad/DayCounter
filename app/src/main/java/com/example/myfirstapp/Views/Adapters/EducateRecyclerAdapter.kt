@@ -29,8 +29,7 @@ import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<EducateViewHolder>() {
 
     private val listener = listener
-    private var educateActionMode: ActionMode? = null
-    private var holders : MutableList<EducateViewHolder> = ArrayList()
+    var educateActionMode: ActionMode? = null
 
     val constantFilters = mutableListOf("ALL","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
     var transactions: MutableList<Transaction> = ArrayList()
@@ -56,60 +55,6 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         return EducateViewHolder(cellForRow)
     }
 
-//    fun selectItem(position: Int, id: Int): Boolean{
-//        if(selectedItemsPosition.contains(position)){
-//            selectedItemsPosition.remove(position)
-//            selectedItemsId.remove(id)
-//            return false
-//        }
-//        else{
-//            selectedItemsPosition.add(position)
-//            selectedItemsId.add(id)
-//            return true
-//        }
-//    }
-
-    fun selectItem(holder: EducateViewHolder, position: Int, id: Int): Boolean{
-
-//        if(selectedItemsPosition.contains(position)){
-//            selectedItemsPosition.remove(position)
-//            selectedItemsId.remove(id)
-//            if(transactions.get(position).amount < 0.0){
-//                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-//            }
-//            else{
-//                holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
-//            }
-//            return false
-//        }
-//        else{
-//            selectedItemsPosition.add(position)
-//            selectedItemsId.add(id)
-//            holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
-//            return true
-//        }
-
-        if(selectedItemsPosition.contains(position)){
-            selectedItemsPosition.remove(position)
-            selectedItemsId.remove(id)
-            transactions.get(position).selected = false
-            if(transactions.get(position).amount < 0.0){
-                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-            }
-            else{
-                holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
-            }
-            return false
-        }
-        else{
-            selectedItemsPosition.add(position)
-            selectedItemsId.add(id)
-            transactions.get(position).selected = true
-            holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
-            return true
-        }
-    }
-
     fun selectItem(position: Int){
         if(transactions.get(position).selected){
             selectedItemsPosition.remove(position)
@@ -125,42 +70,10 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
     }
 
     fun selectAll(){
-//        for (var childCount = recyclerView.getChildCount(), i = 0; i < childCount; ++i) {
-//            final ViewHolder holder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
-//
-//        }
-
-//        for(ctr in 0..mRecyclerView!!.childCount){
-//            val child = mRecyclerView!!.getChildAt(ctr)
-//            val holder = mRecyclerView!!.findViewHolderForLayoutPosition(ctr);
-//                mRecyclerView!!.findViewHolderForAdapterPosition(ctr) as EducateViewHolder
-//            recyclerView!!.getChildViewHolder(recyclerView!!.getChildAt(ctr)) as EducateViewHolder
-//            selectItemHolder(
-//                holder as EducateViewHolder,
-//                ctr,
-//                transactions.get(ctr).id)
-//            Log.e("MainActivity", ctr.toString())
-//        }
-
-//        for(ctr in 0 until holders.size){
-//            selectItem(holders[ctr],
-//                ctr,
-//                transactions.get(ctr).id)
-//        }
-
-//        for(ctr in 0 until holders.size){
-//            Log.e("MainActivity", ctr.toString())
-//            selectItem(holders[ctr],
-//            ctr,
-//            transactions.get(ctr).id)
-//
-//        }
 
         for(ctr in 0 until itemCount){
             Log.e("MainActivity", ctr.toString())
-//            selectItem(holders[ctr],
-//                ctr,
-//                transactions.get(ctr).id)
+
             if(!transactions.get(ctr).selected){
                 selectedItemsPosition.add(ctr)
                 selectedItemsId.add(transactions.get(ctr).id)
@@ -170,17 +83,6 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
         this.notifyItemRangeChanged(0, itemCount)
         Toast.makeText(view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
-
-//        holders.forEachIndexed{ index, element ->
-//            selectItem(
-//                element,
-//                index,
-//                transactions.get(index).id
-//            )
-//            Log.e("MainActivity", index.toString())
-//        }
-
-//        Log.e("MainActivity", itemCount.toString())
 
     }
 
@@ -316,30 +218,14 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         }
 
         holder.itemView.setOnLongClickListener{
-            //Change color when selected
-//            transactions.get(position).selected = !transactions.get(position).selected
-//            if(transactions.get(position).selected){
-//                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
-//            }
-//            else{
-//                if(transactions.get(position).amount < 0.0){
-//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-//                }
-//                else{
-//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
-//                }
-//            }
 
             if(educateActionMode != null){
-//                selectItem(holder,position,transactions.get(position).id)
                 selectItem(position)
             }
             else{
                 educateActionMode = (view.context as AppCompatActivity?)!!.startSupportActionMode(callback())
-//                selectItem(holder,position,transactions.get(position).id)
                 selectItem(position)
                 toggleButtons()
-//                (view.context as AppCompatActivity?)?.findViewById<ViewPager2>(R.id.educateViewPager)?.visibility ?: View.INVISIBLE
             }
 
 //            Log.e("MainActivity", "clicked. ")
@@ -351,24 +237,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         holder.itemView.setOnClickListener{
 
             if(educateActionMode != null){
-//                selectItem(holder,position,transactions.get(position).id)
                 selectItem(position)
-
-
-//                transactions.get(position).selected = !transactions.get(position).selected
-//                if(selectItem(position,transactions.get(position).id)){
-//                    holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
-//                }
-//                else{
-//                    if(transactions.get(position).amount < 0.0){
-//                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
-//                    }
-//                    else{
-//                        holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
-//                    }
-//                }
-
-
                 Toast.makeText(holder.view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
             }
             else{
@@ -494,8 +363,6 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                     ).show()
                 }
             }
-
-            holders.add(holder)
 
             true
 
