@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.R
 import com.example.myfirstapp.Views.Adapters.EducateRecyclerAdapter
@@ -122,12 +123,17 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+//        val pager = activity?.findViewById<ViewPager2>(R.id.educateViewPager);
+//        pager!!.isEnabled= false
+//        pager!!.isUserInputEnabled = false
+
         //Init values
         val constantFilters = mutableListOf("ALL","THIS CUTOFF","LAST CUTOFF", "THIS MONTH", "LAST MONTH")
         val typeFilters = mutableListOf("ALL", "INCOME", "EXPENSES")
 
         val educatePresenter = EducatePresenter(view)
         val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
+
         val filterSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterCategory)
 
         val typeSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterType)
@@ -188,6 +194,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 
         view.addButton.setOnClickListener {
             //educatePresenter.test()
+
             val dialog = AlertDialog.Builder(this.requireContext())
             val dialogView = layoutInflater.inflate(R.layout.add_dialog_v2, null)
 
