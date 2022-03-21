@@ -72,7 +72,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
     fun selectAll(){
 
         for(ctr in 0 until itemCount){
-            Log.e("MainActivity", ctr.toString())
+//            Log.e("MainActivity", ctr.toString())
 
             if(!transactions.get(ctr).selected){
                 selectedItemsPosition.add(ctr)
@@ -86,29 +86,33 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     }
 
-    fun deleteSelectedItems(){
+    fun deleteSelectedItems() {
 //        var entryCategory =
 //            dialogView.findViewById<EditText>(R.id.editText_category).text
+        if (!selectedItemsPosition.isEmpty()) {
+            adapterPresenter.deleteTransactions(selectedItemsId)
+            //        for(position in selectedItemsPosition..)
+            selectedItemsPosition.sortDescending()
+            selectedItemsPosition.forEach {
+                this.transactions.removeAt(it)
+                this.notifyItemRemoved(it)
+            }
 
-        adapterPresenter.deleteTransactions(selectedItemsId)
-//        for(position in selectedItemsPosition..)
-        selectedItemsPosition.sortDescending()
-        selectedItemsPosition.forEach{
-            this.transactions.removeAt(it)
-            this.notifyItemRemoved(it)
+            this.notifyItemRangeChanged(
+                selectedItemsPosition[selectedItemsPosition.lastIndex],
+                this.transactions.size
+            )
+
+            selectedItemsPosition.clear()
+            selectedItemsId.clear()
+
+
+            listener.recompute(adapterPresenter.computeBalance(transactions))
+            listener.refreshSpinner(
+                constantFilters.plus(adapterPresenter.getCategories()),
+                listener.getCurrentFilter()
+            )
         }
-
-        this.notifyItemRangeChanged(selectedItemsPosition[selectedItemsPosition.lastIndex], this.transactions.size)
-
-        selectedItemsPosition.clear()
-        selectedItemsId.clear()
-
-
-        listener.recompute(adapterPresenter.computeBalance(transactions))
-        listener.refreshSpinner(
-            constantFilters.plus(adapterPresenter.getCategories()),
-            listener.getCurrentFilter()
-        )
 
     }
 
