@@ -40,6 +40,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     private var param1: String? = null
     private var param2: String? = null
     private var balance = 0.0
+    public var educateRecyclerAdapter: EducateRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,7 +133,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         val typeFilters = mutableListOf("ALL", "INCOME", "EXPENSES")
 
         val educatePresenter = EducatePresenter(view)
-        val educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
+        educateRecyclerAdapter = EducateRecyclerAdapter(view, this)
 
         val filterSpinner = requireView().findViewById<Spinner>(R.id.spinner_filterCategory)
 
@@ -149,10 +150,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
         refreshSpinner(typeSpinner, typeFilters, "ALL")
 
         //Get latest transactions and categories
-        educateRecyclerAdapter.transactions = educatePresenter.getTransactions("ALL","ALL")
+        educateRecyclerAdapter!!.transactions = educatePresenter.getTransactions("ALL","ALL")
 
         //Get current balance
-        recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+        recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
 
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
 
@@ -162,7 +163,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                educateRecyclerAdapter.educateActionMode?.finish()
+                educateRecyclerAdapter!!.endActionMode()
 
                 var filter = filterSpinner.selectedItem.toString()
                 var type = typeSpinner.selectedItem.toString()
@@ -170,10 +171,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 //                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 //                }
 //                else{
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter,type)
+                    educateRecyclerAdapter!!.transactions = educatePresenter.getTransactions(filter,type)
                // }
-                educateRecyclerAdapter.notifyDataSetChanged();
-                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+                educateRecyclerAdapter!!.notifyDataSetChanged();
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
             }
         }
 
@@ -183,7 +184,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                educateRecyclerAdapter.educateActionMode?.finish()
+                educateRecyclerAdapter!!.educateActionMode?.finish()
 
                 var filter = filterSpinner.selectedItem.toString()
                 var type = typeSpinner.selectedItem.toString()
@@ -191,10 +192,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
 //                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
 //                }
 //                else{
-                educateRecyclerAdapter.transactions = educatePresenter.getTransactions(filter,type)
+                educateRecyclerAdapter!!.transactions = educatePresenter.getTransactions(filter,type)
                 // }
-                educateRecyclerAdapter.notifyDataSetChanged();
-                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+                educateRecyclerAdapter!!.notifyDataSetChanged();
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
             }
         }
 
@@ -236,12 +237,12 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                 val entryCategory = dialogView.findViewById<EditText>(R.id.editText_category).text
 
                 if(educatePresenter.addTransaction(entryTitle.toString(), entryAmount.toString(), entryCategory.toString())){
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+                    educateRecyclerAdapter!!.transactions = educatePresenter.getTransactions()
 
-                    educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
-                    educateRecyclerAdapter.notifyDataSetChanged()
+                    educateRecyclerAdapter!!.notifyItemInserted(educateRecyclerAdapter!!.transactions.size)
+                    educateRecyclerAdapter!!.notifyDataSetChanged()
 
-                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
                     refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()),entryCategory.toString())
                     refreshSpinner(typeSpinner, typeFilters, "ALL")
                     customDialog.dismiss()
@@ -298,12 +299,12 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
                         entryAmount.toString(),
                         entryCategory.toString()
                     )){
-                    educateRecyclerAdapter.transactions = educatePresenter.getTransactions()
+                    educateRecyclerAdapter!!.transactions = educatePresenter.getTransactions()
 
-                    educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
-                    educateRecyclerAdapter.notifyDataSetChanged()
+                    educateRecyclerAdapter!!.notifyItemInserted(educateRecyclerAdapter!!.transactions.size)
+                    educateRecyclerAdapter!!.notifyDataSetChanged()
 
-                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+                    recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
                     refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()), entryCategory.toString())
                     refreshSpinner(typeSpinner, typeFilters, "ALL")
                     customDialog.dismiss()
@@ -339,10 +340,10 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
             if(educatePresenter.importData(uri!!,view.context)){
                 Toast.makeText(view.context, "Data CSV imported!", Toast.LENGTH_LONG).show()
 
-                educateRecyclerAdapter.notifyItemInserted(educateRecyclerAdapter.transactions.size)
-                educateRecyclerAdapter.notifyDataSetChanged()
+                educateRecyclerAdapter!!.notifyItemInserted(educateRecyclerAdapter!!.transactions.size)
+                educateRecyclerAdapter!!.notifyDataSetChanged()
 
-                recompute(educatePresenter.computeBalance(educateRecyclerAdapter.transactions))
+                recompute(educatePresenter.computeBalance(educateRecyclerAdapter!!.transactions))
 //                refreshSpinner(filterSpinner,constantFilters,entryCategory.toString())
                 refreshSpinner(filterSpinner,constantFilters.plus(educatePresenter.getCategories()), "ALL")
                 refreshSpinner(typeSpinner, typeFilters, "ALL")

@@ -234,4 +234,8 @@ class EducatePresenter(view: View) {
         fun getCurrentFilter(): String
     }
 
+    interface HandleActionMode{
+        fun endActionMode()
+    }
+
 }

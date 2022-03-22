@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.frame_row.view.textView_description
 import kotlinx.android.synthetic.main.frame_row.view.textView_mainTitle
 
 
-class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<EducateViewHolder>() {
+class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDelete): RecyclerView.Adapter<EducateViewHolder>(), EducatePresenter.HandleActionMode {
 
     private val listener = listener
     var educateActionMode: ActionMode? = null
@@ -376,6 +376,9 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     }
 
+    override fun endActionMode() {
+        educateActionMode?.finish()
+    }
 
 
 }
