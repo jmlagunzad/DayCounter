@@ -28,6 +28,8 @@ class EducateViewPagerFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    var fragmentAdapter : EducatePagerAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -50,7 +52,7 @@ class EducateViewPagerFragment : Fragment() {
         var tabLayout = view!!.findViewById<TabLayout>(R.id.educateTabMenu)
         var viewPager = view!!.findViewById<ViewPager2>(R.id.educateViewPager)
 
-        val fragmentAdapter = EducatePagerAdapter(this)
+        fragmentAdapter = EducatePagerAdapter(this)
         viewPager.adapter = fragmentAdapter
         viewPager.offscreenPageLimit = 2
 
@@ -67,7 +69,7 @@ class EducateViewPagerFragment : Fragment() {
 
         class callback : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                fragmentAdapter.educateFragment.educateRecyclerAdapter?.endActionMode()
+                fragmentAdapter!!.educateFragment.educateRecyclerAdapter?.endActionMode()
             }
         }
 

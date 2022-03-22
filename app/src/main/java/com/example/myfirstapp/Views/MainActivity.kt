@@ -11,12 +11,12 @@ import com.example.myfirstapp.R
 import com.example.myfirstapp.Views.Adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
 //    public var actionMode : ActionMode? = null
 
-    private var currViewPager : ViewPager2? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +34,13 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = fragmentAdapter
         viewPager.offscreenPageLimit = 2
 
-        currViewPager = viewPager
-
-
 //
 //        tabLayout.setupWithViewPager(viewPager)
 
-            //val adapter = PagerAdapter(EndureFragment())
+        //val adapter = PagerAdapter(EndureFragment())
         //viewPager.adapter = adapter
-        TabLayoutMediator(tabLayout, viewPager){ tab, position ->
-            when(position){
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
                 0 -> {
                     tab.text = "Endure"
                 }
@@ -61,17 +58,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
-        //tabLayout(viewPager)
-//
-//        class callback : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                actionMode = educateActionMode
-//            }
-//        }
+
+        class callback : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                fragmentAdapter.educateViewPager.fragmentAdapter?.educateFragment?.educateRecyclerAdapter?.endActionMode()
+            }
+        }
+
+        viewPager.registerOnPageChangeCallback(callback())
     }
 
-    fun pauseViewer(){
-        currViewPager?.visibility ?: View.INVISIBLE
-    }
+
 
 }
