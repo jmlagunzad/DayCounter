@@ -177,6 +177,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 mode!!.menuInflater.inflate(R.menu.educate_menu,menu)
                 mode.setTitle("Choose option")
+                menu!!.findItem(R.id.item3).isEnabled = false
 //                view.findViewById<ViewPager2>(R.id.educateViewPager).visibility = View.INVISIBLE
                 return true
             }

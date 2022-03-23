@@ -4,7 +4,7 @@
 
     <item android:id="@+id/item_select_all"
         android:icon="@drawable/ic_select_all"
-        android:title="Select ALl"
+        android:title="Select All"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/item_delete"
@@ -12,7 +12,10 @@
         android:title="Delete"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/item3"
-        android:title="Item3"
-        app:showAsAction="never" />
+    <item
+        android:id="@+id/item3"
+        android:title=""
+        android:icon="@drawable/ic_menu_btn"
+        android:enabled="false"
+        app:showAsAction="ifRoom" />
 </menu>
