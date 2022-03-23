@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_educate.*
 
 class EducatePagerAdapter(fa: EducateViewPagerFragment) : FragmentStateAdapter(fa) {
 
-    public var educateFragment = EducateFragment()
+    var educateFragment = EducateFragment()
 
     override fun createFragment(position: Int): Fragment {
         return when(position){

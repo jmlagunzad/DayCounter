@@ -71,13 +71,18 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
     fun selectAll(){
 
-        for(ctr in 0 until itemCount){
+        if(selectedItemsPosition.count() == itemCount){
+            resetSelectedItems()
+        }
+        else{
+            for(ctr in 0 until itemCount){
 //            Log.e("MainActivity", ctr.toString())
 
-            if(!transactions.get(ctr).selected){
-                selectedItemsPosition.add(ctr)
-                selectedItemsId.add(transactions.get(ctr).id)
-                transactions.get(ctr).selected = true
+                if(!transactions.get(ctr).selected){
+                    selectedItemsPosition.add(ctr)
+                    selectedItemsId.add(transactions.get(ctr).id)
+                    transactions.get(ctr).selected = true
+                }
             }
         }
 
