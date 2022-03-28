@@ -48,4 +48,12 @@ class EvolveRecyclerAdapterPresenter(view: View) {
         return result
     }
 
+    fun computeDifference(initialWeight:  Double?, currWeight: Double): Double {
+        try{
+            return Math.round((Math.round(( Math.round((initialWeight!! - currWeight) * 1000.0) / 1000.0) * 100.0) / 100.0) * 10.0) / 10.0
+        }catch(e: java.lang.Exception){
+            return 0.0
+        }
+    }
+
 }
