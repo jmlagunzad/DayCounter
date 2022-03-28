@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         //val adapter = PagerAdapter(EndureFragment())
         //viewPager.adapter = adapter
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {

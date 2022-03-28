@@ -55,6 +55,11 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         return EducateViewHolder(cellForRow)
     }
 
+    fun clearItemLists(){
+        selectedItemsPosition.clear()
+        selectedItemsId.clear()
+    }
+
     fun selectItem(position: Int){
         if(transactions.get(position).selected){
             selectedItemsPosition.remove(position)
@@ -87,7 +92,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
         }
 
         this.notifyItemRangeChanged(0, itemCount)
-        Toast.makeText(view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
 
     }
 
@@ -108,9 +113,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 this.transactions.size
             )
 
-            selectedItemsPosition.clear()
-            selectedItemsId.clear()
-
+            clearItemLists()
 
             listener.recompute(adapterPresenter.computeBalance(transactions))
             listener.refreshSpinner(
@@ -118,7 +121,6 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 listener.getCurrentFilter()
             )
         }
-
     }
 
     fun resetSelectedItems(){
@@ -131,8 +133,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
             this.notifyItemRangeChanged((selectedItemsPosition[0]), selectedItemsPosition[selectedItemsPosition.lastIndex])
 
-            selectedItemsPosition.clear()
-            selectedItemsId.clear()
+            clearItemLists()
         }
 
     }
@@ -196,11 +197,11 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
                 when(item!!.itemId){
                     R.id.item_select_all -> {
                         selectAll()
-                        Toast.makeText(
-                            holder.view.context,
-                            "Select all",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            holder.view.context,
+//                            "Select all",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
 //                        mode!!.finish()
                         return true
                     }
@@ -248,7 +249,7 @@ class EducateRecyclerAdapter(view: View, listener: EducatePresenter.OnEditOrDele
 
             if(educateActionMode != null){
                 selectItem(position)
-                Toast.makeText(holder.view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
+//                Toast.makeText(holder.view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
             }
             else{
 
