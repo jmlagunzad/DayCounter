@@ -39,18 +39,31 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         var difference = 0.0
+        var differenceText = ""
+
         if(position > 0){
             difference = presenter.computeDifference(logs.get(position-1).value, logs.get(position).value)
             initialWeight = logs.get(position).value
+
+            if(difference < 0){
+                holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
+                differenceText = " [+" + (difference * -1) + " KG]"
+            }
+            else{
+                holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+                differenceText = " [-" + difference + " KG]"
+            }
+
         }
         else{
             initialWeight = logs.get(position).value
         }
-        holder?.view?.textView_mainTitle?.text = logs.get(position).title
-        holder?.view?.textView_description?.text = presenter.displayConversion(logs.get(position).value,logs.get(position).unit) + " - " + difference
-        holder?.view?.textView_deadline?.text = logs.get(position).log_date
 
-        holder?.itemView.setOnLongClickListener{
+        holder.view.textView_mainTitle?.text = logs.get(position).title + differenceText
+        holder.view.textView_description?.text = presenter.displayConversion(logs.get(position).value,logs.get(position).unit)
+        holder.view.textView_deadline?.text = logs.get(position).log_date
+
+        holder.itemView.setOnLongClickListener{
 
             //CHOOSE TEMPLATE FOR EACH FRAME
             val dialog = AlertDialog.Builder(holder.view.context)
