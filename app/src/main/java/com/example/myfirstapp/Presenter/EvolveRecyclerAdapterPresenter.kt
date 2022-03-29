@@ -33,16 +33,16 @@ class EvolveRecyclerAdapterPresenter(view: View) {
         logHandler.deleteData(id)
     }
 
-    fun displayConversion(value: Double, unit: String): String{
+    fun displayConversion(value: Double, unit: String, full: Boolean = true): String{
         var result = ""
         result = when(unit){
             "KG" -> {
                 var converted = Math.round((Math.round(( Math.round((value * 2.20462) * 1000.0) / 1000.0) * 100.0) / 100.0) * 10.0) / 10.0
-                "$value $unit - $converted LBS"
+                if(full) "$value $unit - $converted LBS" else converted.toString()
             }
             else -> {
                 var converted = Math.round((Math.round(( Math.round((value * 0.453592) * 1000.0) / 1000.0) * 100.0) / 100.0) * 10.0) / 10.0
-                "$value $unit - $converted KG"
+                if(full) "$value $unit - $converted KG" else converted.toString()
             }
         }
         return result

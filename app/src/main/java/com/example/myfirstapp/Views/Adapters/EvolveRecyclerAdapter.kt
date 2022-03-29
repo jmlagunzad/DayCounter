@@ -37,13 +37,17 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
         return CustomViewHolder(cellForRow)
     }
 
+    fun weightInKg(position: Int): Double{
+        return if(logs.get(position).unit == "KG") logs.get(position).value
+        else presenter.displayConversion(logs.get(position).value,logs.get(position).unit, false).toDouble()
+    }
+
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         var difference = 0.0
         var differenceText = ""
 
         if(position > 0){
-            difference = presenter.computeDifference(logs.get(position-1).value, logs.get(position).value)
-            initialWeight = logs.get(position).value
+            difference = presenter.computeDifference(weightInKg(position-1), weightInKg(position))
 
             if(difference < 0){
                 holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFB3BA"))
@@ -54,9 +58,6 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                 differenceText = " [-" + difference + " KG]"
             }
 
-        }
-        else{
-            initialWeight = logs.get(position).value
         }
 
         holder.view.textView_mainTitle?.text = logs.get(position).title + differenceText
@@ -113,6 +114,7 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                     )!!
                     this.notifyDataSetChanged()
                     this.notifyItemChanged(position)
+                    this.notifyItemRangeChanged(position, itemCount)
                     customDialog.dismiss()
 
                     Toast.makeText(
