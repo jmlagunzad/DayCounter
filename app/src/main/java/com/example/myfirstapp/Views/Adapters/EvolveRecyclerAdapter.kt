@@ -39,13 +39,13 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         var difference = 0.0
-//        if(initialWeight != null){
-            difference = presenter.computeDifference(initialWeight, logs.get(position).value)
+        if(position > 0){
+            difference = presenter.computeDifference(logs.get(position-1).value, logs.get(position).value)
             initialWeight = logs.get(position).value
-//        }
-//        else{
-//            initialWeight = logs.get(position).value
-//        }
+        }
+        else{
+            initialWeight = logs.get(position).value
+        }
         holder?.view?.textView_mainTitle?.text = logs.get(position).title
         holder?.view?.textView_description?.text = presenter.displayConversion(logs.get(position).value,logs.get(position).unit) + " - " + difference
         holder?.view?.textView_deadline?.text = logs.get(position).log_date
