@@ -26,6 +26,8 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
     var logs : MutableList<Log> = ArrayList()
     private val presenter = EvolveRecyclerAdapterPresenter(view)
     var evolveActionMode: ActionMode? = null
+    val selectedItemsPosition = mutableListOf<Int>()
+    val selectedItemsId = mutableListOf<Int>()
 
     override fun getItemCount(): Int {
         return logs.size
@@ -40,6 +42,41 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
     fun weightInKg(position: Int): Double{
         return if(logs.get(position).unit == "KG") logs.get(position).value
         else presenter.displayConversion(logs.get(position).value,logs.get(position).unit, false).toDouble()
+    }
+
+    fun selectItem(position: Int){
+        if(logs.get(position).selected){
+            selectedItemsPosition.remove(position)
+            selectedItemsId.remove(logs.get(position).id)
+        }
+        else{
+            selectedItemsPosition.add(position)
+            selectedItemsId.add(logs.get(position).id)
+        }
+
+        logs.get(position).selected = !logs.get(position).selected
+        this.notifyItemChanged(position)
+
+    }
+
+    fun clearItemLists(){
+        selectedItemsPosition.clear()
+        selectedItemsId.clear()
+    }
+
+    fun resetSelectedItems(){
+
+        if(!selectedItemsPosition.isEmpty()){
+            selectedItemsPosition.sorted()
+            selectedItemsPosition.forEach{
+                logs.get(it).selected = false
+            }
+
+            this.notifyItemRangeChanged((selectedItemsPosition[0]), selectedItemsPosition[selectedItemsPosition.lastIndex])
+
+            clearItemLists()
+        }
+
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
@@ -57,7 +94,13 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                 holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
                 differenceText = " [-" + difference + " KG]"
             }
+        }
+        else{
+            holder.view.layout_background.setBackgroundColor(Color.parseColor("#BAFFC9"))
+        }
 
+        if(logs.get(position).selected){
+            holder.view.layout_background.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
 
         holder.view.textView_mainTitle?.text = logs.get(position).title + differenceText
@@ -67,7 +110,8 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
         holder.itemView.setOnLongClickListener{
 
             if(evolveActionMode != null){
-//                selectItem(position)
+                selectItem(position)
+                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
             }
             else{
                 evolveActionMode = (holder.view.context as AppCompatActivity?)!!.startSupportActionMode(object : ActionMode.Callback{
@@ -111,13 +155,14 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode?) {
-//                        resetSelectedItems()
-//                        notifyDataSetChanged()
+                        resetSelectedItems()
+                        notifyDataSetChanged()
                         evolveActionMode = null
 //                        toggleButtons()
                     }
                 })
-//                selectItem(position)
+                selectItem(position)
+                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
 //                toggleButtons()
             }
 
@@ -129,7 +174,9 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
         holder.itemView.setOnClickListener{
 
             if(evolveActionMode != null){
-//                selectItem(position)
+                selectItem(position)
+                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
+
             }
             else {
 
