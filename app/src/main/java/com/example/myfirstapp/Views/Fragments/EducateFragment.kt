@@ -40,7 +40,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     private var param1: String? = null
     private var param2: String? = null
     private var balance = 0.0
-    public var educateRecyclerAdapter: EducateRecyclerAdapter? = null
+    var educateRecyclerAdapter: EducateRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
