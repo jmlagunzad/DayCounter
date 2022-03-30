@@ -85,9 +85,29 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
             unitSpinner.adapter = unitAdapter
             unitSpinner.setSelection(unitAdapter.getPosition(logs.get(position).unit))
 
-            //GET VALUES FROM EDIT TEXT FIELDS
-            val logTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
-            val logValue = dialogView.findViewById<EditText>(R.id.editText_description).text
+            unitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
+                var itemPosition = holder.adapterPosition
+                var initialSelect = ""
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if(initialSelect == ""){
+                        dialogView.findViewById<EditText>(R.id.editText_description).setText(logs.get(itemPosition).value.toString())
+                    }
+                    else{
+                        dialogView.findViewById<EditText>(R.id.editText_description).setText(
+                            presenter.displayConversion(dialogView.findViewById<EditText>(R.id.editText_description).text.toString().toDouble(),
+                                initialSelect,
+                                false))
+                    }
+                    initialSelect = unitSpinner.selectedItem.toString()
+                }
+            }
+
 
             //SETUP VALUES FOR DIALOGVIEW
             dialog.setView(dialogView)
@@ -104,6 +124,10 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
             //LISTENER FOR EDIT
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
 
+                //GET VALUES FROM EDIT TEXT FIELDS
+                val logTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
+                val logValue = dialogView.findViewById<EditText>(R.id.editText_description).text
+
                 try {
 
                     logs = presenter.updateTransaction(
@@ -112,8 +136,8 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                         unitSpinner.selectedItem.toString(),
                         logs.get(position).id
                     )!!
-                    this.notifyDataSetChanged()
-                    this.notifyItemChanged(position)
+//                    this.notifyDataSetChanged()
+//                    this.notifyItemChanged(position)
                     this.notifyItemRangeChanged(position, itemCount)
                     customDialog.dismiss()
 
