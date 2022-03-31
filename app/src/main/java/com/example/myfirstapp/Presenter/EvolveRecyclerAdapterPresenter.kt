@@ -33,6 +33,10 @@ class EvolveRecyclerAdapterPresenter(view: View) {
         logHandler.deleteData(id)
     }
 
+    fun deleteRecords(ids: MutableList<Int>){
+        logHandler.deleteMultiple(ids)
+    }
+
     fun displayConversion(value: Double, unit: String, full: Boolean = true): String{
         var result = ""
         result = when(unit){

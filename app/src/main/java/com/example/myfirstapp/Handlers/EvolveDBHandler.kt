@@ -91,4 +91,11 @@ class EvolveDBHandler(var context: Context) : SQLiteOpenHelper(context, DATABASE
         db.close()
     }
 
+    fun deleteMultiple(ids: MutableList<Int>){
+        val db = this.writableDatabase
+        val list = ids.joinToString()
+        db.delete(TABLE_NAME,"$COL_ID IN ( $list )",null)
+        db.close()
+    }
+
 }

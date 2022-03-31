@@ -79,6 +79,27 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
     }
 
+    fun deleteSelectedItems() {
+//        var entryCategory =
+//            dialogView.findViewById<EditText>(R.id.editText_category).text
+        if (!selectedItemsPosition.isEmpty()) {
+            presenter.deleteRecords(selectedItemsId)
+            //        for(position in selectedItemsPosition..)
+            selectedItemsPosition.sortDescending()
+            selectedItemsPosition.forEach {
+                this.logs.removeAt(it)
+                this.notifyItemRemoved(it)
+            }
+
+            this.notifyItemRangeChanged(
+                selectedItemsPosition[selectedItemsPosition.lastIndex],
+                this.logs.size
+            )
+
+            clearItemLists()
+        }
+    }
+
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         var difference = 0.0
         var differenceText = ""
@@ -141,7 +162,7 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                                 return true
                             }
                             R.id.item_delete -> {
-//                                deleteSelectedItems()
+                                deleteSelectedItems()
                                 Toast.makeText(
                                     holder.view.context,
                                     "Entries deleted!",
