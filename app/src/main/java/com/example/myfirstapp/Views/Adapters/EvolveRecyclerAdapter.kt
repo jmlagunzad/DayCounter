@@ -59,6 +59,28 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
     }
 
+    fun selectAll(){
+
+        if(selectedItemsPosition.count() == itemCount){
+            resetSelectedItems()
+        }
+        else{
+            for(ctr in 0 until itemCount){
+//            Log.e("MainActivity", ctr.toString())
+
+                if(!logs.get(ctr).selected){
+                    selectedItemsPosition.add(ctr)
+                    selectedItemsId.add(logs.get(ctr).id)
+                    logs.get(ctr).selected = true
+                }
+            }
+        }
+
+        this.notifyItemRangeChanged(0, itemCount)
+//        Toast.makeText(view.context, selectedItemsPosition.joinToString(separator = ", "), Toast.LENGTH_SHORT).show()
+
+    }
+
     fun clearItemLists(){
         selectedItemsPosition.clear()
         selectedItemsId.clear()
@@ -152,13 +174,13 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
                         when(item!!.itemId){
                             R.id.item_select_all -> {
-//                                selectAll()
-                        Toast.makeText(
-                            holder.view.context,
-                            "Select all",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        mode!!.finish()
+                                selectAll()
+                                Toast.makeText(
+                                    holder.view.context,
+                                    "Select all",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+//                                mode!!.finish()
                                 return true
                             }
                             R.id.item_delete -> {
