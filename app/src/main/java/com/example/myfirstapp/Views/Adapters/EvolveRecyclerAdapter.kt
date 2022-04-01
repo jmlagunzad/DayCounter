@@ -12,6 +12,7 @@ import com.example.myfirstapp.Model.Log
 import com.example.myfirstapp.Model.Transaction
 import com.example.myfirstapp.Presenter.EducatePresenter
 import com.example.myfirstapp.Presenter.EducateRecyclerAdapterPresenter
+import com.example.myfirstapp.Presenter.EvolvePresenter
 import com.example.myfirstapp.Presenter.EvolveRecyclerAdapterPresenter
 import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.educate_row.view.*
@@ -21,7 +22,7 @@ import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
-class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>() {
+class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(){
 
     var logs : MutableList<Log> = ArrayList()
     private val presenter = EvolveRecyclerAdapterPresenter(view)
@@ -154,7 +155,7 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
             if(evolveActionMode != null){
                 selectItem(position)
-                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
             }
             else{
                 evolveActionMode = (holder.view.context as AppCompatActivity?)!!.startSupportActionMode(object : ActionMode.Callback{
@@ -205,7 +206,7 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                     }
                 })
                 selectItem(position)
-                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
 //                toggleButtons()
             }
 
@@ -218,7 +219,7 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
             if(evolveActionMode != null){
                 selectItem(position)
-                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(holder.view.context, "Clicked "+ position + "selected: " + logs.get(position).selected, Toast.LENGTH_SHORT).show()
 
             }
             else {
@@ -350,6 +351,10 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
 
 
         }
+    }
+
+    fun endActionMode() {
+        evolveActionMode?.finish()
     }
 
 

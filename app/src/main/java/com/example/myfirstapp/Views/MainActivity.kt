@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         class callback : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 fragmentAdapter.educateViewPager.fragmentAdapter?.educateFragment?.educateRecyclerAdapter?.endActionMode()
+                fragmentAdapter.evolveFragment.evolveRecyclerAdapter?.endActionMode()
             }
         }
 

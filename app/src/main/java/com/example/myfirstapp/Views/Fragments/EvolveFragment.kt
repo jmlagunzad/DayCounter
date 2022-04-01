@@ -35,6 +35,7 @@ class EvolveFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var evolveRecyclerAdapter: EvolveRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +56,13 @@ class EvolveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val evolvePresenter = EvolvePresenter(view)
-        val mAdapter = EvolveRecyclerAdapter(view)
+        evolveRecyclerAdapter = EvolveRecyclerAdapter(view)
         //val db = EducateDBHandler(this.context!!)
 
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
-        recyclerView.adapter = mAdapter
+        recyclerView.adapter = evolveRecyclerAdapter
 
-        mAdapter.logs = evolvePresenter.getLogs()
+        evolveRecyclerAdapter!!.logs = evolvePresenter.getLogs()
 
         view.evolve_addButton.setOnClickListener {
             //educatePresenter.test()
@@ -93,9 +94,9 @@ class EvolveFragment : Fragment() {
             customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
 
                 if(evolvePresenter.addLog(logTitle.toString(), logAmount.toString(), unitSpinner.selectedItem.toString())){
-                    mAdapter.logs = evolvePresenter.getLogs()
-                    mAdapter.notifyItemInserted(mAdapter.logs.size)
-                    mAdapter.notifyDataSetChanged()
+                    evolveRecyclerAdapter!!.logs = evolvePresenter.getLogs()
+                    evolveRecyclerAdapter!!.notifyItemInserted(evolveRecyclerAdapter!!.logs.size)
+                    evolveRecyclerAdapter!!.notifyDataSetChanged()
 
                     customDialog.dismiss()
                 }

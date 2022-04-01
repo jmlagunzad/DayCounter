@@ -7,7 +7,8 @@ import com.example.myfirstapp.Views.Fragments.*
 
 class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
-    public var educateViewPager = EducateViewPagerFragment()
+    var educateViewPager = EducateViewPagerFragment()
+    var evolveFragment = EvolveFragment()
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
@@ -21,7 +22,7 @@ class PagerAdapter (fa: FragmentActivity) : FragmentStateAdapter(fa) {
                 educateViewPager
             }
             3 -> {
-                EvolveFragment()
+                evolveFragment
             }
             else -> {
                 AboutFragment()
