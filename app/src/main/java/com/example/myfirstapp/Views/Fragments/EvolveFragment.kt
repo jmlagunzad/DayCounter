@@ -59,14 +59,14 @@ class EvolveFragment : Fragment() {
         evolveRecyclerAdapter = EvolveRecyclerAdapter(view)
         //val db = EducateDBHandler(this.context!!)
 
-        recyclerView.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView.adapter = evolveRecyclerAdapter
 
         evolveRecyclerAdapter!!.logs = evolvePresenter.getLogs()
 
         view.evolve_addButton.setOnClickListener {
             //educatePresenter.test()
-            val dialog = AlertDialog.Builder(this.context!!)
+            val dialog = AlertDialog.Builder(this.requireContext())
             val dialogView = layoutInflater.inflate(R.layout.add_choose_dialog, null)
             val logTitle = dialogView.findViewById<EditText>(R.id.editText_title).text
             val logAmount = dialogView.findViewById<EditText>(R.id.editText_description).text
@@ -74,7 +74,7 @@ class EvolveFragment : Fragment() {
 
             //LOAD UNIT CHOICES FOR SPINNER
             val units = arrayListOf("KG","LBS")
-            val unitAdapter = ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item,units)
+            val unitAdapter = ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_dropdown_item,units)
             unitSpinner.adapter = unitAdapter
 
             dialogView.findViewById<TextView>(R.id.textView_mainTitle).text = "Add new log"

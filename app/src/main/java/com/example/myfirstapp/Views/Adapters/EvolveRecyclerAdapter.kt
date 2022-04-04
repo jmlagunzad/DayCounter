@@ -176,11 +176,11 @@ class EvolveRecyclerAdapter(view: View): RecyclerView.Adapter<CustomViewHolder>(
                         when(item!!.itemId){
                             R.id.item_select_all -> {
                                 selectAll()
-                                Toast.makeText(
-                                    holder.view.context,
-                                    "Select all",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+//                                Toast.makeText(
+//                                    holder.view.context,
+//                                    "Select all",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
 //                                mode!!.finish()
                                 return true
                             }
