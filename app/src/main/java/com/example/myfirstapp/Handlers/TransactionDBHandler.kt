@@ -35,7 +35,9 @@ class TransactionDBHandler(var context: Context) : SQLiteOpenHelper(context, DAT
         cv.put(COL_NAME, transaction.title)
         cv.put(COL_AMOUNT, transaction.amount)
         cv.put(COL_CATEGORY, transaction.category)
-        //cv.put(COL_DATE, )
+        if(transaction.transaction_date != ""){
+            cv.put(COL_DATE, transaction.transaction_date)
+        }
 
         var result = db.insert(TABLE_NAME,null,cv)
         if(result == -1.toLong()){

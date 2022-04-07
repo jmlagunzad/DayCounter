@@ -125,7 +125,7 @@ class EducateFragment : Fragment(), EducatePresenter.OnEditOrDelete{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 //        val pager = activity?.findViewById<ViewPager2>(R.id.educateViewPager);
-//        pager!!.isEnabled= false
+//        pager!!.isEnabled = false
 //        pager!!.isUserInputEnabled = false
 
         //Init values
