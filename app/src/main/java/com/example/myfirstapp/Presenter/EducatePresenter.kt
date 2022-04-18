@@ -71,7 +71,7 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     typeFilter +
-                    "ORDER BY id DESC"
+                    "ORDER BY transaction_date DESC,id DESC"
             "LAST CUTOFF" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where CASE " +
@@ -89,7 +89,7 @@ class EducatePresenter(view: View) {
 
                     "END " +
                     typeFilter +
-                    "ORDER BY id DESC"
+                    "ORDER BY transaction_date DESC,id DESC"
             "THIS MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
 
@@ -97,7 +97,7 @@ class EducatePresenter(view: View) {
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','+1 month','-1 day')) " +
 
                     typeFilter +
-                    "ORDER BY id DESC"
+                    "ORDER BY transaction_date DESC,id DESC"
 
             "LAST MONTH" ->    "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
@@ -106,12 +106,12 @@ class EducatePresenter(view: View) {
                     "AND strftime('%Y-%m-%d',datetime('now','start of month','-1 day')) " +
 
                     typeFilter +
-                    "ORDER BY id DESC"
+                    "ORDER BY transaction_date DESC,id DESC"
             else -> "SELECT id, title, amount, category, strftime('%m/%d',transaction_date) as transaction_date " +
                     "from transactions " +
                     "where category = '$filter' " +
                     typeFilter +
-                    "ORDER BY id DESC"
+                    "ORDER BY transaction_date DESC,id DESC"
         }
         return transactionHandler.readData(filterQuery)
     }
